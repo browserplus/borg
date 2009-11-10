@@ -4,7 +4,7 @@ class IRC {
 	private $db;
     
     private static $table = "chat";
-    private static $logpath =  "/home/websites/borg/irc_logs/";
+    private static $logpath =  "/home/websites/browserplus/irc_logs/";
 
 	function __construct() {
         $this->db = new DB("irc");
