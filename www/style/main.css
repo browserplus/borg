@@ -1,0 +1,113 @@
+body {
+    color:#333;
+    /*font-family: "trebuchet ms", arial, sans-serif;*/
+    font-family:georgia,verdana,"trebuchet ms",sans-serif;
+}
+
+.main {
+    font-size: 116%;
+    line-height:1.5em;
+}
+
+.main ol li { list-style: decimal outside; }
+.main ul li { list-style: disc outside; }
+
+.main ol, .main ul, .main dl { margin-left: 2em; margin-bottom:1em;}
+
+.main dd {margin-left:2em; margin-bottom:0.5em; }
+
+blockquote {margin:1em 2em;}
+a { color:#ef5500; }
+a { color:#33c; }
+p { margin-bottom: 1em;}
+strong,dt {font-weight:bold;}
+tt,code { padding:1px; }
+pre,tt,code {
+    font-family: consolas, monaco, "courier new", courier, monospace;
+    color:#222221;
+    background:#e7e5dc;
+}
+pre {
+    padding:3px;
+    margin:1em 0;
+    overflow:auto;
+    font-size:85%;
+    border:1px solid #d1d0cb;
+}
+hr  {
+    border:0;
+    background: #ccc;
+    height: 2px;
+    width:450px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: verdana,"trebuchet ms",helvetica,arial,sans-serif;
+	margin: 1em 0 0.5em 0;
+    color:#007cef;
+}
+
+h1 {font-size: 153.9%;}
+h2 {font-size: 138.5%;margin-top:1.5em;}
+h3 {font-size: 131%;}
+h4 {font-size: 123.1%;}
+
+/* header */
+#logo { padding: 10px 0 10px 0; text-align:center;}
+#topnav .active a { font-weight:bold;}
+#topnav { text-align:center; padding-bottom:1px; border-bottom:1px dotted #ccc; }
+#topnav ul { margin: 0; }
+#topnav ul li { display: inline; padding:0 10px;}
+#topnav ul li a {
+    text-decoration:none;
+    font-family:"century gothic",helvetica,arial,sans-serif;
+    color:#007cef;
+    font-size:146.5%;
+}
+
+#ft { border-top:1px dotted #ccc; padding-top:5px; text-align:left;}
+
+
+/* widgets */
+#widgets { margin-left:20px;}
+.widget a { color:#33c;}
+.widget h1 a {font-size:85%;}
+.widget ul  { margin:0 0 0 0.5em;}
+.widget ul li { list-style:none; font-size:93%;}
+.widget h1, .widget h3 {
+    color:#555;
+    border-bottom:1px dotted #ccc;
+    margin-bottom:5px;
+    font-size:116%;
+    letter-spacing:0.1em;
+}
+
+.widget-content { margin-bottom:2em;}
+.widget-search input {font-size:85%;}
+.widget-irc-tags a { font-family:consolas, monaco, "courier new", courier, monospace;}
+.widget-git-projects a { font-family:consolas, monaco, "courier new", courier, monospace; font-size:93%;}
+
+/* blog */
+h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
+.entry-title a { color:#007cef; text-decoration:none; }
+.asset-meta {font-size:85%;text-align:right;margin-top:5px;}
+.vcard {font-weight:bold;}
+.content-nav {text-align:center;margin-top:20px;margin-bottom:10px;}
+
+.home-logs {font-size:85%;}
+.home-irc-log { margin-bottom:20px;}
+.irc-logs {font-size:93%;}
+
+/* log (git and irc tables) */
+.log {font-family:verdana;}
+.log-nav {font-size:85%; margin:1px auto; text-align:center;}
+.log table { margin: 1px; font-size:85%; border-collapse:collapse;border-spacing:0;}
+.log td { padding:1px 5px; border:1px dotted #c0c5d0;}
+.log-hdr  { background:#c5d1e2;font-weight:bold;text-align:center;font-size:93%;}
+.log-when  { background:#f5f5f5;}
+.log-when a {color:#666;}
+.log-who {font-weight:bold;color:#369;}
+.log-what {}
+.odd {background:#f0f5ff;}
+.even {background:#fff;}
+

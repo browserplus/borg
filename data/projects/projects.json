@@ -1,0 +1,35 @@
+{
+    "Tools": [
+        "http://github.com/browserplus/bp-service-api",
+        "http://github.com/browserplus/bp-service-framework",
+        "http://github.com/lloyd/bp-service-tools"
+    ],
+    
+    "Misc": [
+        "http://github.com/why/fakeplus",
+        "http://github.com/dgrigsby/bp-helloworld",
+        "http://github.com/lloyd/bp-prompting-sample"
+    ],
+
+    "Services": [
+        "http://github.com/davglass/bp-apache",
+        "http://github.com/lloyd/bp-bloopsaphone",
+        "http://github.com/maccman/bp-bonjour",
+        "http://github.com/sspencer/bp-capture",
+        "http://github.com/vargon/bp-docdb",
+        "http://github.com/lloyd/bp-downloader",
+        "http://github.com/lloyd/bp-fileaccess",
+        "http://github.com/lloyd/bp-imagealter",
+        "http://github.com/lloyd/bp-jsonrequest",
+        "http://github.com/davglass/bp-jslint",
+        "http://github.com/lloyd/bp-lzma",
+        "http://github.com/davglass/bp-pastebuffer",
+        "http://github.com/sspencer/bp-photobooth",
+        "http://github.com/dgrigsby/bp-prime",
+        "http://github.com/davglass/bp-profiler",
+        "http://github.com/browserplus/bp-pubsub",
+        "http://github.com/sspencer/bp-pubsub",
+        "http://github.com/browserplus/bp-ruby",
+        "http://github.com/davglass/bp-sreader"
+    ]
+}
