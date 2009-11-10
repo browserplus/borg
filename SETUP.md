@@ -47,7 +47,17 @@ is made from the files under data/pages/docs.
 
 Rules of the road:
 
+* Default File
+  * If "index.*" appears in the directory being served, that file is the default shown.
+  * Above is a problem, cause title of file would appear as "Index".  
+  * Instead, prefix file names with digits like this: "00_this_is_my_default_file.md"
 * Extensions
   * <file>.md is translated into html via Markdown and put in the site template
   * <file>.html is untouched but put within the site template too
   * <file>.raw is untouched and served as html without a template.  Use this for code examples.
+* File Names
+  * File names are translated into the html title element. 
+  * Words break on underscores.  
+  * Each word is capitalized.
+  * If you want special capitalization, like BrowserPlus, include capitalization in the filename.
+  * If you want special characters, `data/dok/helper.php` include TitleMap which can translate files like "c_cpp" into "C/C++".
