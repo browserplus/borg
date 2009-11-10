@@ -39,3 +39,15 @@ The file "dbpasswd.json" lives in /home/browserplus.  Contents:
 ## Cron Jobs
 
 To keep git commits up-to-date, `bin/fetch_commits.php` needs to run periodically.
+
+## Dok CMS
+
+The Dok CMS translates a directory of text files into a web site.  The Doc/ tab on the web site
+is made from the files under data/pages/docs.
+
+Rules of the road:
+
+* Extensions
+  * <file>.md is translated into html via Markdown and put in the site template
+  * <file>.html is untouched but put within the site template too
+  * <file>.raw is untouched and served as html without a template.  Use this for code examples.
