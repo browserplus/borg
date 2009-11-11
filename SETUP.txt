@@ -7,7 +7,7 @@ In php.ini, the following variable is set:
 
     dok_base=/home/websites/browserplus/data
 
-The file "dbpasswd.json" lives in /home/browserplus.  Contents:
+The file "dbpasswd.json" lives in /home/borg.  Contents:
 
 =======================================      
 	{ 
