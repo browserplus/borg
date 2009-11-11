@@ -23,6 +23,7 @@ class DB
 	}
 
     private function err($s) {
+        if (is_array($s)) $s = print_r($s, 1);
         error_log($s, 3, "/tmp/dberrors.txt");        
     }
 
