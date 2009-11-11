@@ -1,5 +1,5 @@
 <?php
-define("DB_CONN", "/home/browserplus/dbpasswd.json");
+define("DB_CONN", "/home/borg/dbpasswd.json");
 
 class DB
 {
