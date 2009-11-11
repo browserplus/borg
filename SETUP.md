@@ -18,7 +18,7 @@ to retrieve IRC conversations and cronjob result.
 
 Schemas are located under data/sql.
 
-The file "dbpasswd.json" lives in /home/browserplus.  Contents:
+The file "dbpasswd.json" lives in /home/borg/dbpasswd.json  Contents:
 
 	{ 
 	    "irc": {
