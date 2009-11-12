@@ -11,9 +11,10 @@ $RowsToShow = 15;
 // IRC Transcript
 $irc = new IRC();
 $results = $irc->get_rows($irc->get_max_id(), $RowsToShow);
+
 $ircnav = l("#browserplus", "/discuss/");
 $irctable = render_table($results, "stamp", "who", "utterance", 
-    array("show_long_dates"=>true, "top_nav" => $ircnav));
+    array("show_long_dates"=>true, "top_nav" => "<strong>IRC: $ircnav</strong>"));
 
 $ircwidgets = $irc->render_widget("day") . $irc->render_widget("week") . $irc->render_widget("month");
 
@@ -29,7 +30,8 @@ $gitwidgets = $git->render_project_widget();
 
 
 $body = <<< EOS
-<h1>BrowserPlus</h1>
+<h1>BrowserPlus Dashboard</h1>
+
 <div class="home-logs">
     <div class="home-irc-log">$irctable</div>
     <div class="home-git-log">$gittable</div>
