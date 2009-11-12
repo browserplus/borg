@@ -39,11 +39,11 @@ class GIT {
         $gitbase = "http://github.com/";
 
         $projects = $this->get_projects_flattened();
-        $s = "";
+        $arr = array();
         foreach($projects as $repository => $url) {
-            $s .= "<a href=\"$url\">$repository</a>\n";
+            $arr[] = "<a href=\"$url\">$repository</a>";
         }
-
+        $s = join(", ", $arr);
         return render_widget("git-projects", "Projects", $s);
     }
 }
