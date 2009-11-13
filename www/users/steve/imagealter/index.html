@@ -1,0 +1,230 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Drop Based Coding</title>
+
+<style type="text/css">
+/*margin and padding on body element
+  can introduce errors in determining
+  element position and are not recommended;
+  we turn them off as a foundation for YUI
+  CSS treatments. */
+body {
+	margin:0;
+	padding:0;
+}
+
+#content {
+    margin:0 12px;
+}
+</style>
+
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
+<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+
+<!--there is no custom header content for this example-->
+
+</head>
+
+<body class=" yui-skin-sam">
+<div id="content">
+<h1>Client Side Image Processing</h1>
+
+<div class="exampleIntro">
+	<p>
+	    Your servers are busy enough already!  Utilize the CPU on the client to perform 
+	    image transformations.
+	</p>
+    <p>
+	    Just drag an image from the desktop to the area below 
+	    to get started.  <a id="tester" href="#">Fake Drop</a>!
+	</p>
+
+</div>
+
+<!--BEGIN SOURCE CODE FOR EXAMPLE =============================== -->
+
+<style type="text/css" media="screen">
+    .yui-dd-proxy {
+        text-align: left;
+    }
+
+    #play {
+        margin: 10px;
+        zoom: 1;
+    }
+    
+    ul {
+        padding:0;margin:0;
+    }
+    
+    .exampleIntro p {
+        font-family:georgia;
+        font-size:123.1%;
+        margin: 0 2em 1em 2em;
+    }
+
+    .exampleIntro {
+        margin-bottom:50px;
+    }
+
+    #play:after { display: block; clear: both; visibility: hidden; content: '.'; height: 0;}
+
+    #play ul, #pic {
+        border: 2px solid #369;
+        margin-right: 10px;
+        height: 320px;
+        float: left;
+        padding: 1px;
+        position: relative;
+        zoom: 1;
+    }
+    
+    #play ul {
+        width: 140px;
+        visibility:visible;
+    }
+    
+    #pic {
+        width: 320px;
+    }
+    
+    #pictext,#dropinstr {
+        margin-top:20px;
+        text-align:center;
+        padding:0 20px;
+        font-size:174%;
+        color:#369;n
+        font-family:"trebuchet ms";
+    }
+    
+    #drag {
+        z-index:2;
+    }
+
+    #drop {
+        overflow: auto;
+    }
+
+
+    #play ul li {
+        background-image: none;
+        list-style-type: none;
+        padding-left: 20px;
+        padding: 2px;
+        margin: 1px;
+        zoom: 1;
+        position: relative;
+        font-family:verdana;
+        font-size:85%;
+    }
+    
+    #play ul li.list1 {
+        background-color: #8DD5E7;
+        border:1px solid #39a;
+        cursor: move;
+
+    }
+    #play ul li.list2 {
+        background-color: #EDFF9F;
+        border:1px solid #bc6;
+        padding-left:15px;
+        background:#EDFF9F url(trash_can.gif) no-repeat 1px 4px;
+        cursor:pointer;
+    }
+</style>
+
+
+<div id="play">
+    <ul id="drag">
+        <li id="a01" class="list1">Contrast More</li>
+        <li id="a02" class="list1">Contrast Less</li>
+        <li id="a03" class="list1">Crop</li>
+        <li id="a04" class="list1">Despeckle</li>
+        <li id="a05" class="list1">Enhance</li>
+        <li id="a06" class="list1">Grayscale</li>
+        <li id="a07" class="list1">Negate</li>
+        <li id="a08" class="list1">OilPaint</li>
+        <li id="a09" class="list1">Psychedelic</li>
+        <li id="a10" class="list1">Rotate Left</li>
+        <li id="a11" class="list1">Rotate Right</li>
+        <li id="a12" class="list1">Scale</li>
+        <li id="a13" class="list1">Sepia</li>
+        <li id="a14" class="list1">Solarize</li>
+        <li id="a15" class="list1">Swirl</li>
+    </ul>
+    <ul id="drop">
+        <div id="dropinstr">Drop actions from list here</div>
+    </ul>
+    
+    <div id="pic"><div id="pictext">Drop Image Here</div></div>
+</div>
+
+<script>
+
+YUI({combine: true, timeout: 10000}).use('dd-drop', 'dd-constrain', function(Y) {
+    var data = {
+        'a01': { color: 'white', size: 'x-small', price: '$5.00' },
+        'a02': { color: 'blue', size: 'small', price: '$6.00' },
+        'a03': { color: 'green', size: 'medium', price: '$7.00' },
+        'a04': { color: 'red', size: 'large', price: '$10.00' },
+        'a05': { color: 'purple', size: 'x-large', price: '$15.00' }
+    };
+    
+    function renderActions(items) {
+        items.each(function(v,k) {
+            console.log("v="+v.get('className') +", k="+k);
+        });
+    }
+
+    Y.on("click", function(){ alert("Testing!"); }, "#tester");
+
+    Y.on("actionlist:change", renderActions);
+
+    var drags = Y.Node.all('#drag li');
+    drags.each(function(v, k) {
+        var thisData = {};
+        Y.mix(thisData, data[v.get('id')]);
+        var dd = new Y.DD.Drag({
+            node: v,
+            dragMode: 'intersect',
+            data: thisData
+        }).plug(Y.Plugin.DDConstrained, {
+            constrain2node: '#play'
+        });
+        dd.on('drag:end', function(e) {
+            e.preventDefault();
+        });
+    });
+
+    var drop = new Y.DD.Drop({
+        node: '#drop'
+    });
+
+    drop.on('drop:hit', function(e) {
+        var drag = e.drag;
+        var data = drag.get('data');
+        var out = ['id: ' + drag.get('node').get('id')];
+        Y.each(data, function(v, k) {
+            out[out.length] = k + ': ' + v;
+        });
+        var id = drag.get('node').get('id');
+        var str = 'Dropped(' + id + '): ' + out.join(', ');
+        var instr = Y.Node.get("#dropinstr");
+        if (instr) {
+            this.get('node').removeChild(instr);
+        }
+        this.get('node').appendChild(Y.Node.create('<li class="list2 a_' + id +'">' + str + '</li>'));
+
+        Y.fire('actionlist:change', Y.Node.all('#drop li'));
+
+        //var str = '<p><strong>Dropped</strong>: ' + out.join(', ') + '</p>';
+        //this.get('node').set('innerHTML', str);
+    });
+});
+</script>
+</div>
+</body>
+</html>
