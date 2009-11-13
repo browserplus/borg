@@ -82,6 +82,10 @@ body {
         zoom: 1;
     }
     
+    #lists {
+        opacity:0;
+    }
+
     #play ul {
         width: 140px;
         visibility:visible;
@@ -138,6 +142,7 @@ body {
 
 
 <div id="play">
+    <div id="lists">
     <ul id="drag">
         <li id="a01" class="list1">Contrast More</li>
         <li id="a02" class="list1">Contrast Less</li>
@@ -158,13 +163,13 @@ body {
     <ul id="drop">
         <div id="dropinstr">Drop actions from list here</div>
     </ul>
-    
+    </div>
     <div id="pic"><div id="pictext">Drop Image Here</div></div>
 </div>
 
 <script>
 
-YUI({combine: true, timeout: 10000}).use('dd-drop', 'dd-constrain', function(Y) {
+YUI({combine: true, timeout: 10000}).use('dd-drop', 'dd-constrain', 'anim', function(Y) {
     var data = {
         'a01': { color: 'white', size: 'x-small', price: '$5.00' },
         'a02': { color: 'blue', size: 'small', price: '$6.00' },
@@ -179,7 +184,15 @@ YUI({combine: true, timeout: 10000}).use('dd-drop', 'dd-constrain', function(Y) 
         });
     }
 
-    Y.on("click", function(){ alert("Testing!"); }, "#tester");
+    Y.on("click", function(e){ 
+            e.preventDefault();
+            var anim = new Y.Anim({
+                node: '#lists',
+                to: { opacity: 1 }
+            });
+
+            anim.run();
+        }, "#tester");
 
     Y.on("actionlist:change", renderActions);
 
