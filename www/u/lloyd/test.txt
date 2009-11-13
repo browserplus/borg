@@ -4,7 +4,9 @@
    osx version: http://next.browserplus.org/u/lloyd/bpi_uktest_2.4.17.dmg
    win32 version: http://next.browserplus.org/u/lloyd/bpi_uktest_2.4.17.exe
 
-3. MANUALLY EDIT BrowserPlus.confg
+3. MANUALLY EDIT BrowserPlus.config, change primary distro server:
+   from:  http://browserplus.yahoo.com
+   to:    http://w002.bplus.ukl.yahoo.com
 
 4. visit Yahoo Mail! http://web32311.mail.mud.yahoo.com/dc/launch
 
