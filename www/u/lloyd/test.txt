@@ -1,0 +1,26 @@
+1. pick an important platform/browser combo
+
+2. install all-in-one browserplus-internal installer: 
+   osx version: http://next.browserplus.org/u/lloyd/bpi_uktest_2.4.17.dmg
+   win32 version: http://next.browserplus.org/u/lloyd/bpi_uktest_2.4.17.exe
+
+2. visit Yahoo Mail! http://web32311.mail.mud.yahoo.com/dc/launch
+
+3. login with cg_test_us1 / jayson
+
+4. click new
+
+5. observe inline service update without any prompting (little status bar on the attach bar on the bottom)
+
+6. Check the running version of BrowserPlus
+   6a. on windows: hold shift + control and click on "help"
+       on osx:     hold command + shift and click on "help"
+   6b. click "About"
+   6c. notice: 2.4.17 "production"
+
+7. reload the page once.  Now BrowserPlus will install the
+   new software (2.4.21), but you'll use the old software (2.4.17) for the
+   purposes of this session. Now steps number 2-6 - verify you're still
+   running 2.4.17 "production".
+
+8. reload the page again.  Now steps number 2-6 - verify you're running 2.4.21 "production"
