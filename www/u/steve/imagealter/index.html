@@ -3,71 +3,28 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Drop Based Coding</title>
-
-<style type="text/css">
-/*margin and padding on body element
-  can introduce errors in determining
-  element position and are not recommended;
-  we turn them off as a foundation for YUI
-  CSS treatments. */
-body {
-	margin:0;
-	padding:0;
-}
-
-#content {
-    margin:0 12px;
-}
-</style>
+<title>Image Alter</title>
 
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
 <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>  
+<script src="http://bp.yahooapis.com/toolbox/installer/1.0.11/install-min.js"></script> 
 
-<!--there is no custom header content for this example-->
+<style type="text/css">
+    body {margin:0;	padding:0;}
+    ul {padding:0;margin:0;}
+    #content {margin:0 12px;}
 
-</head>
+    .yui-dd-proxy {text-align: left;}
 
-<body class=" yui-skin-sam">
-<div id="content">
-<h1>Client Side Image Processing</h1>
-
-<div class="exampleIntro">
-	<p>
-	    Your servers are busy enough already!  Utilize the CPU on the client to perform 
-	    image transformations.
-	</p>
-    <p>
-	    Just drag an image from the desktop to the area below 
-	    to get started.  <a id="tester" href="#">Fake Drop</a>!
-	</p>
-
-</div>
-
-<!--BEGIN SOURCE CODE FOR EXAMPLE =============================== -->
-
-<style type="text/css" media="screen">
-    .yui-dd-proxy {
-        text-align: left;
-    }
-
-    #play {
-        margin: 10px;
-        zoom: 1;
-    }
-    
-    ul {
-        padding:0;margin:0;
-    }
-    
+    .exampleIntro {margin-bottom:35px;}
     .exampleIntro p {
         font-family:georgia;
         font-size:123.1%;
         margin: 0 2em 1em 2em;
     }
 
-    .exampleIntro {
-        margin-bottom:50px;
+    #play { margin: 10px; zoom: 1;
     }
 
     #play:after { display: block; clear: both; visibility: hidden; content: '.'; height: 0;}
@@ -82,37 +39,10 @@ body {
         zoom: 1;
     }
     
-    #lists {
-        opacity:0;
-    }
+    #lists {opacity:0;}
 
-    #play ul {
-        width: 140px;
-        visibility:visible;
-    }
+    #play ul {width: 140px; visibility:visible; }
     
-    #pic {
-        width: 320px;
-    }
-    
-    #pictext,#dropinstr {
-        margin-top:20px;
-        text-align:center;
-        padding:0 20px;
-        font-size:174%;
-        color:#369;n
-        font-family:"trebuchet ms";
-    }
-    
-    #drag {
-        z-index:2;
-    }
-
-    #drop {
-        overflow: auto;
-    }
-
-
     #play ul li {
         background-image: none;
         list-style-type: none;
@@ -138,104 +68,306 @@ body {
         background:#EDFF9F url(trash_can.gif) no-repeat 1px 4px;
         cursor:pointer;
     }
+
+    #pic {
+        width: 320px;
+    }
+    
+    #pictext, #dropinstr {
+        text-align:center;
+        color:#369;
+        font-family:"trebuchet ms";
+    }
+    
+    #dropinstr {
+        margin-top:20px;
+        font-size:131%;
+    }
+
+    #pictext {
+        font-size:187%;
+        position:absolute;
+        top:20px;
+        left:0px;
+        width:320px;
+        background:#eee;
+        z-index:2;
+    }
+    
+    #picimage {
+        z-index:3;
+    }
+
+    #drag {
+        z-index:2;
+        overflow: auto;
+    }
+
+    #drop {
+        overflow: auto;
+    }
+
 </style>
+
+</head>
+
+<body class=" yui-skin-sam">
+<div id="content">
+<h1>Client Side Image Processing</h1>
+
+<div class="exampleIntro">
+	<p>
+	    Your servers are busy enough already!  Utilize the CPU on the client to perform 
+	    image transformations.  Drag an image from the desktop and drop it below to 
+	    get started.
+	</p>
+</div>
 
 
 <div id="play">
     <div id="lists">
-    <ul id="drag">
-        <li id="a01" class="list1">Contrast More</li>
-        <li id="a02" class="list1">Contrast Less</li>
-        <li id="a03" class="list1">Crop</li>
-        <li id="a04" class="list1">Despeckle</li>
-        <li id="a05" class="list1">Enhance</li>
-        <li id="a06" class="list1">Grayscale</li>
-        <li id="a07" class="list1">Negate</li>
-        <li id="a08" class="list1">OilPaint</li>
-        <li id="a09" class="list1">Psychedelic</li>
-        <li id="a10" class="list1">Rotate Left</li>
-        <li id="a11" class="list1">Rotate Right</li>
-        <li id="a12" class="list1">Scale</li>
-        <li id="a13" class="list1">Sepia</li>
-        <li id="a14" class="list1">Solarize</li>
-        <li id="a15" class="list1">Swirl</li>
-    </ul>
-    <ul id="drop">
-        <div id="dropinstr">Drop actions from list here</div>
-    </ul>
+        <ul id="drag"></ul>
+        <ul id="drop">
+            <div id="dropinstr"></div>
+        </ul>
     </div>
-    <div id="pic"><div id="pictext">Drop Image Here</div></div>
+    <div id="pic">
+        <div id="pictext"></div>
+        <div id="picimage"></div>
+    </div>
 </div>
 
 <script>
+YUI({combine: true, timeout: 10000}).use( 'dd-drop', 'dd-constrain', 'dd-proxy', 'anim', function(Y) {
 
-YUI({combine: true, timeout: 10000}).use('dd-drop', 'dd-constrain', 'anim', function(Y) {
+    // Defines all image transformations and provides default parameters to each.
     var data = {
-        'a01': { color: 'white', size: 'x-small', price: '$5.00' },
-        'a02': { color: 'blue', size: 'small', price: '$6.00' },
-        'a03': { color: 'green', size: 'medium', price: '$7.00' },
-        'a04': { color: 'red', size: 'large', price: '$10.00' },
-        'a05': { color: 'purple', size: 'x-large', price: '$15.00' }
+        'a_trast_more':  { 'label': 'More Contrast', 'action':{'contrast': 1}},
+        'a_trast_less':  { 'label': 'Less Contrast', 'action':{'contrast': -1}},
+//        'a_crop':        { 'label': 'Crop',          'action':{'crop': [0.1, 0.1, 0.9, 0.9]}},
+        'a_despeckle':   { 'label': 'Despeckle',     'action':'despeckle'},
+        'a_enhance':     { 'label': 'Enhance',       'action':'enhance'},
+        'a_grayscale':   { 'label': 'Grayscale',     'action':'grayscale'},
+        'a_negate':      { 'label': 'Negate',        'action':'negate'},
+        'a_oilpaint':    { 'label': 'OilPaint',      'action':'oilpaint'},
+        'a_psychedelic': { 'label': 'Psychedelic',   'action':'psychedelic'},
+        'a_rot_left':    { 'label': 'Rotate Left',   'action':{'rotate': -90}},
+        'a_rot_right':   { 'label': 'Rotate Right',  'action':{'rotate': 90}},
+        'a_sepia':       { 'label': 'Sepia',         'action':'sepia'},
+        'a_solarize':    { 'label': 'Solarize',      'action':'solarize'},
+        'a_swirl':       { 'label': 'Swirl',         'action':{'swirl': 90}}
     };
     
-    function renderActions(items) {
-        items.each(function(v,k) {
-            console.log("v="+v.get('className') +", k="+k);
+    var origFileHandle = null;
+    var thumbFileHandle = null;
+    var listsAreHidden = true;
+    var dropText = "Drop Image Transformations Here";
+    
+    Y.one("#dropinstr").setContent(dropText);
+
+    function fireActionChange() {
+        var actions = [];
+        Y.Node.all('#drop li').each(function(v,k) {
+            actions.push(v.getAttribute('action'));
         });
+
+        Y.fire('actions:change', actions);
+        
     }
 
-    Y.on("click", function(e){ 
-            e.preventDefault();
-            var anim = new Y.Anim({
-                node: '#lists',
-                to: { opacity: 1 }
-            });
+    function renderActions(actions) {
+        var arr = [];
+        for(var k in actions) {
+            if (actions.hasOwnProperty(k)) {
+                arr.push(data[actions[k]].action);
+            }
+        }
 
-            anim.run();
-        }, "#tester");
+        processImage(thumbFileHandle, arr);
+    }
+    
+    function renderLists(e) {
+        var anim = new Y.Anim({node: '#lists', to: { opacity: 1 } });
+        anim.run();
+    }
 
-    Y.on("actionlist:change", renderActions);
+    // User click on item in drop list.  Remove it and fire action listener.
+    function dropListClicked(e) {
+        if (e.target.get('tagName') === "LI") {
+            e.target.remove();
+            fireActionChange();
+            if (Y.Node.all('#drop li').size() === 0) {
+                Y.one('#drop').append('<div id="dropinstr">' + dropText + '</div>');
+            }
+        }
+    }
+
+    Y.on("click", dropListClicked, "#drop");
+    Y.on("actions:change", renderActions);
+
+    //Listen for all drag:start events
+    Y.DD.DDM.on('drag:start', function(e) {
+        //Get our drag object
+        var drag = e.target;
+
+        //Set some styles here
+        drag.get('node').setStyle('opacity', '.25');
+        drag.get('dragNode').set('innerHTML', drag.get('node').get('innerHTML'));
+        drag.get('dragNode').setStyles({
+            opacity: '.5',
+            borderColor: drag.get('node').getStyle('borderColor'),
+            backgroundColor: drag.get('node').getStyle('backgroundColor')
+        });
+    });
+
+    //Listen for a drag:end events
+    Y.DD.DDM.on('drag:end', function(e) {
+        var drag = e.target;
+        //Put out styles back
+        drag.get('node').setStyles({visibility: '',  opacity: '1' });
+    });
+    
+    var drop = new Y.DD.Drop({node: '#drop' });
+
+    drop.on('drop:hit', function(e) {
+        var drag = e.drag;
+        var id = drag.get('node').get('id');
+        var data = drag.get('data');
+
+        var instr = Y.Node.get("#dropinstr");
+        if (instr) {
+            this.get('node').removeChild(instr);
+        }
+        
+        var actionNode = Y.Node.create('<li class="list2">' + data.label + '</li>');
+        actionNode.setAttribute('action', id);
+        this.get('node').appendChild(actionNode);
+        fireActionChange();
+    });
+    
+
+    // Populate drag list with actions from 'data' object
+    var drag = Y.one("#drag");
+    Y.each(data, function(v, k) {
+        drag.appendChild(Y.Node.create('<li id="' + k + '" class="list1">' + data[k].label + '</li>'));
+    });
 
     var drags = Y.Node.all('#drag li');
     drags.each(function(v, k) {
         var thisData = {};
         Y.mix(thisData, data[v.get('id')]);
+
         var dd = new Y.DD.Drag({
             node: v,
             dragMode: 'intersect',
             data: thisData
+        }).plug(Y.Plugin.DDProxy, {
+            moveOnEnd: false
         }).plug(Y.Plugin.DDConstrained, {
             constrain2node: '#play'
         });
-        dd.on('drag:end', function(e) {
-            e.preventDefault();
-        });
     });
 
-    var drop = new Y.DD.Drop({
-        node: '#drop'
-    });
+    function error(str, res) {
+        alert(str + ":" + res.error + " - " + res.verboseError);
+    }
 
-    drop.on('drop:hit', function(e) {
-        var drag = e.drag;
-        var data = drag.get('data');
-        var out = ['id: ' + drag.get('node').get('id')];
-        Y.each(data, function(v, k) {
-            out[out.length] = k + ': ' + v;
+    function processImage(file, actions) {
+        if (!file) {return;}
+        
+        BP.ImageAlter.transform({"file": file, "quality": 100, "actions": actions||[]}, function (transform) {
+            if (transform.success) {
+                BP.FileAccess.GetURL({ file: transform.value.file }, function (r) {
+                    if (r.success) {
+                        var str = '<img src="' + r.value + '">';
+                        Y.one("#picimage").setContent(str);
+                        Y.one("#pictext").setContent("");
+                    }
+                });
+            }
         });
-        var id = drag.get('node').get('id');
-        var str = 'Dropped(' + id + '): ' + out.join(', ');
-        var instr = Y.Node.get("#dropinstr");
-        if (instr) {
-            this.get('node').removeChild(instr);
+    }
+
+    function isImage(file) {
+        var i, len = file.mimeType.length, mime;
+        for (i = 0; i < len; i++) {
+            mime = file.mimeType[i];
+            if (mime === "image/jpeg" || mime === "image/pjpeg" || mime === "image/gif" || mime === "image/png") {
+                return true;
+            }
         }
-        this.get('node').appendChild(Y.Node.create('<li class="list2 a_' + id +'">' + str + '</li>'));
+        return false;
+    }
 
-        Y.fire('actionlist:change', Y.Node.all('#drop li'));
+    function dragDrop(res) {
+        var files = res.actualSelection, i, len = files.length;
+        for (i = 0; i < len; i++) {
+            if (isImage(files[i])) {
 
-        //var str = '<p><strong>Dropped</strong>: ' + out.join(', ') + '</p>';
-        //this.get('node').set('innerHTML', str);
-    });
+                origFileHandle = files[i];
+                if (listsAreHidden) {
+                    listsAreHidden = !listsAreHidden;
+                    renderLists();
+                }
+
+                // scale image to 320x320 and use that result for all further processing
+                var params = {
+                    "file": files[i],
+                    "quality": 100,
+                    "actions": [{"scale": {"maxwidth": 320, "maxheight": 320}}]
+                };
+
+                BP.ImageAlter.transform(params, function (transform) {
+                    if (transform.success) {
+                        // thumbFileHandle has module scope
+                        thumbFileHandle = transform.value.file;
+                        processImage(thumbFileHandle);
+                        Y.Node.all('#drop li').each(function(v,k) {
+                            v.remove();
+                        });
+
+                    }
+                });
+
+                break;
+            }
+        }
+    }
+
+    function dragHover(over) {
+        Y.one("#pictext").setContent(over ? "Drop Image Now" : "Drag Image from Desktop");
+    }
+
+
+    var BP = BrowserPlus;
+    var Services = [
+        {service: "DragAndDrop", version: "1"},
+        {service: "ImageAlter",  version: "4.0.2"},
+        {service: "FileAccess",  version: "1.0.9"}
+    ];
+
+    // Initialize BrowserPlus
+    BPTool.Installer.show({}, function(init) {
+        //dragHover(false);
+        
+        if (init.success) {
+            BP.require({services: Services}, function(require) {
+                if (require.success) {
+                    BP.DragAndDrop.AddDropTarget({id: "pic", includeGestureInfo:true}, function(adt) {
+                        // set initial text in Image box
+                        dragHover(false);
+                        BP.DragAndDrop.AttachCallbacks({ id: "pic", hover: dragHover, drop: dragDrop}, function(){});
+                    });
+                } else {
+                    error("Error Loading Services", require);
+                }
+            });
+        } else {
+            error("Failed to initialize BrowserPlus", init);
+        }
+    }); 
+
+
 });
 </script>
 </div>
