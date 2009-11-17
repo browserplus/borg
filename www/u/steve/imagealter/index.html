@@ -6,117 +6,17 @@
 <title>Image Alter: Client Side Image Processor</title>
 
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>  
 <script src="http://bp.yahooapis.com/toolbox/installer/1.0.11/install-min.js"></script> 
-
-<style type="text/css">
-    body {margin:0;	padding:0;}
-    
-    ul {padding:0;margin:0;}
-    
-    #content {margin:0 12px;}
-
-    .exampleIntro {margin-bottom:35px;}
-    
-    .exampleIntro p {
-        font-family:georgia;
-        font-size:123.1%;
-        margin: 0 2em 1em 2em;
-    }
-
-    #lists {
-        opacity:0;
-    }
-
-    #play { 
-        margin: 10px; 
-        zoom: 1;
-    }
-
-    #play:after { 
-        display: block; 
-        clear: both; 
-        visibility: hidden; 
-        content: '.'; 
-        height:0;
-    }
-
-    #play ul, #imagewell {
-        border: 2px solid #369;
-        margin-right: 10px;
-        height: 320px;
-        float: left;
-        padding: 1px;
-        position: relative;
-        zoom: 1;
-    }
-    
-    #play ul {
-        width: 140px; 
-        visibility:visible; 
-        overflow:auto;
-    }
-    
-    #play ul li {
-        background-image: none;
-        list-style-type: none;
-        padding-left: 20px;
-        padding: 2px;
-        margin: 1px;
-        zoom: 1;
-        position: relative;
-        font-family:verdana;
-        font-size:85%;
-    }
-    
-    #play ul li.list1 {
-        border:1px solid #39a;
-        padding-left:15px;
-        background:#8DD5E7 url(add.gif) no-repeat 1px 4px;
-        cursor: pointer;
-    }
-
-    #play ul li.list2 {
-        border:1px solid #bc6;
-        padding-left:15px;
-        background:#EDFF9F url(trash_can.gif) no-repeat 1px 4px;
-        cursor:pointer;
-    }
-
-    #imagewell {
-        width: 320px;
-    }
-    
-    #imagetext, #applytext {
-        text-align:center;
-        color:#369;
-        font-family:"trebuchet ms";
-    }
-    
-    #applytext {
-        margin-top:20px;
-        font-size:131%;
-    }
-
-    #imagetext {
-        font-size:187%;
-        position:absolute;
-        top:20px;
-        left:0px;
-        width:320px;
-        background:#eee;
-    }
-
-</style>
-
 </head>
 
 <body class=" yui-skin-sam">
 <div id="content">
 <h1>Client Side Image Processing</h1>
 
-<div class="exampleIntro">
+<div class="intro">
 	<p>
 	    Your servers are busy enough already!  Use ImageAlter from BrowserPlus to perform
 	    client-side image transformations.  To start, drag an image from the desktop and drop it on the
@@ -135,6 +35,115 @@
         <div id="imagetext"></div>
         <div id="image"></div>
     </div>
+</div>
+
+<div id="detail">
+    <div id="funcintro">
+        <h2>ImageAlter 4</h2>
+        <p>
+            Starting with 4.0, ImageAlter is built on <a href="http://www.graphicsmagick.org/">GraphicsMagick</a>.
+            As a result, the ImageAlter service weighs in at 700KB, compared to ImageAlter3's 1.4MB.
+            ImageAlter4's API has changed, allow for chainable transformations and is now
+            <a href="http://github.com/lloyd/bp-imagealter">open source</a>.  
+            
+        <p>
+            Can't find the transformation you <em>need</em>?  
+            With A little C++ knowledge, you can always 
+            <a href="http://github.com/lloyd/bp-imagealter/blob/master/src/Transformations.cpp">add it yourself</a>.
+        </p>
+    </div>
+
+    <h3>ImageAlter in action:</h3>
+
+    <pre>
+BrowserPlus.ImageAlter.transform({
+        file: &lt;path&gt;, 
+        <em>format: "png"</em>, 
+        <em>quality: 100</em>, 
+        <em>actions:[{"scale": [0.2, 0.2, 0.8, 0.8]}, "enhance", "grayscale", {"contrast": 2}]</em>
+    }, 
+    function(result){});</pre>
+
+
+    <h3>ImageAlter API</h3>
+    <dl id="filterdoc">
+        <dt>file: path (req)</dt>
+	    <dd>The image to transform.</dd>
+
+        <dt>format: string (opt)</dt>
+	    <dd>
+	        The format of the output image. Default is to output in the same format as the input image. 
+	        A string, one of: jpg, gif, or png
+	    </dd>
+
+        <dt>quality: integer (opt)</dt>
+        <dd>
+	        The quality of the output image. From 0-100. Lower qualities result in faster operations 
+	        and smaller file sizes, at the cost of image quality.
+	    </dd>
+
+        <dt>actions: list (opt)</dt>
+	    <dd>
+	        <p>
+	            An array of actions to perform. Each action is either a string 
+	            (i.e. { actions: [ 'solarize' ]	}) , or an object with a single property, where the 
+	            property name is the action to perform, and the property value is the argument 
+	            (i.e. { actions: [{rotate: 90}] }. 
+            </p>
+            <p>
+	            Supported actions include: 
+	        </p>
+
+            <dl>
+                <dt>contrast - <span>actions: [{'contrast': 1}]</span></dt>
+                <dd>
+                    adjust the image's contrast, accepts an optional numeric argument between -10 and 10
+                </dd> 
+                <dt>crop - <span>actions: [{'crop': [0.1, 0.1, 0.9, 0.9]}]</span></dt>
+                <dd>
+                    select a subset of an image, accepts an array of four floating point numbers: 
+                    x1,y1,x2,y2 which are between 0.0 and 1.0 and are relative coordinates to the 
+                    upper left hand corner of the image
+                </dd>
+                <dt>despeckle - <span>actions: ['despeckle']</span></dt>
+                <dd>
+                    reduces the speckle noise in an image while preserving the edges of the original 
+                    image, accepts no arguments
+                </dd>
+                <dt>enhance - <span>actions: ['enhance']</span></dt>
+                <dd>
+                    Applies a digital filter that improves the quality of a noisy image, accepts no arguments
+                </dd>
+                <dt>grayscale - <span>actions: ['grayscale']</span></dt>
+                <dd>remove the color from an image, accepts no arguments</dd>
+                <dt>greyscale - <span>actions: ['greyscale']</span></dt>
+                <dd>an alias for 'grayscale'</dd>
+                <dt>negate - <span>actions: ['negate']</span></dt>
+                <dd>negate the colors of the image, accepts no arguments</dd>
+                <dt>noop - <span>actions: ['noop']</span></dt>
+                <dd>do nothing. may be applied multiple times. still does nothing.</dd>
+                <dt>oilpaint - <span>actions: ['oilpaint']</span></dt>
+                <dd>an effect that will make the image look like an oil painting, accepts no arguments</dd>
+                <dt>psychedelic - <span>actions: ['psychedelic']</span></dt><dd>trip out an image. takes no arguments. may be applied multiple times.</dd>
+                <dt>rotate - <span>actions: [{'rotate': -45}]</span></dt>
+                <dd>rotate an image by some number of degrees, takes a single numeric argument</dd>
+                <dt>scale - <span>actions: [{'scale': {'maxwidth':320, 'maxheight': 320}}]</span></dt>
+                <dd>
+                    downscale an image preserving aspect ratio. you may provide the integer arguments 
+                    maxwidth and/or maxheight which limit the image in the specified direction. units are pixels.
+                </dd>
+                <dt>sepia - <span>actions: ['sepia']</span></dt>
+                <dd>sepia tone an image. no arguments.</dd>
+                <dt>solarize - <span>['solarize']</span></dt>
+                <dd>solarize an image. no arguments</dd>
+                <dt>swirl - <span>actions: [{'swirl', 180}]</span></dt>
+                <dd>
+                    swirl an image. optionally a numeric argument specifies the degrees to swirl, 
+                    default is 90 degrees.
+                </dd>
+            </dl>
+        </dd>
+    </dl>
 </div>
 
 <script>
