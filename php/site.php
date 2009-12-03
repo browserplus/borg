@@ -72,6 +72,23 @@ function render_page($data, $template) {
     include(get_cfg_var("dok_base") . "/layout/{$template}.php");
 }
 
+/*
+ * If linked URL is too long, break it the label by removing everything after the '?' or
+ * add <wbr>.
+ */ 
+function render_line_link_cb($matches) {
+    $max = 50;
+    $title = $matches[1];
+    if (strlen($matches[1]) > $max) {
+        if (($p = strpos($matches[1], "?")) < $max) {
+            $title = substr($title, 0, $p) . "?...";
+        } else {
+            $title = preg_replace("/(.{30})/", "\\1<wbr>", $title);
+        }
+    }
+    return "<a target='_blank' href='{$matches[1]}'>$title</a>";
+}
+
 /* 
  * Render a line of text, hyperlinking urls and displaying emoticons.
  */
@@ -95,7 +112,7 @@ function render_line($s){
     $port = "(:\d{1,})?";
     $path = "(\/[^?<>\#\"\s]+)?";
     $query = "(\?[^<>\#\"\s]+)?";
-    $s = preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a target='_blank' href='$1'>$1</a>", $s);
+    $s = preg_replace_callback("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "render_line_link_cb", $s);
 
     // link git projects
     // git@github.com:lloyd/bp-imagealter.git
@@ -127,7 +144,6 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
     $curday = null;
     foreach($rows as $row) {
 
-        $clz = ($cnt++ % 2 == 0 ? "even" : "odd");
 
         if (preg_match("/^[0-9]+$/", $row[$when_key])) {
             // integer already
@@ -144,12 +160,14 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
             $when = date("H:i", $time);
             $day = date("F j, Y", $time);
 
-            if ($day != $curday) {
+            if ($day != $curday) { 
                 $str .= "<tr><td class=\"log-hdr\" colspan=2>$day</td></tr>";
                 $curday = $day;
+                $cnt = 0;
             }
         }
 
+        $clz = ($cnt++ % 2 == 0 ? "even" : "odd");
         $str .= "<tr>";
         if ($cfg['url_pat'] && $cfg['url_key']) {
             $t = "<a href=\"" . sprintf($cfg['url_pat'], $row[$cfg['url_key']]) . "\">$when</a>";
