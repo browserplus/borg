@@ -4,6 +4,27 @@ include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/irc.php");
 include("/home/websites/browserplus/php/git.php");
 
+function get_blog_widget() {
+    $atom = file_get_contents("/var/www/blog/atom.xml");
+    $xml = simplexml_load_string($atom);
+    
+//    print "<pre>"; print_r($xml); print "</pre>";
+    
+//    return "test";
+    $s = "<ul>";
+    $max = 5;
+    foreach($xml->entry as $item) {
+        if ($max-- == 0) { break; }
+        $link = (string)$item->link;
+        $title = (string)$item->title;
+        $s .= "<li><a href=\"$link\">$title</a></li>";
+    }
+    
+    $s .= "</ul>";
+
+    return render_widget("blog", "Blog", $s);
+}
+
 
 $RowsToShow = 15;
 
@@ -28,6 +49,7 @@ $gittable = render_table($results, "tcommit", "project", "msg",
 
 $gitwidgets = $git->render_project_widget();
 
+$blogwidget = get_blog_widget();
 
 $body = <<< EOS
 <h1>BrowserPlus Dashboard</h1>
@@ -38,6 +60,6 @@ $body = <<< EOS
 </div>
 EOS;
 
-render2c("BrowserPlus", "Home", $body, $ircwidgets . $gitwidgets);
+render2c("BrowserPlus", "Home", $body, $blogwidget . $ircwidgets . $gitwidgets);
 
 ?>

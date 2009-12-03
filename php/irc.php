@@ -95,7 +95,7 @@ class IRC {
 
     function render_widget($period) {
         $body = $this->get_hot_words($period, "/discuss/?search=", 20, 10, 20);
-        return render_widget("irc-tags", "Hot Topics: " . ucfirst($period), $body);
+        return render_widget("irc-tags", "IRC Topics: " . ucfirst($period), $body);
     }
 }
 

@@ -71,9 +71,7 @@ h4 {font-size: 123.1%;}
 /* widgets */
 #widgets { margin-left:20px;}
 .widget a { color:#33c;}
-.widget h1 a {font-size:85%;}
-.widget ul  { margin:0 0 0 0.5em;}
-.widget ul li { list-style:none; font-size:93%;}
+
 .widget h1, .widget h3 {
     color:#555;
     border-bottom:1px dotted #ccc;
@@ -82,10 +80,14 @@ h4 {font-size: 123.1%;}
     letter-spacing:0.1em;
 }
 
-.widget-content { margin-bottom:2em;}
+.widget-content { margin-bottom:2em; }
 .widget-search input {font-size:85%;}
-.widget-irc-tags a { font-family:consolas, monaco, "courier new", courier, monospace;}
-.widget-git-projects a { font-family:consolas, monaco, "courier new", courier, monospace; font-size:93%;}
+.widget-irc-tags a { font-size:93%; font-family:consolas, monaco, "courier new", monospace;}
+.widget-git-projects a { font-size:93%; font-family:consolas, monaco, "courier new", monospace;}
+
+.widget-blog a { font-size:93%;}
+.widget-blog li { list-style:circle outside; margin-left:20px;display:list-item;color:#999;}
+
 
 /* blog */
 h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
