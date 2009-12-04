@@ -108,11 +108,9 @@ function render_line($s){
     $s = implode(" ", $out);
 
     // link hyperlinks
-    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
-    $port = "(:\d{1,})?";
-    $path = "(\/[^?<>\#\"\s]+)?";
-    $query = "(\?[^<>\"\s]+)?";
-    $s = preg_replace_callback("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "render_line_link_cb", $s);
+    // credit for this pattern: http://daringfireball.net/2009/11/liberal_regex_for_matching_urls
+    $urlpat = "\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))"
+    $s = preg_replace_callback("#{$urlpat})#i", "render_line_link_cb", $s);
 
     // link git projects
     // git@github.com:lloyd/bp-imagealter.git
