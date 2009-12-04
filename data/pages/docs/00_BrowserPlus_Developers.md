@@ -1,7 +1,7 @@
 # BrowserPlus Developers
 
-We have all sorts of documentation.
+Some of the basics are answered in [How Do I?](how_do_i/).  
 
-Question is, what do you want to know?  And who's going to write it.
+We'll be moving more and more developer focused documentation over here.  In the mean
+time, checkout out the [Yahoo! BrowserPlus Site](http://browserplus.yahoo.com/developer/).
 
-Coming soon ... more docs.

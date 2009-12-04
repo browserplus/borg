@@ -113,6 +113,8 @@ class Dok
 
             $up_dir = ($dir == "/") ? "/" : $this->conf['baseurl'] . dirname(substr($dir, 0, -1));
 
+            $cur_dir = ($dir == "/" ? "docs" : basename($dir));
+            
 	        return array(
                 "filename" => $htmlfile,
                 "title" => $this->title_from_file($htmlfile),
@@ -120,6 +122,8 @@ class Dok
 	            "body" => $body,
 	            "dir"  => $this->conf['baseurl'] . $dir,
 	            "up_dir" => $up_dir,
+	            "cur_dir" => $cur_dir,
+	            "cur_dir_title" => $this->title_from_file($cur_dir),
 	            "dirs" => $dirs,
 	            "files" => $titles,
 	            "layout" => $layout

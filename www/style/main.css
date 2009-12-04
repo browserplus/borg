@@ -44,7 +44,7 @@ hr  {
 h1,h2,h3,h4,h5,h6 {
     font-family: verdana,"trebuchet ms",helvetica,arial,sans-serif;
 	margin: 1em 0 0.5em 0;
-    color:#007cef;
+    color:#ef7c00;/*maincolor 007cef ef7c00 847e7d*/
 }
 
 h1 {font-size: 153.9%;}
@@ -61,7 +61,7 @@ h4 {font-size: 123.1%;}
 #topnav ul li a {
     text-decoration:none;
     font-family:"century gothic",helvetica,arial,sans-serif;
-    color:#007cef;
+    color:#007cef;/*maincolor*/
     font-size:146.5%;
 }
 
@@ -80,15 +80,17 @@ h4 {font-size: 123.1%;}
     letter-spacing:0.1em;
 }
 
-.widget-content { margin-bottom:2em; }
+.widget-content { margin-bottom:2em; font-family:consolas, monaco, "courier new", monospace;}
 .widget-search input {font-size:85%;}
-.widget-irc-tags a { font-size:93%; font-family:consolas, monaco, "courier new", monospace;}
-.widget-git-projects a { font-size:93%; font-family:consolas, monaco, "courier new", monospace;}
+.widget-irc-tags a { font-size:93%; }
+.widget-git-projects a { font-size:93%; }
 
 .widget-blog a { font-size:93%;}
 .widget-blog li { list-style:circle outside; margin-left:20px;display:list-item;color:#999;}
 
-
+.widget-pages h2 {color:#333;font-size:100%;font-family:consolas, monaco, "courier new", monospace;margin:0;}
+.widget-pages li {margin-left:10px;font-size:93%;}
+.widget-pages li.active {font-style:italic;}
 /* blog */
 h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 .entry-title a { color:#007cef; text-decoration:none; }

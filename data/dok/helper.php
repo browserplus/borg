@@ -10,17 +10,18 @@ $TitleMap = array("c_cpp" => "C/C++");
 /*
  * Rend
  */
-function dok_pages_widget($dirs, $files, $up_dir, $current_file) {
+function dok_pages_widget($dirs, $files, $up_dir, $cur_dir_title, $current_file) {
     ob_start();
     if (count($files) > 0 || count($dirs) > 0) {
         echo "<div class=\"widget widget-pages\">\n";
         echo "<h1>Pages (<a href=\"$up_dir\">Up a Level</a>)</h1>\n";
+        echo "<h2>{$cur_dir_title}/</h2>\n";
         echo "<div class=\"widget-content\">\n";
         echo "<ul>\n";
         if (count($files) > 0) {
             foreach($files as $file => $title) {
                 if ($file == $current_file) {
-                    echo "<li class=\"active\">&raquo; $title &laquo;</li>\n";
+                    echo "<li class=\"active\">&raquo; $title</li>\n";
                 } else {
                     echo "<li><a href=\"$file\">$title</a></li>\n";
                 }
