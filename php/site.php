@@ -73,29 +73,27 @@ function render_page($data, $template) {
 }
 
 /*
- * If linked URL is too long, break it the label by removing everything after the '?' or
- * add <wbr>.
+ * If linked URL is too long, add some wbrs so it won't make the table too wide.
  */ 
 function render_line_link_cb($matches) {
-    $max = 50;
     $title = $matches[1];
-    if (strlen($matches[1]) > $max) {
-        if (($p = strpos($matches[1], "?")) < $max) {
-            $title = substr($title, 0, $p) . "?...";
-        } else {
-            $title = preg_replace("/(.{30})/", "\\1<wbr>", $title);
-        }
+
+    // for long urls, add some white space breaks
+    if (strlen($title) > 60) {
+        $title = preg_replace("/(.{20})/", "\\1:::<wbr>", $title);
     }
     return "<a target='_blank' href='{$matches[1]}'>$title</a>";
 }
+
 
 /* 
  * Render a line of text, hyperlinking urls and displaying emoticons.
  */
 function render_line($s){
     global $EMO_SEARCH, $EMO_REPLACE;
+
     $s = str_replace($EMO_SEARCH, $EMO_REPLACE, $s);
-    $words = preg_split("/[\s,]+/", $s);
+    $words = preg_split("/[\s]+/", $s);
     $out = array();
     foreach($words as $w) {
         if (strlen($w) > 30 && !preg_match("#^((ht|f)tps?://)|(git@github.com)#", $w)) {
@@ -107,12 +105,9 @@ function render_line($s){
 
     $s = implode(" ", $out);
 
-    // link hyperlinks
-    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
-    $port = "(:\d{1,})?";
-    $path = "(\/[^?<>\#\"\s]+)?";
-    $query = "(\?[^<>\#\"\s]+)?";
-    $s = preg_replace_callback("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "render_line_link_cb", $s);
+    // http://daringfireball.net/2009/11/liberal_regex_for_matching_urls
+    $gruber = "\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))";
+    $s = preg_replace_callback("@$gruber@i", "render_line_link_cb", $s);
 
     // link git projects
     // git@github.com:lloyd/bp-imagealter.git
