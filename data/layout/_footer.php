@@ -1,5 +1,6 @@
-        <!-- div id="ft">
-        </div -->
+        <div id="ft">
+
+        </div>
     </div>
 <?php if (get_cfg_var("bp_env") != "local"): ?>
 

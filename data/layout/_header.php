@@ -16,6 +16,7 @@ function topnav($active) {
         echo "$li<a href=\"$url\">$label</a></li>\n";
     }
 }
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">

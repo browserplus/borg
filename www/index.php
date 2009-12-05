@@ -52,14 +52,16 @@ $gitwidgets = $git->render_project_widget();
 $blogwidget = get_blog_widget();
 
 $body = <<< EOS
-<h1>BrowserPlus Dashboard</h1>
-
+<h1 class="homepage">BrowserPlus Dashboard</h1>
 <div class="home-logs">
     <div class="home-irc-log">$irctable</div>
     <div class="home-git-log">$gittable</div>
 </div>
 EOS;
 
-render2c("BrowserPlus", "Home", $body, $blogwidget . $ircwidgets . $gitwidgets);
+
+
+//render2c("BrowserPlus", "Home", $body, $blogwidget . $ircwidgets . $gitwidgets);
+render3c("BrowserPlus", "Home", $blogwidget . $gitwidgets, $body, $ircwidgets);
 
 ?>

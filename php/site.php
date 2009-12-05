@@ -1,5 +1,6 @@
 <?php
 define("LAYOUT_2C", "site_2c");
+define("LAYOUT_3C", "site_3c");
 
 $EMOTES = array(
     ":)"   => '<img alt="smile" src="/images/emote/smile.png">',
@@ -46,7 +47,7 @@ function l($label, $url, $bool=true) {
 
 function render2c($title, $tab, $body, $widgets) {
     $data = array(
-        "title" => $tilte,
+        "title" => $title,
         "active" => $tab,
         "body" => $body,
         "widgets" => $widgets
@@ -55,6 +56,17 @@ function render2c($title, $tab, $body, $widgets) {
     render_page($data, LAYOUT_2C);
 }
 
+function render3c($title, $tab, $widgets_left, $body, $widgets_right) {
+    $data = array(
+        "title" => $title,
+        "active" => $tab,
+        "widgets_left" => $widgets_left,
+        "body" => $body,
+        "widgets_right" => $widgets_right
+    );
+    
+    render_page($data, LAYOUT_3C);
+}
 function get_projects() {
     return json_decode(file_get_contents(get_cfg_var("dok_base") . "/projects/projects.json"), 1);
 }

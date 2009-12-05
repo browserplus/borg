@@ -7,6 +7,7 @@ body {
 .main {
     font-size: 116%;
     line-height:1.5em;
+    margin-bottom:20px;
 }
 
 .main ol li { list-style: decimal outside; }
@@ -52,6 +53,7 @@ h2 {font-size: 138.5%;margin-top:1.5em;}
 h3 {font-size: 131%;}
 h4 {font-size: 123.1%;}
 
+h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:italic;}
 /* header */
 #logo { padding: 10px 0 10px 0; text-align:center;}
 #topnav .active a { font-weight:bold;}
@@ -65,11 +67,19 @@ h4 {font-size: 123.1%;}
     font-size:146.5%;
 }
 
-#ft { border-top:1px dotted #ccc; padding-top:5px; text-align:left;}
+#ft { 
+    border-top:1px dotted #ddd; 
+    padding-top:5px; 
+    text-align:center;
+    clear:both;
+}
 
 
 /* widgets */
+#widgets_left { margin-right:20px;}
+#widgets_right { margin-left:20px;}
 #widgets { margin-left:20px;}
+
 .widget a { color:#33c;}
 
 .widget h1, .widget h3 {
@@ -91,6 +101,11 @@ h4 {font-size: 123.1%;}
 .widget-pages h2 {color:#333;font-size:100%;font-family:consolas, monaco, "courier new", monospace;margin:0;}
 .widget-pages li {margin-left:10px;font-size:93%;}
 .widget-pages li.active {font-style:italic;}
+
+.twtr-tweet-wrap {
+    font-size:93%;
+}
+
 /* blog */
 h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 .entry-title a { color:#007cef; text-decoration:none; }
@@ -114,4 +129,28 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 .log-what {}
 .odd {background:#f0f5ff;}
 .even {background:#fff;}
+
+
+#wrapper {
+	text-align: left;
+	margin: 0px auto;
+	padding: 0px;
+	border:0;
+	width: 950px;
+}
+
+#side-a {
+	float: left;
+	width: 220px;
+}
+
+#side-b {
+	float: right;
+	width: 220px;
+}
+
+#content { 
+	float: left;
+	width: 53%;
+}
 
