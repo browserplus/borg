@@ -1,16 +1,19 @@
 <?php 
 //
-// SITE_2C template takes following vars:
+// SITE_3C template takes following vars:
 //    For Header
 //        $title
 //        $active (tab, i.e. "Discuss")
 //    For This 
+//        $widgets_left
 //        $body
-//        $widgets
+//        $widgets_right
 //    For Footer
 //        [nothing]
 //
-
+//
+// 3 column layout from http://www.neuroticweb.com/recursos/3-columns-layout/index.php
+//
 include "_header.php" 
 ?>
 
