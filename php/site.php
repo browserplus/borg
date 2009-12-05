@@ -80,7 +80,7 @@ function render_line_link_cb($matches) {
 
     // for long urls, add some white space breaks
     if (strlen($title) > 60) {
-        $title = preg_replace("/(.{20})/", "\\1:::<wbr>", $title);
+        $title = preg_replace("/(.{20})/", "\\1<wbr>", $title);
     }
     return "<a target='_blank' href='{$matches[1]}'>$title</a>";
 }
