@@ -48,7 +48,12 @@ class IRC {
     * $maxPixelSize
     */
     function get_hot_words($timeframe, $url, $howmany, $minPixelSize=7, $maxPixelSize=35) {
-        $lines = file(self::$logpath . "irc_${timeframe}.csv");
+        $fn = self::$logpath . "irc_${timeframe}.csv";
+        if (!file_exists($fn)) {
+            return "No topics found!";
+        }
+
+        $lines = file($fn);
 
         $words = array();
         $cnt = 0;
