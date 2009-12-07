@@ -3,6 +3,10 @@ include("/home/websites/browserplus/php/site.php");
 include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/irc.php");
 include("/home/websites/browserplus/php/git.php");
+include("/home/websites/browserplus/php/twitter.php");
+
+$tableRowsToShow = 15;
+$twitterRowsToShow = 5;
 
 function get_blog_widget() {
     $atom = file_get_contents("/var/www/blog/atom.xml");
@@ -25,13 +29,9 @@ function get_blog_widget() {
     return render_widget("blog", "Blog", $s);
 }
 
-
-$RowsToShow = 15;
-
-
 // IRC Transcript
 $irc = new IRC();
-$results = $irc->get_rows($irc->get_max_id(), $RowsToShow);
+$results = $irc->get_rows($irc->get_max_id(), $tableRowsToShow);
 
 $ircnav = l("#browserplus", "/discuss/");
 $irctable = render_table($results, "stamp", "who", "utterance", 
@@ -42,14 +42,21 @@ $ircwidgets = $irc->render_widget("day") . $irc->render_widget("week") . $irc->r
 
 // GIT Projects
 $git = new GIT();
-$results = $git->get_rows($RowsToShow);
+$results = $git->get_rows($tableRowsToShow);
 $gitnav = "<strong>Latest Project Commits</strong>";
 $gittable = render_table($results, "tcommit", "project", "msg", 
     array("show_long_dates"=>true, "top_nav" => $gitnav, "url_key" => "url", "url_pat" => "%s"));
 
 $gitwidgets = $git->render_project_widget();
 
+// Blog Widget
 $blogwidget = get_blog_widget();
+
+// Twitter Widgets
+$twitter = new Twitter();
+$tw_user_widget   = $twitter->render_user_widget("browserplus", $twitterRowsToShow);
+$tw_search_widget = $twitter->render_search_widget("browserplus", $twitterRowsToShow);
+
 
 $body = <<< EOS
 <h1 class="homepage">BrowserPlus Dashboard</h1>
@@ -60,8 +67,10 @@ $body = <<< EOS
 EOS;
 
 
+// widgets
+$left = $tw_user_widget . $tw_search_widget;
+$right =  $blogwidget . $gitwidgets . $ircwidgets;
 
+render3c("BrowserPlus", "Home", $left, $body, $right);
 //render2c("BrowserPlus", "Home", $body, $blogwidget . $ircwidgets . $gitwidgets);
-render3c("BrowserPlus", "Home", $blogwidget . $gitwidgets, $body, $ircwidgets);
-
 ?>

@@ -84,6 +84,40 @@ function render_page($data, $template) {
     include(get_cfg_var("dok_base") . "/layout/{$template}.php");
 }
 
+
+function prettyDate($ts)
+{
+    $diff = time() - $ts;
+    
+    $map = array(
+        array(60, 0, "just now"),
+        array(120, 0, "1 minute ago"),
+        array(3600, 60, "minutes ago"),
+        array(7200, 0, "1 hour ago"),
+        array(86400, 3600, "hours ago"),
+        array(172800, 0, "1 day ago"),
+        array(604800, 86400, "days ago"),
+        array(1209600, 0, "1 week ago"),
+        array(2592000, 604800, "weeks ago"),
+        array(5184000, 0, "1 month ago"),
+        array(28857600, 2592000, "months ago"),
+        array(63072000, 0, "1 year ago"),
+        array(0, 31536000, "years ago"));
+
+            
+    $cnt = count($map);
+    for ($i = 0; $i < $cnt; $i++)
+    {
+        if ($diff < $map[$i][0] && $map[$i][1] == 0) {
+            return $map[$i][2];
+        } else if ($diff < $map[$i][0] || $map[$i][0] == 0) {
+            return floor($diff/$map[$i][1]) . " " . $map[$i][2];
+        }
+    }
+    
+    return "?";
+}
+
 /*
  * If linked URL is too long, add some wbrs so it won't make the table too wide.
  */ 
