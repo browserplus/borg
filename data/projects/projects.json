@@ -8,7 +8,9 @@
     "Misc": [
         "http://github.com/why/fakeplus",
         "http://github.com/dgrigsby/bp-helloworld",
-        "http://github.com/lloyd/bp-prompting-sample"
+        "http://github.com/lloyd/bp-prompting-sample",
+        "http://github.com/browserplus/bp-directory",
+        "http://github.com/browserplus/bp-file"
     ],
 
     "Services": [
@@ -30,6 +32,8 @@
         "http://github.com/browserplus/bp-pubsub",
         "http://github.com/sspencer/bp-pubsub",
         "http://github.com/browserplus/bp-ruby",
-        "http://github.com/davglass/bp-sreader"
+        "http://github.com/davglass/bp-sreader",
+        "http://github.com/browserplus/bp-tar",
+        "http://github.com/browserplus/bp-zipper"
     ]
 }
