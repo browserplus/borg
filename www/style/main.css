@@ -92,17 +92,17 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
     letter-spacing:0.1em;
 }
 
-.widget-content { margin-bottom:2em; font-family:consolas, monaco, "courier new", monospace;}
+.widget-content { margin-bottom:2em;font-family:arial,sans-serif;}
 .widget-search input {font-size:85%;}
 .widget-irc-tags a { font-size:93%; }
-.widget-git-projects a { font-size:93%; }
+.widget-git-projects a { font-size:85%; }
 
 .widget-blog a { font-size:93%;}
-.widget-blog li { list-style:circle outside; margin-left:20px;display:list-item;color:#999;}
+.widget-blog li { list-style:circle outside; margin-left:15px; color:#999;}
 
-.widget-tweet li { font-family:arial;font-size:85%;list-style:circle inside; display:list-item;color:#333;margin-bottom:5px;}
+.widget-tweet li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
 .tweet-when {color:#666;}
-.widget-pages h2 {color:#333;font-size:100%;font-family:consolas, monaco, "courier new", monospace;margin:0;}
+.widget-pages h2 {color:#333;font-size:100%;margin:0;}
 .widget-pages li {margin-left:10px;font-size:93%;}
 .widget-pages li.active {font-style:italic;}
 

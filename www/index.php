@@ -68,8 +68,17 @@ EOS;
 
 
 // widgets
-$left = $tw_user_widget . $tw_search_widget;
-$right =  $blogwidget . $gitwidgets . $ircwidgets;
+$left = <<< EOS
+    $tw_user_widget 
+    $tw_search_widget
+EOS;
+
+$right =  <<< EOS
+    $blogwidget
+    $ircwidgets
+    $gitwidgets
+EOS;
+
 
 render3c("BrowserPlus", "Home", $left, $body, $right);
 //render2c("BrowserPlus", "Home", $body, $blogwidget . $ircwidgets . $gitwidgets);

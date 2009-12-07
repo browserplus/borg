@@ -79,11 +79,11 @@ class Twitter
             $time = prettyDate(strtotime($t->created_at));
 
             $str .= "<li><a href=\"http://twitter.com/{$t->from_user}\">{$t->from_user}</a>: " .
-                render_tweet($t->text) . " <span class=\"tweet-when\">({$time})<span></li>";
+                $this->hyperlinkit($t->text) . " <span class=\"tweet-when\">({$time})<span></li>";
         }
     
         $str .= "</ul>";
-        return render_widget("tweet", "Twitter: <a href=\"http://twitter.com/$search\">Search</a>", $str);
+        return render_widget("tweet", "Twitter: <a href=\"http://search.twitter.com/search?q=$search\">Search</a>", $str);
     }
 }
 
