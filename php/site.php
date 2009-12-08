@@ -32,8 +32,8 @@ $EMO_SEARCH  = array_keys($EMOTES);
 $EMO_REPLACE = array_values($EMOTES);
 
 function get_secret($key) {
-    static $data = null;
-    if (!$data) {
+    static $json = null;
+    if (!$json) {
         $json = json_decode(file_get_contents(SECRETS_FILE), true);
     }
     
