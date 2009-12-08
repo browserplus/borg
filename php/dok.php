@@ -123,6 +123,7 @@ class Dok
 	            "dir"  => $this->conf['baseurl'] . $dir,
 	            "up_dir" => $up_dir,
 	            "cur_dir" => $cur_dir,
+                "base_title" => $this->conf['basename'],
 	            "cur_dir_title" => $this->title_from_file($cur_dir),
 	            "dirs" => $dirs,
 	            "files" => $titles,
