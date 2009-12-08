@@ -1,6 +1,7 @@
 <?php
 define("LAYOUT_2C", "site_2c");
 define("LAYOUT_3C", "site_3c");
+define("SECRETS_FILE", "/home/borg/borg_secrets.json");
 
 $EMOTES = array(
     ":)"   => '<img alt="smile" src="/images/emote/smile.png">',
@@ -30,6 +31,14 @@ $EMOTES = array(
 $EMO_SEARCH  = array_keys($EMOTES);
 $EMO_REPLACE = array_values($EMOTES);
 
+function get_secret($key) {
+    static $data = null;
+    if (!$data) {
+        $json = json_decode(file_get_contents(SECRETS_FILE), true);
+    }
+    
+    return $json[$key];
+}
 
 /*
  * Escape html text.

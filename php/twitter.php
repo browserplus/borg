@@ -8,11 +8,16 @@ class Twitter
     private static $searchUrl = "http://search.twitter.com/search.json?q=";
     private static $searchKey = "twitter.search.";    
 
+    // return the "cachekey", which prevents others from hitting our cache files
+    function get_cache_secret() {
+        return get_secret("cachekey");
+    }
+    
     // fetch tweets for specific user and store in apc cache under "twitter.user.<user>"
     function fetch_user_tweets($user) {
         $json = fetch(self::$userUrl . urlencode($user));
         if ($json) {
-            apc_add(self::$userKey . $user, $json);
+            apc_store(self::$userKey . $user, $json);
             return true;
         } else {
             return false;
@@ -23,7 +28,7 @@ class Twitter
     function fetch_search_tweets($search) {
         $json = fetch(self::$searchUrl . urlencode($search));
         if ($json) {
-            apc_add(self::$searchKey . $search, $json);
+            apc_store(self::$searchKey . $search, $json);
             return true;
         } else {
             return false;

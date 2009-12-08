@@ -4,9 +4,11 @@ include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/irc.php");
 include("/home/websites/browserplus/php/git.php");
 include("/home/websites/browserplus/php/twitter.php");
+include("/home/websites/browserplus/php/forum.php");
 
 $tableRowsToShow = 15;
 $twitterRowsToShow = 5;
+$forumRowsToShow = 5;
 
 function get_blog_widget() {
     $atom = file_get_contents("/var/www/blog/atom.xml");
@@ -57,6 +59,10 @@ $twitter = new Twitter();
 $tw_user_widget   = $twitter->render_user_widget("browserplus", $twitterRowsToShow);
 $tw_search_widget = $twitter->render_search_widget("browserplus", $twitterRowsToShow);
 
+$forums = new Forum($forumRowsToShow);
+$forum_widget = $forums->render_widget();
+
+
 
 $body = <<< EOS
 <h1 class="homepage">BrowserPlus Dashboard</h1>
@@ -71,6 +77,7 @@ EOS;
 $left = <<< EOS
     $tw_user_widget 
     $tw_search_widget
+    $forum_widget
 EOS;
 
 $right =  <<< EOS
