@@ -3,6 +3,10 @@
 // map file names to page titles
 $TitleMap = array("c_cpp" => "C/C++");
 
+// replace @{varname} with below
+$VarMap = array("bpver" => "2.4.21");
+
+
 /*
  * Helper Functions for Dok Layout.
  */

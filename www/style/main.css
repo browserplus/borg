@@ -17,7 +17,7 @@ em {
 .main ol li { list-style: decimal outside; }
 .main ul li { list-style: disc outside; }
 
-.main ol, .main ul, .main dl { margin-left: 2em; margin-bottom:1em;}
+.main ol, .main ul, .main dl { margin-left: 1em; margin-bottom:1em;}
 
 .main dd {margin-left:2em; margin-bottom:0.5em; }
 
@@ -46,16 +46,16 @@ hr  {
     width:450px;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,h2,h3,h4 {
     font-family: verdana,"trebuchet ms",helvetica,arial,sans-serif;
 	margin: 1em 0 0.5em 0;
-    color:#ef7c00;/*maincolor 007cef ef7c00 847e7d*/
+    color:#900;
 }
 
-h1 {font-size: 153.9%;}
-h2 {font-size: 138.5%;margin-top:1.5em;}
-h3 {font-size: 131%;}
-h4 {font-size: 123.1%;}
+h1 {font-size: 153.9%; color:#ef7c00;}
+h2 {font-size: 138.5%;margin-top:1.5em; color:#ef7c00;}
+h3 {font-size: 123.1%;}
+h4 {font-size: 116%;}
 
 h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:italic;}
 /* header */
@@ -162,3 +162,38 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 	width: 53%;
 }
 
+.api h2 {
+    font-family:consolas, monaco, "courier new", courier, monospace;
+    font-weight:bold;
+    font-size:123.1%;
+    color:#000; 
+    background:#ddd;
+
+    margin-top:3.0em;
+    padding:5px;
+    border:1px solid #bbb; 
+}
+
+/* the first h2 in API */
+div.api > h2:first-child { margin-top:1.5em;}
+
+.api h3 {
+    font-size: 116%; 
+    font-weight:bold;
+    font-family:arial,sans-serif;
+    color:#900;
+}
+
+.api pre {
+    margin:1em;
+    padding:4px;
+    border:2px solid #666;
+}
+
+.api pre, .api code {
+    background:#191614; color:#81d83b;
+}
+
+.api p, .api dl {
+    font-size:93%;
+}

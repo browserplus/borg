@@ -3,10 +3,11 @@ require("markdown.php");
 
 class Dok 
 {
-    var $conf;
-    var $titlemap_keys;
-    var $titlemap_vals;
-
+    private $conf;
+    private $titlemap_keys;
+    private $titlemap_vals;
+    private $varmap_keys;
+    private $varmap_vals;
     public static $default_filename = 'index.html';
 
 	function __construct($conf) {
@@ -16,8 +17,20 @@ class Dok
         $this->conf["layout"] = "$dok_base/layout";
         $this->conf['pages']  = "$dok_base/" . $this->conf['pages'] ;
         include($this->conf['site'] . '/helper.php' );
+
+        // get title map ready for str_replace
         $this->titlemap_keys = array_keys($TitleMap);
         $this->titlemap_vals = array_values($TitleMap);
+
+        // DokVarMap replaces @{varname} variables in documents
+        $keys = array_keys($VarMap);
+        
+        $this->varmap_keys = array();
+        foreach($keys as $k) {
+            $this->varmap_keys[] = '@{' . $k . '}';
+        }
+        
+        $this->varmap_vals = array_values($VarMap);
     }
     
     private function endswith( $str, $sub ) {
@@ -163,6 +176,8 @@ class Dok
             if ($type == "md") {
                 $body = markdown($body);
             }
+
+            $body = str_replace($this->varmap_keys, $this->varmap_vals, $body);
 
             // DBG - set to false
             if (false) { 
