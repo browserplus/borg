@@ -38,7 +38,9 @@ pre {
     overflow:auto;
     font-size:85%;
     border:1px solid #d1d0cb;
+    line-height:1.2em;
 }
+
 hr  {
     border:0;
     background: #ccc;
