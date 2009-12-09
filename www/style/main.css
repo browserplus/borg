@@ -101,8 +101,9 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
 .widget-irc-tags a { font-size:93%; }
 .widget-git-projects a { font-size:85%; }
 
-.widget-blog a { font-size:93%;}
-.widget-blog li { list-style:circle outside; margin-left:15px; color:#999;}
+.widget-links li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
+
+.widget-blog li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
 
 .widget-tweet li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
 .tweet-when {color:#666;}

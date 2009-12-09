@@ -10,6 +10,29 @@ $tableRowsToShow = 15;
 $twitterRowsToShow = 5;
 $forumRowsToShow = 5;
 
+function get_links_widget() {
+    $links = array(
+        array(
+            "link" => "http://browserplus.yahoo.com/install/",
+            "title" => "Install BrowserPlus"
+        ),
+
+        array(
+            "link" => "http://developer.yahoo.net/blog/archives/2009/12/browserplus_source_code_available_now_on_github.html",
+            "title" => "BrowserPlus Source Code Available Now on Github"
+        )
+    );
+    
+    $str = "<ul>";
+    foreach($links as $link => $d) {
+        $str .= "<li><a href=\"{$d['link']}\">{$d['title']}</a></li>";
+    }
+
+    $str .= "</ul>";
+    
+    return render_widget("links", "Links Around the Web", $str);
+}
+
 function get_blog_widget() {
     $atom = file_get_contents("/var/www/blog/atom.xml");
     $xml = simplexml_load_string($atom);
@@ -28,7 +51,7 @@ function get_blog_widget() {
     
     $s .= "</ul>";
 
-    return render_widget("blog", "Blog", $s);
+    return render_widget("blog", "BrowserPlus Blog", $s);
 }
 
 // IRC Transcript
@@ -39,17 +62,20 @@ $ircnav = l("#browserplus", "/discuss/");
 $irctable = render_table($results, "stamp", "who", "utterance", 
     array("show_long_dates"=>true, "top_nav" => "<strong>IRC: $ircnav</strong>"));
 
-$ircwidgets = $irc->render_widget("day") . $irc->render_widget("week") . $irc->render_widget("month");
+$ircwidgets = $irc->render_widget("day") . $irc->render_widget("week");// . $irc->render_widget("month");
 
 
 // GIT Projects
 $git = new GIT();
 $results = $git->get_rows($tableRowsToShow);
-$gitnav = "<strong>Latest Project Commits</strong>";
+$gitnav = "<strong>GitHub: <a href=\"http://www.github.com/browserplus/\">BrowserPlus</a></strong>";
 $gittable = render_table($results, "tcommit", "project", "msg", 
     array("show_long_dates"=>true, "top_nav" => $gitnav, "url_key" => "url", "url_pat" => "%s"));
 
 $gitwidgets = $git->render_project_widget();
+
+// Links Widget
+$linkswidget = get_links_widget();
 
 // Blog Widget
 $blogwidget = get_blog_widget();
@@ -81,6 +107,7 @@ $left = <<< EOS
 EOS;
 
 $right =  <<< EOS
+    $linkswidget
     $blogwidget
     $ircwidgets
     $gitwidgets
