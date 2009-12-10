@@ -6,6 +6,7 @@
     ],
     
     "Misc": [
+        "http://github.com/browserplus/platform",
         "http://github.com/why/fakeplus",
         "http://github.com/dgrigsby/bp-helloworld",
         "http://github.com/lloyd/bp-prompting-sample",
