@@ -8,6 +8,13 @@
 
         </div>
     </div>
+<?php
+if (isset($jslibs)) {
+    foreach($jslibs as $lib) {
+        echo "    <script src=\"$lib\"></script>\n";
+    }
+}
+?>
 <?php if (get_cfg_var("bp_env") != "local"): ?>
 
 <script type="text/javascript">

@@ -25,8 +25,16 @@ function topnav($active) {
     <title><?php echo $title ?></title>
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/yui/2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css">
     <link rel="stylesheet" type="text/css" href="/style/main.css" media="screen">
+    <?php 
+    if (isset($stylesheets)) {
+        foreach($stylesheets as $ss) {
+            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$ss\">\n";
+        }
+    }
+    ?>
+
 </head>
-<body> 
+<body<?php if (isset($onload)) { echo " " . $onload; } ?>> 
     <div id="doc2" class="yui-t7"> 
         <div id="hd" role="banner"> 
             <div id="logo">

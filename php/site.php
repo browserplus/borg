@@ -249,4 +249,15 @@ function render_widget($name, $title, $body) {
     </div>
 EOS;
 }
+
+function isMobile() {
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+    if(preg_match("~Mozilla/[^ ]+ \((iPhone|iPod); U; CPU [^;]+ Mac OS X; [^)]+\) AppleWebKit/[^ ]+ \(KHTML, like Gecko\) Version/[^ ]+ Mobile/[^ ]+ Safari/[^ ]+~",$agent,$match)) {
+        return true;
+    } elseif(stristr($agent,'iphone') or stristr($agent,'ipod')){
+        return true;
+    } else {
+        return false;
+    }
+}
 ?>

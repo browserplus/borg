@@ -173,13 +173,30 @@ class Dok
             $page = array_merge($data, $this->conf['vars']);
             extract($page);
 
+            // Two options at this point, Markdown or HTML
             if ($type == "md") {
-                $body = markdown($body);
+                $body = markdown($data['body']);
             }
 
+            // Substitute our homegrown @{varname} syntax.  Values set in data/dok/helper.php
             $body = str_replace($this->varmap_keys, $this->varmap_vals, $body);
 
-            // DBG - set to false
+            // Using Google Code Prettyify cause it seems to be the lightest 
+            // weight JavaScript prettifier.  Just 2 files.
+            //     http://google-code-prettify.googlecode.com/
+            //
+            // If there is any code to be highlighted in body, include syntax highlighting
+            //    0. code is marked with [pre class="prettyprint"]code[/code]
+            //    1. body onload=prettyPrint
+            //    2. include css file
+            //    3. include js  file
+            if (strpos($body, '<pre class="prettyprint">') !== false) {
+                $onload = "onload=\"prettyPrint()\"";
+                $stylesheets = array("/syntaxhighlighter/prettify.css");
+                $jslibs = array("/syntaxhighlighter/prettify.js");
+            }
+
+            // Print out all the variables sent to the templates.
             if (false) { 
                 // copy array and remove body so it doesn't take so much room
                 $arr = $page;
@@ -190,6 +207,8 @@ class Dok
                 $body .= "</pre>";
             }
 
+            // Include layout.  All variables in this function are visible to the template.
+            unset($data);
             include $this->conf['layout'] . "/" . $layout;
         }            
     }
