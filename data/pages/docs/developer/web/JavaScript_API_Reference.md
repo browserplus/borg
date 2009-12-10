@@ -1,5 +1,8 @@
 # JavaScript API Reference
 
+(Want a link to a *specific* function?  Append pound - functionname to the
+ url above.  i.e. <a href="#initWhenAvailable">#initWhenAvailable</a>)
+
 <div markdown="1" class="api">
 
 ## <a name="clientSystemInfo"></a>Object BrowserPlus.clientSystemInfo()
