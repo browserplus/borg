@@ -29,6 +29,7 @@ $forumItems = $f->render_mobile($RowsToShow);
 <head>
   <title>BrowserPlus</title>
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+  <link rel="apple-touch-icon" href="/m/dashboard-icon.png" />
   <style type="text/css" media="screen">@import "/iui/dashboardx.css";</style><!-- http://www.phpied.com/cssmin-js/ -->
   <script type="application/x-javascript" src="/iui/iuix.js"></script>
   <style type="text/css" media="screen">
