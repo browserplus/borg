@@ -1,5 +1,9 @@
 <?php
 include("/home/websites/browserplus/php/site.php");
+if (isMobile()) {
+    header("Location: /m/");
+    exit;
+}
 include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/irc.php");
 include("/home/websites/browserplus/php/git.php");

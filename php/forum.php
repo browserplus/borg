@@ -75,4 +75,19 @@ class Forum
         $str .= "</ul>";
         return render_widget("forum", "YDN: <a href=\"http://developer.yahoo.net/forum/index.php?showforum=90\">Forums</a>", $str);
     }
+
+    function render_mobile($rows=10) {
+        $json = apc_fetch(self::$forumKey);
+        if (!$json) { return ""; }
+        $items = json_decode($json, 1);
+
+        foreach($items as $i) {
+            if ($rows-- == 0) { break; }
+            $text = str_replace("/", "/<wbr>", $i["text"]);
+            $time = prettyDate($i["time"]);
+            $str .= "<li><a target=\"_self\" href=\"{$i['link']}\">$text</a><span class=\"when\">$time</span></li>";
+        }
+        
+        return $str;
+    }
 }

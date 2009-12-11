@@ -71,6 +71,22 @@ class Twitter
         return render_widget("tweet", "Twitter: <a href=\"http://twitter.com/$user\">Feed</a>", $str);
     }
 
+    function render_user_mobile($user, $rows=10) {
+        // note that data is stored in apc via a cron job
+        $json = apc_fetch(self::$userKey . $user);
+        if (!$json) { return ""; }
+
+        $tweets = json_decode($json);
+        $str = "";
+        foreach($tweets as $t) {
+            if ($rows-- == 0) { break; }
+            $time = prettyDate(strtotime($t->created_at));
+            $str .= "<div class=\"row\">" . $this->hyperlinkit($t->text) . " <span class=\"when\">({$time})<span></div>";
+        }
+    
+        return $str;
+    }
+
     function render_search_widget($search, $rows=5) {
         // note that data is stored in apc via a cron job
         $json = apc_fetch(self::$searchKey . $search);
@@ -80,6 +96,7 @@ class Twitter
         $str = "<ul>";
 
         foreach($tweets->results as $t) {
+            if ($t->from_user == $search) continue;
             if ($rows-- == 0) { break; }
             $time = prettyDate(strtotime($t->created_at));
 
@@ -89,6 +106,26 @@ class Twitter
     
         $str .= "</ul>";
         return render_widget("tweet", "Twitter: <a href=\"http://search.twitter.com/search?q=$search\">Search</a>", $str);
+    }
+
+    function render_search_mobile($search, $rows=10) {
+        // note that data is stored in apc via a cron job
+        $json = apc_fetch(self::$searchKey . $search);
+        if (!$json) { return ""; }
+
+        $tweets = json_decode($json);
+        $str = "";
+
+        foreach($tweets->results as $t) {
+            if ($t->from_user == $search) continue;
+            if ($rows-- == 0) break;
+            $time = prettyDate(strtotime($t->created_at));
+
+            $str .= "<div class=\"row\"><a href=\"http://twitter.com/{$t->from_user}\">{$t->from_user}</a>: " .
+                $this->hyperlinkit($t->text) . " <span class=\"when\">({$time})<span></div>";
+        }
+    
+        return $str;
     }
 }
 

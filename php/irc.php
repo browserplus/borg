@@ -20,14 +20,15 @@ class IRC {
     /*
     * Query irc table for range of values
     */
-    function get_rows($max_id=-1, $num_rows=10) {
-        if ($max_id == -1) {
-            $max_id = $this->get_max_id();
-        }
-
+    function get_rows($max_id, $num_rows=10) {
         $starting_id = max(0, $max_id - $num_rows);
         $sql = "SELECT * FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($starting_id));
+    }
+
+    function get_rows_at($id, $num_rows) {
+        $sql = "SELECT * FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
+        return $this->db->fetch_all($sql, array($id));
     }
 
     /*
@@ -101,6 +102,22 @@ class IRC {
     function render_widget($period) {
         $body = $this->get_hot_words($period, "/discuss/?search=", 20, 10, 20);
         return render_widget("irc-tags", "IRC Topics: " . ucfirst($period), $body);
+    }
+    
+    function render_mobile($results, $max_id) {
+        $str = "";
+        if (is_array($results) && count($results) > 0) {
+            foreach($results as $row) {
+                $when = date("g:ia", strtotime($row['stamp']));
+                $who = h($row['who']);
+                $what = render_line($row['utterance']);
+                $max_id = $row['id'];
+                $str .= "<li><span class=\"who\">$who</span> $what <span class=\"when\">$when</span></li>";
+            }
+        }
+
+        $str .= "<li><a href=\"mirc.php?id={$max_id}\" target=\"_replace\">Get Latest Conversation</a></li>";
+        return $str;
     }
 }
 
