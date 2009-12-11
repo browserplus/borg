@@ -112,4 +112,17 @@ class GIT {
         }
         return "";
     }
+    
+    function render_issues_mobile($num=10) {
+        $json = apc_fetch(self::$platformIssueKey);
+
+        $s = "";
+        if ($json && ($issues = json_decode($json, 1))) {
+            foreach($issues as $i) {
+                if ($num-- == 0) break;
+                $s .= "<li><a target=\"_self\" href=\"http://github.com/browserplus/platform/issues/#issue/{$i['id']}\">{$i['title']}</a></li>";
+            }
+        }
+        return $s;
+    }
 }
