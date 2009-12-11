@@ -1,5 +1,6 @@
 <?php
 include("/home/websites/browserplus/php/site.php");
+include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/git.php");
 
 $g = new GIT();
