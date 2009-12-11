@@ -35,7 +35,7 @@ function topnav($active) {
 
 </head>
 <body<?php if (isset($onload)) { echo " " . $onload; } ?>> 
-    <div id="doc2" class="yui-t7"> 
+    <div id="doc4" class="yui-t7"> 
         <div id="hd" role="banner"> 
             <div id="logo">
                 <img src="/images/main-logo.gif" alt="BrowserPlus">

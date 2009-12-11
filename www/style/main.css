@@ -110,9 +110,8 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
 .widget-git-projects a { font-size:85%; }
 
 .widget-links li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
-
 .widget-blog li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
-
+.widget-issues li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
 .widget-tweet li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
 .tweet-when {color:#666;}
 
@@ -148,28 +147,6 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 .even {background:#fff;}
 
 
-#wrapper {
-	text-align: left;
-	margin: 0px auto;
-	padding: 0px;
-	border:0;
-	width: 950px;
-}
-
-#side-a {
-	float: left;
-	width: 220px;
-}
-
-#side-b {
-	float: right;
-	width: 220px;
-}
-
-#content { 
-	float: left;
-	width: 53%;
-}
 
 .api h2 {
     font-family:consolas, monaco, "courier new", courier, monospace;
@@ -196,3 +173,9 @@ div.api > h2:first-child { margin-top:1.5em;}
 .api p, .api dl {
     font-size:93%;
 }
+
+/* http://www.neuroticweb.com/recursos/3-columns-layout/index.php */
+#wrapper {width:974px; text-align:left; margin:0px auto; padding:0px; border:0;}
+#side-a  {width:235px; float:left;}
+#side-b  {width:235px; float:right;}
+#content {width:51%;   float:left;}
