@@ -15,7 +15,7 @@ $twitterSearchItems = $t->render_search_mobile("browserplus", $RowsToShow);
 $twitterUserItems = $t->render_user_mobile("browserplus", $RowsToShow);
 
 $max = $irc->get_max_id();
-$results = $irc->get_rows($max, 50);
+$results = $irc->get_rows($max, $RowsToShow);
 $ircItems = $irc->render_mobile($results, $max);
 
 
