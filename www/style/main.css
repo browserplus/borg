@@ -119,8 +119,9 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
 .forum-when {color:#666;}
 
 
-.widget-pages h1 {margin-top:10px;border:0;border-bottom:1px solid #ddd;}
-.widget-pages li {margin-left:10px;font-size:93%;}
+div.widget-pages {background:#f5f5f5;margin-top:5px;border:1px solid #d5d5d5;}
+.widget-pages h1 {margin:0;padding:5px;border:0;border-bottom:1px solid #ddd;background:#eee;}
+.widget-pages li {margin-left:10px;font-size:93%;padding:2px 0;}
 .widget-pages li.active {font-style:italic;}
 
 /* blog */

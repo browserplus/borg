@@ -27,7 +27,7 @@ function dok_pages_widget($parents, $dirs, $files, $current_file) {
             if ($cnt-- == 1) {
                 echo "<h1>$title</h1>";
             } else {
-                echo "<h1>$up<a href=\"$url\">$title</a></h1>";
+                echo "<h1>^<a href=\"$url\">$title</a></h1>";
             }
         }
 
