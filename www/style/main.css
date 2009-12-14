@@ -118,7 +118,8 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
 .widget-forum li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
 .forum-when {color:#666;}
 
-.widget-pages h2 {color:#333;font-size:100%;margin:0;}
+
+.widget-pages h1 {margin-top:10px;border:0;border-bottom:1px solid #ddd;}
 .widget-pages li {margin-left:10px;font-size:93%;}
 .widget-pages li.active {font-style:italic;}
 

@@ -34,7 +34,7 @@ include "_header.php"
                     </div>
                 </div -->
 
-                <?php echo dok_pages_widget($dirs, $files, $up_dir, $cur_dir_title, $filename); ?>
+                <?php echo dok_pages_widget($parents, $dirs, $files, $filename); ?>
             </div>
         </div>
     </div>

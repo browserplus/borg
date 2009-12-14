@@ -88,6 +88,26 @@ class Dok
         return array($htmlfile, $srcfile, $files, $datadir);
     }
     
+    private function getHierarchy($path) {
+        $orig = $path;
+        if ($path[0] == "/") $path = substr($path, 1);
+        if ($path[strlen($path)-1] == "/") $path = substr($path, 0, -1);
+        $arr = explode("/",$path);
+        $cur = "";
+        $ret = array();
+
+        $ret [$this->conf['baseurl']. '/'] = $this->conf['basename'];
+
+        if ($path != "") {
+            foreach($arr as $c) {
+                $cur .= "/$c";
+                $ret[$this->conf['baseurl'] . "{$cur}/"] = $this->title_from_file($c);
+            }
+        }
+        
+        return $ret;
+    }
+
     private function getFileContents($uri) {
 
         if ($this->endswith($uri, ".html")) {
@@ -119,25 +139,20 @@ class Dok
                 $titles[$file] = $this->title_from_file($file);
             }
 
+            $hierarchy = $this->getHierarchy($dir);
+
             $dirs = array();
             foreach(array_keys($files["dirs"]) as $name) {
                 $dirs[$name] = $this->conf['baseurl'] . $dir . $name . "/";
             }
 
-            $up_dir = ($dir == "/") ? "/" : $this->conf['baseurl'] . dirname(substr($dir, 0, -1));
-
-            $cur_dir = ($dir == "/" ? "docs" : basename($dir));
             
 	        return array(
                 "filename" => $htmlfile,
+                "parents" => $hierarchy,
                 "title" => $this->title_from_file($htmlfile),
                 "type" => $fileext,
 	            "body" => $body,
-	            "dir"  => $this->conf['baseurl'] . $dir,
-	            "up_dir" => $up_dir,
-	            "cur_dir" => $cur_dir,
-                "base_title" => $this->conf['basename'],
-	            "cur_dir_title" => $this->title_from_file($cur_dir),
 	            "dirs" => $dirs,
 	            "files" => $titles,
 	            "layout" => $layout
