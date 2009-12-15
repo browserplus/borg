@@ -143,7 +143,7 @@ class Dok
 
             $dirs = array();
             foreach(array_keys($files["dirs"]) as $name) {
-                $dirs[$name] = $this->conf['baseurl'] . $dir . $name . "/";
+                $dirs[$this->title_from_file($name)] = $this->conf['baseurl'] . $dir . $name . "/";
             }
 
             

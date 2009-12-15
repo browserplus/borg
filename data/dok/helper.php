@@ -1,7 +1,10 @@
 <?php
 
 // map file names to page titles
-$TitleMap = array("c_cpp" => "C/C++");
+$TitleMap = array(
+    "service_dev" => "Service Developers",
+    "web_dev" => "Web Developers"
+);
 
 // replace @{varname} with below
 $VarMap = array(
