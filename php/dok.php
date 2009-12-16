@@ -1,18 +1,25 @@
 <?php
 require("markdown.php");
 
-class Dok 
+interface iFileScanner
+{
+    public function findFile($datadir, $htmlfile);
+    public function getFileContents($path);
+}
+
+class Dok implements iFileScanner
 {
     private $conf;
     private $titlemap_keys;
     private $titlemap_vals;
     private $varmap_keys;
     private $varmap_vals;
+    private $scanner;
     public static $default_filename = 'index.html';
 
-	function __construct($conf) {
+	public function __construct($conf) {
         $this->conf = $conf;
-        $dok_base = get_cfg_var("dok_base");
+        $dok_base = getenv("DOK_BASE");
         $this->conf["site"]   = "$dok_base/dok";
         $this->conf["layout"] = "$dok_base/layout";
         $this->conf['pages']  = "$dok_base/" . $this->conf['pages'] ;
@@ -38,56 +45,6 @@ class Dok
         return (false !== ($i = strrpos($str, $sub)) && $i === strlen($str) - strlen($sub));
     }
     
-    private function scandir($dir) {
-	    $dirs = array();
-	    $files = array();
-
-	    if ($handle = opendir($dir)) {
-		    // correct way of iterating thru with readdir
-		    while (false !== ($file = readdir($handle))) {
-			    $full = $dir . '/' . $file;
-			    if (is_dir($full) && $file != '.' && $file != '..') {
-				    $f = basename($file);
-				    $dirs[$f]  = $f;
-			    } else if (is_file($full)) {
-				    $f = basename($file);
-					$key = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2.html", $f);
-				    $files[$key] = $f;
-			    }
-		    }
-
-            closedir($handle);
-	    }
-	
-	    return array("dirs"=>$dirs, "files"=>$files);
-    }
-
-    private function findFile($datadir, $htmlfile) {
-        $srcfile = null;
-        $files = null;
-
-        if (file_exists($datadir)) {
-            $files = $this->scandir($datadir);
-
-            if ($files["files"][$htmlfile]) {
-                // 1. File is specfied in URI and found
-                $srcfile = $files["files"][$htmlfile];
-            } else if (!$htmlfile && $files["files"][self::$default_filename]) {
-                // 2. No file specified, use index.html
-                $srcfile = $files["files"][self::$default_filename];                
-                $htmlfile = self::$default_filename;
-            } else if (!$htmlfile && count($files) > 0) {
-                // 3. No file specified and "index" file does not exist.
-                //    Show "first" file in directory.   The file can be 
-                //    named 000_anything.md and the digits+underscore are
-                //    stripped out.
-				list($htmlfile,$srcfile) = each($files["files"]);
-            }
-        }
-
-        return array($htmlfile, $srcfile, $files, $datadir);
-    }
-    
     private function getHierarchy($path) {
         $orig = $path;
         if ($path[0] == "/") $path = substr($path, 1);
@@ -108,8 +65,7 @@ class Dok
         return $ret;
     }
 
-    private function getFileContents($uri) {
-
+    private function getPage($uri) {
         if ($this->endswith($uri, ".html")) {
             $dir = dirname($uri);
             $htmlfile = basename($uri);
@@ -122,16 +78,29 @@ class Dok
         $dir = ($dir == "." ? "/" : ($this->endswith($dir, "/") ? $dir : "$dir/"));
         $dir = ($dir[0] != "/" ? "/$dir" : $dir);
 
-        list($htmlfile, $srcfile, $files, $datadir) = $this->findFile($this->conf['pages'] . "$dir", $htmlfile);
+        $datadir = $this->conf['pages'] . $dir;
+
+        $dbg = false;
+        if ($dbg) echo "<pre>findFile('$datadir', '$htmlfile')\n";
+        list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, $htmlfile);
+
+        if ($dbg) {
+            echo "htmlfile=$htmlfile\nsrcfile=$srcfile\n";
+            print_r($files);
+            echo "</pre>";
+        }
+
+
         if ($srcfile) {
             $layout = "dok_2c.php";            
         } else {
-            list($htmlfile, $srcfile, $files, $datadir) = $this->findFile($this->conf['site'], "file_not_found.html");
+            $datadir = $this->conf['site'];
             $layout = "dok_1c.php";
+            list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, "file_not_found.html");
         }
 
         if ($srcfile) {
-	        $body = file_get_contents($datadir . "/$srcfile");
+	        $body = $this->scanner->getFileContents($datadir . "$srcfile");
 
 	        $fileext = substr($srcfile, strrpos($srcfile, '.')+1);
             $titles = array();
@@ -172,16 +141,7 @@ class Dok
         return $str;
     }
 
-    function render($uri) {
-        $data = $this->getFileContents($uri);
-        if ($data) {
-            $this->render_one($data);
-        } else {
-            echo "Bad Request";
-        }
-    }
-
-    function render_one($data) {
+    private function _renderit($data) {
         if ($data["type"] == "raw") {
             echo $data["body"];
         } else {
@@ -226,6 +186,85 @@ class Dok
             unset($data);
             include $this->conf['layout'] . "/" . $layout;
         }            
+    }
+
+    // return all files + dirs in the given directory
+    private function getDirContents($dir) {
+	    $dirs = array();
+	    $files = array();
+
+	    if ($handle = opendir($dir)) {
+		    // correct way of iterating thru with readdir
+		    while (false !== ($file = readdir($handle))) {
+			    $full = $dir . '/' . $file;
+			    if (is_dir($full) && $file != '.' && $file != '..') {
+				    $f = basename($file);
+				    $dirs[$f]  = $f;
+			    } else if (is_file($full)) {
+				    $f = basename($file);
+					$key = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2.html", $f);
+				    $files[$key] = $f;
+			    }
+		    }
+
+            closedir($handle);
+	    }
+	
+	    
+	    return array("dirs"=>$dirs, "files"=>$files);
+    }
+
+    public function render($uri) {
+        $this->scanner = getFileScanner($uri);
+        if ($this->scanner == null) {
+            $this->scanner = $this;
+        }
+
+        $data = $this->getPage($uri);
+        if ($data) {
+            $this->_renderit($data);
+        } else {
+            echo "Bad Request";
+        }
+    }
+
+
+    //
+    // Default implemenation of iFileScanner that works off of file system.
+    // The file scanner can be overriden based on the URL.  In helper.php
+    // getFileScanner(uri) holds the mapping.
+    //
+
+    // returns the file to render in the given directory
+    public function findFile($datadir, $htmlfile) {
+        $srcfile = null;
+        $files = null;
+
+        if (file_exists($datadir)) {
+            $files = $this->getDirContents($datadir);
+
+            if ($files["files"][$htmlfile]) {
+                // 1. File is specfied in URI and found
+                $srcfile = $files["files"][$htmlfile];
+            } else if (!$htmlfile && $files["files"][self::$default_filename]) {
+                // 2. No file specified, use index.html
+                $srcfile = $files["files"][self::$default_filename];                
+                $htmlfile = self::$default_filename;
+            } else if (!$htmlfile && count($files) > 0) {
+                // 3. No file specified and "index" file does not exist.
+                //    Show "first" file in directory.   The file can be 
+                //    named 000_anything.md and the digits+underscore are
+                //    stripped out.
+				list($htmlfile, $srcfile) = each($files["files"]);
+            }
+        }
+
+        return array($htmlfile, $srcfile, $files);
+    }
+    
+    // returns the contents ("body") of the given path
+    public function getFileContents($path) {
+        return file_get_contents($path);
     }
 }
 

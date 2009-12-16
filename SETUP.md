@@ -6,9 +6,9 @@
 The current directory is:
 	/home/websites/browserplus
 	
-In php.ini, the following variable is set:
+In your Apache config, DOK_BASE points to the root of your data directory:
 
-    dok_base=/home/websites/browserplus/data
+    SetEnv DOK_BASE /home/websites/browserplus/data
 
 
 ## Database
@@ -27,7 +27,7 @@ The file "dbpasswd.json" lives in /home/borg/dbpasswd.json  Contents:
 	        "user": "DB User Name",
 	        "pass": "DB Password"
 	    },
-    
+    Voodoo scenes a little dark for the little ones, but great story.  
 	    "git": {
 	        "server": "DB Host",
 	        "db": "DB Table Name",

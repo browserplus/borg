@@ -12,7 +12,67 @@ $VarMap = array(
     "rubyver" => "4.2.6"
 );
 
+function getFileScanner($uri) {
+    if (strpos($uri, "developer/services/") === 0) {
+        return new ServicesFileScanner();
+    }
+    
+    return null;
+}
 
+class ServicesFileScanner implements iFileScanner 
+{
+    var $bp = null;
+    var $services = null;
+    var $homepage = "00_home";
+    
+	public function __construct() {
+        include("/home/websites/browserplus/php/site.php");
+        include("/home/websites/browserplus/php/bpservices.php");
+        $this->bp = new BPServices();
+    }
+
+    private function basename($file) {
+        // return file strip stripped of all path and (the last) extension
+        $name = basename($file);
+        return substr($name, 0, strrpos($name, "."));        
+    }
+
+    public function findFile($datadir, $htmlfile) {
+        $bn = $this->basename($htmlfile);
+        
+        $foundIt = false;
+        $services = $this->bp->getAllServices();
+        foreach($services as $s) {
+            $name = $s['name'];
+            if ($name == $bn) $foundIt = true;
+            $files["${name}.html"] = "${name}.md";
+        }
+
+        ksort($files);
+        $home = array("home.html" => "00_home.md");
+        $files = array_merge($home, $files);
+
+        $files = array("dirs" => array(), "files" => $files);
+
+        if ($foundIt) {
+            return array("{$bn}.html", "{$bn}.md", $files);
+        } else {
+            return array("home.html", $this->homepage . ".md", $files);            
+        }
+    }
+    
+    public function getFileContents($path)
+    {
+        $name = $this->basename($path);
+        if ($name == $this->homepage) {
+            return $this->bp->renderServiceHome();
+        } else {
+            return $this->bp->renderServiceDoc($name);
+        }
+    }
+    
+}
 /*
  * Helper Functions for Dok Layout.
  */

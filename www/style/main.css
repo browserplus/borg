@@ -119,10 +119,15 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
 .forum-when {color:#666;}
 
 
-div.widget-pages {background:#f5f5f5;margin-top:5px;border:1px solid #d5d5d5;}
-.widget-pages h1 {margin:0;padding:5px;border:0;border-bottom:1px solid #ddd;background:#eee;}
-.widget-pages li {margin-left:10px;font-size:93%;padding:2px 0;}
+.widget-pages {margin:5px 0; background:#f7f5f2; border:1px solid #d9d7d2;}
+.widget-pages h1 {margin:0; padding:5px; background:#eae5e1; border-top:1px solid #f9f5f1; border-bottom:1px solid #d7d4d0;}
+/*
+.widget-pages {margin:5px 0; background:#f5f5f5; border:1px solid #ccc;}
+.widget-pages h1 {margin:0; padding:5px; background:#e5e5e5; border-top:1px solid #f5f5f5; border-bottom:1px solid #ccc;}
+*/
+.widget-pages li {margin-left:10px;font-size:93%;padding:2px 0;font-family:verdana,arial,sans-serif;}
 .widget-pages li.active {font-style:italic;}
+
 
 /* blog */
 h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}

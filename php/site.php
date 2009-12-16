@@ -77,7 +77,7 @@ function render3c($title, $tab, $widgets_left, $body, $widgets_right) {
     render_page($data, LAYOUT_3C);
 }
 function get_projects() {
-    return json_decode(file_get_contents(get_cfg_var("dok_base") . "/projects/projects.json"), 1);
+    return json_decode(file_get_contents(getenv("DOK_BASE") . "/projects/projects.json"), 1);
 }
 
 function fetch($url) {
@@ -90,7 +90,7 @@ function fetch($url) {
 
 function render_page($data, $template) {
     extract($data);
-    include(get_cfg_var("dok_base") . "/layout/{$template}.php");
+    include(getenv("DOK_BASE") . "/layout/{$template}.php");
 }
 
 
