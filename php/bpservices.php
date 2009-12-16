@@ -5,6 +5,7 @@ class BPServices
     private static $serviceKey = "bp.services";
     private static $baseKey = "bp.service.%s.%s.%s";
     private static $builtInServices = array("DragAndDrop", "FileBrowse", "InactiveServices", "Log");
+    private static $ttl = 1800;
     var $builtinPath = null;
     var $services = null;
     
@@ -53,7 +54,7 @@ EOS;
                 $services[] = $b;
             }
     
-            apc_store($key, json_encode($services));
+            apc_store($key, json_encode($services), self::$ttl);
         } else {
             $services = json_decode($services, 1);
         }
@@ -82,7 +83,7 @@ EOS;
                 $json = fetch(self::$apibase . "/corelet/metadata/{$name}/{$version}/{$platform}");
             }
 
-            if ($json) apc_store($key, $json);
+            if ($json) apc_store($key, $json, self::$ttl);
         }
         
         return ($json ? json_decode($json, 1) : null);
@@ -107,7 +108,11 @@ EOS;
 
         ksort($latest);
         $str = "# Services\n\n";
-        $str .= "The following services are in production.\n\n";
+        $str .= "The following services are in production at <http://browserplus.yahoo.com/>. ";
+        $str .= "With BrowserPlus installed, you can test services with "; 
+        $str .= "<a target=\"_blank\" href=\"http://browserplus.yahoo.com/developer/explore/test/\">Service Explorer</a>.\n\n";
+        $str .= "### Services Available\n\n";
+
         foreach($latest as $name => $s) {
             $str .= "[{$name}]({$name}.html)\n";
             $str .= ": {$s['doc']}\n\n";
@@ -160,6 +165,7 @@ EOS;
 
             if ($service) {
                 $str .= $service['documentation'] . "\n\n";
+                
                 if ($service['CoreletType'] == "dependent" && isset($service['CoreletRequires'])) {
                     $dn = $service['CoreletRequires']['Name'];
                     $str .= "**NOTE**: {$name} depends on [{$dn}]({$dn}.html).\n\n";
