@@ -4,11 +4,16 @@ class BPServices
     private static $apibase = "http://browserplus.yahoo.com/api/v3";
     private static $serviceKey = "bp.services";
     private static $baseKey = "bp.service.%s.%s.%s";
-    
+    private static $builtInServices = array("DragAndDrop", "FileBrowse", "InactiveServices", "Log");
+    var $builtinPath = null;
     var $services = null;
     
+	function __construct() {
+        $this->builtinPath = getenv("DOK_BASE") . "/services/";
+    }
+
     private function getServiceKey($name, $platform, $version) {
-        return sprintf(self::$baseKey, $name, $platform, $version);
+        return sprintf(self::$baseKey, $name, $platform, $this->versionNum($version));
     }
 
     function getAllServices() {
@@ -60,8 +65,23 @@ EOS;
     function getService($name, $platform, $version) {
         $key = $this->getServiceKey($name, $platform, $version);
         $json = apc_fetch($key);
+
         if ($json == null) {
-            $json = fetch(self::$apibase . "/corelet/metadata/{$name}/{$version}/{$platform}");
+
+            if (in_array($name, self::$builtInServices)) {
+                // Built-In Service
+                // The api doesn't yet return documentation for built-in services, so
+                // we store the equivalent info in a local file 
+                $path = $this->builtinPath . $name . "_" . $version . ".json";
+
+                if (file_exists($path)) {
+                    $json = file_get_contents($path);                    
+                }
+            } else {
+                // Regular Service, fetch from web services api
+                $json = fetch(self::$apibase . "/corelet/metadata/{$name}/{$version}/{$platform}");
+            }
+
             if ($json) apc_store($key, $json);
         }
         
@@ -96,46 +116,110 @@ EOS;
         return "<div markdown=\"1\" class=\"api\">\n$str\n</div>\n";
     }
 
-    function renderServiceDoc($name, $platform=null, $version=null)
+    function renderServiceDoc($name)
     {
         $str = "# {$name}\n";
         $maxvn = 0;
         $maxvs = "";
-        $maxos = "";
 
         $versions = array();
+        $validvers = array();
 
         foreach($this->services as $s) {
             if ($s['name'] == $name) {
                 $vs = $s['versionString'];
-                $os = $s['os'];
                 $vn = $this->versionNum($vs);
-                $versions[] = "{$vn}_{$os}_$vs";
+                $key = "{$vn}|$vs";
+                if (!isset($versions[$key])) {
+                    $versions[$key] = 1;
+                    $validvers[$vs] = 1;
+                }
                 if ($vn >= $maxvn) {
                     $maxvn = $vn;
                     $maxvs = $vs;
-                    $maxos = $os;
                 }
             }
         }
+
+        krsort($versions);
         
-        rsort($versions);
+        if (isset($_GET['v']) && isset($validvers[$_GET['v']])) {
+            $version = $_GET['v'];
+        } else {
+            $version = $maxvs;
+        }
 
-        if (!$platform) $platform = $maxos;
-        if (!$version) $version = $maxvs;
-
-        $s_os = ($platform == "ind" ? "" : "($platform)");
-        if ($platform == "ind") $platform = "win32";
-
-        if (true) {
+        if (false) {
             $str = "# {$name}, v{$version}\n\n";
             $str .= "Doc coming soon...\n";
         } else {
-            $str = "# {$name}{$s_os}, v{$version}\n\n";
-            $str .= "~~~\n";
-            $str .= "KEY($name): " . $this->getServiceKey($name, $platform, $version) . "\n";
-            $str .= print_r($this->getService($name, $platform, $version), 1);
-            $str .= "~~~\n";
+            $str = "# {$name}, v{$version}\n\n";
+
+            // assume services are same for all platforms and fetch the "win32" version
+            $service = $this->getService($name, "win32", $version);
+
+            if ($service) {
+                $str .= $service['documentation'] . "\n\n";
+                if ($service['CoreletType'] == "dependent" && isset($service['CoreletRequires'])) {
+                    $dn = $service['CoreletRequires']['Name'];
+                    $str .= "**NOTE**: {$name} depends on [{$dn}]({$dn}.html).\n\n";
+                }
+                
+                // print all versions
+                if (count($versions) > 1) {
+                    $links = array();
+
+                    foreach($versions as $v => $ignore) {
+                        // array entry is 4000004|4.0.4
+                        $arr = explode("|", $v);
+                        $v = $arr[1];
+                     
+                        if ($v == $version) {
+                            $links[] = "**{$v}**";
+                        } else {
+                            $links[] = "[$v]({$name}.html?v={$v})";
+                        }
+                    }
+                    
+                    if (count($links) > 0) {
+                        $str .= "#### Other Versions\n\n";
+                        $str .= join(", ", $links) . "\n\n";
+                    }
+                }
+                
+
+                if (count($service['functions']) > 0) {
+                    $funcs = $service['functions'];
+                    foreach($funcs as $f) {
+                        $str .= "## BrowserPlus.{$name}.{$f['name']}({params}, function{}())\n\n";
+                        $str .= $f['documentation'] . "\n\n";
+
+                        $str .= "### Parameters\n\n";
+                        
+                        if (count($f['parameters']) > 0) {
+                            $params = $f['parameters'];
+                            foreach($params as $p) {
+                                $str .= "{$p['name']}: {$p['type']}";
+                                if (!$p['required']) {
+                                    $str .= " *(Optional)*";
+                                }
+                                $str .= "\n";
+                                $str .= ": " . $p['documentation'] . "\n\n";
+                            }
+                        } else {
+                            $str .= "*No Parameters*\n\n";
+                        }
+                    }
+                }
+
+                if (false) {
+                    $str .= "~~~\n";
+                    $str .= "KEY($name): " . $this->getServiceKey($name, "win32", $version) . "\n";
+                    $str .= print_r($this->getService($name, "win32", $version), 1);
+                    $str .= "~~~\n";
+                }
+
+            }
         }
 
         return "<div markdown=\"1\" class=\"api\">\n$str\n</div>\n";

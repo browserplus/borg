@@ -1,0 +1,104 @@
+{
+    "name": "DragAndDrop",
+    "versionString": "1.0.1",
+    "version" : {
+        "major": 1,
+        "minor": 0,
+        "micro": 1
+    },
+    "documentation": "Support drag and drop of files from desktop to web browser.",
+    "functions": [
+        {
+            "name": "AddDropTarget",
+            "documentation": "Starts monitoring drag/drop activity for the specified element.",
+            "parameters": [
+                {
+                    "name": "id",
+                    "required": true,
+                    "documentation": "The 'id' of the registered DOM element to operate on.",
+                    "type": "string"
+                },
+                {
+                    "name": "mimeTypes",
+                    "required": false,
+                    "documentation": "A list of mimetypes to filter against. Only items which match one of these mimetypes will be accepted. Default is empty (all dropped items will be accepted).",
+                    "type": "list"
+                },
+                {
+                    "name": "includeGestureInfo",
+                    "required": false,
+                    "documentation": "Should selection gesture information be included in the argument to the 'drop' callback? Default is false. If false, the argument is an array of opaque file handles. If true, the argument is a map containing keys 'actualSelection' and 'files'. The 'actualSelection' value is a list of opaque file handles representing what was actually selected by the UI gesture. The 'files' value is an array of maps, each entry containing keys 'handle' (value is an opaque file handle) and 'parent' (value is handle id of element in 'actualSelection' list which resulted in this file being included).",
+                    "type": "boolean"
+                },
+                {
+                    "name": "limit",
+                    "required": false,
+                    "documentation": "Maximum number of items which will be included in a drop. Default is 10000.",
+                    "type": "integer"
+                }
+            ]
+        },
+        {
+            "name": "AttachCallbacks",
+            "documentation": "AttachCallbacks to a registered drop target. This function will not return until RemoveDropTarget is called, so it should not be invoked synchronously.",
+            "parameters": [
+                {
+                    "name": "id",
+                    "required": true,
+                    "documentation": "The 'id' of the registered DOM element to which you wish to attach.",
+                    "type": "string"
+                },
+                {
+                    "name": "hover",
+                    "required": false,
+                    "documentation": "A function that will be invoked when the user hovers over the drop target. Argument is a boolean which when true means the user has entered the region, and when false means they have exited.",
+                    "type": "callback"
+                },
+                {
+                    "name": "drop",
+                    "required": false,
+                    "documentation": "A function that will be invoked when the user drops files on your drop target. Arguments to the callback vary depending on whether 'includeGestureInfo' was set true for the target. See the documentation for the 'includeGestureInfo' argument to 'AddDropTarget()'.",
+                    "type": "callback"
+                }
+            ]
+        },
+        {
+            "name": "RemoveDropTarget",
+            "documentation": "Stop monitoring an element for drag/drop activity.",
+            "parameters": [
+                {
+                    "name": "id",
+                    "required": true,
+                    "documentation": "The 'id' of the DOM element to operate on.",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "EnableDropTarget",
+            "documentation": "Enable/disable an element for drag/drop activity. AddDropTarget must have already been called for the element.",
+            "parameters": [
+                {
+                    "name": "id",
+                    "required": true,
+                    "documentation": "The 'id' of the registered DOM element for which you wish to enable/disable drag/drop activity.",
+                    "type": "string"
+                },
+                {
+                    "name": "enable",
+                    "required": true,
+                    "documentation": "A boolean indicating whether activity should be enabled (true) or disabled (false).",
+                    "type": "boolean"
+                }
+            ]
+        },
+        {
+            "name": "ListTargets",
+            "documentation": "Returns a list of the ids of the currently registered drop targets.",
+            "parameters": []
+        }
+
+    ],
+    "CoreletType": "built-in", 
+    "CoreletAPIVersion":4
+}

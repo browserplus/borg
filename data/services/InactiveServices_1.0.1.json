@@ -1,0 +1,50 @@
+{
+    "name": "InactiveServices",
+    "versionString": "1.0.1",
+    "version" : {
+        "major": 1,
+        "minor": 0,
+        "micro": 1
+    },
+    "documentation": "Allows for the exploration of available services, which may be downloaded and activated.",
+    "functions": [
+        {
+            "name": "All",
+            "documentation": "Get a list of all available services.",
+            "parameters": [
+                {
+                    "name": "platform",
+                    "required": false,
+                    "documentation": "The platform (either 'osx' or 'win32') for which you would like to see available corelets.",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Describe",
+            "documentation": "Get a data structure describing the interface of a specified service.",
+            "parameters": [
+                {
+                    "name": "service",
+                    "required": true,
+                    "documentation": "The name of the service.",
+                    "type": "string"
+                },
+                {
+                    "name": "version",
+                    "required": true,
+                    "documentation": "The exact version of the service.",
+                    "type": "string"
+                },
+                {
+                    "name": "platform",
+                    "required": false,
+                    "documentation": "The platform (either 'osx' or 'win32') for which you would like a service description.",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "CoreletType": "built-in", 
+    "CoreletAPIVersion":4
+}
