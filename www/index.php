@@ -96,7 +96,6 @@ $forum_widget = $forums->render_widget($listItemsToShow);
 
 
 $body = <<< EOS
-<h1 class="homepage">BrowserPlus Dashboard</h1>
 <div class="home-logs">
     <div class="home-irc-log">$irctable</div>
     <div class="home-git-log">$gittable</div>
