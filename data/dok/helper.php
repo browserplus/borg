@@ -64,15 +64,23 @@ class ServicesFileScanner implements iFileScanner
     
     public function getFileContents($path)
     {
-        $name = $this->basename($path);
-        if ($name == $this->homepage) {
-            return $this->bp->renderServiceHome();
+        if (file_exists($path)) {
+            // Built-in services are not documented by the web services api.  Look for
+            // "ServiceName.md" file in services directory first to provide the details.
+            $page = file_get_contents($path);
+            return "<div markdown=\"1\" class=\"api\">\n$page\n</div>\n";
         } else {
-            return $this->bp->renderServiceDoc($name);
+            // just get the service name
+            $name = $this->basename($path);
+            if ($name == $this->homepage) {
+                return $this->bp->renderServiceHome();
+            } else {
+                return $this->bp->renderServiceDoc($name);
+            }
         }
     }
-    
 }
+
 /*
  * Helper Functions for Dok Layout.
  */

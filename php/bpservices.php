@@ -126,15 +126,18 @@ EOS;
 
         $s_os = ($platform == "ind" ? "" : "($platform)");
         if ($platform == "ind") $platform = "win32";
-        //$str = "# {$name}{$s_os}, v{$version}\n\n";
-        $str = "# {$name}, v{$version}\n\n";
-        $str .= "Doc coming soon...\n";
-        /*
-        $str .= "~~~\n";
-        $str .= "KEY($name): " . $this->getServiceKey($name, $platform, $version) . "\n";
-        $str .= print_r($this->getService($name, $platform, $version), 1);
-        $str .= "~~~\n";
-        */
+
+        if (true) {
+            $str = "# {$name}, v{$version}\n\n";
+            $str .= "Doc coming soon...\n";
+        } else {
+            $str = "# {$name}{$s_os}, v{$version}\n\n";
+            $str .= "~~~\n";
+            $str .= "KEY($name): " . $this->getServiceKey($name, $platform, $version) . "\n";
+            $str .= print_r($this->getService($name, $platform, $version), 1);
+            $str .= "~~~\n";
+        }
+
         return "<div markdown=\"1\" class=\"api\">\n$str\n</div>\n";
     }
 }
