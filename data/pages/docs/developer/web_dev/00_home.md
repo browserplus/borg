@@ -15,8 +15,7 @@ We hope you'll be up and running in about 5 minutes. Here's how:
    some higher level javascript libraries that make some interesting applications of BrowserPlus possible 
    in just a couple lines of code.
 4. Leverage our full documentation to understand the scope and functioning of the BrowserPlus API.
-5. Explore the [services available today](http://browserplus.yahoo.com/developer/explore/), along 
-   with full API documentation.
+5. Explore the [available services](/docs/developer/services/).
 
 ## Join the Community
 
