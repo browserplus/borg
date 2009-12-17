@@ -73,7 +73,7 @@ class Dok implements iFileScanner
 	        $dir = ($this->endswith($uri, '/') ? $uri : "$uri/");
             $htmlfile = "";
         }
-        
+
         // correct "/" around dir
         $dir = ($dir == "." ? "/" : ($this->endswith($dir, "/") ? $dir : "$dir/"));
         $dir = ($dir[0] != "/" ? "/$dir" : $dir);
