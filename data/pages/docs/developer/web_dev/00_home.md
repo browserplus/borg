@@ -14,7 +14,9 @@ We hope you'll be up and running in about 5 minutes. Here's how:
 3. Check out our [toolbox](http://browserplus.yahoo.com/developer/web/toolbox/installer/), which contains 
    some higher level javascript libraries that make some interesting applications of BrowserPlus possible 
    in just a couple lines of code.
-4. Leverage our full documentation to understand the scope and functioning of the BrowserPlus API.
+4. Leverage our [full documentation](docs/developer/web_dev/JavaScript_API_Overview.html) 
+   to understand the scope and functioning of the 
+   [BrowserPlus API](/docs/developer/web_dev/JavaScript_API_Reference.html).
 5. Explore the [available services](/docs/developer/services/).
 
 ## Join the Community
