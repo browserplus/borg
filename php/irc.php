@@ -5,7 +5,8 @@ class IRC {
     
     private static $table = "chat";
     private static $logpath =  "/home/websites/browserplus/irc_logs/";
-
+    // subtract 8 hours to convert from GST to PST
+    private static $tblcols = "id, from_unixtime(unix_timestamp(stamp)-28800) as stamp, utterance, who";
 	function __construct() {
         $this->db = new DB("irc");
     }
@@ -22,12 +23,12 @@ class IRC {
     */
     function get_rows($max_id, $num_rows=10) {
         $starting_id = max(0, $max_id - $num_rows);
-        $sql = "SELECT * FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
+        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($starting_id));
     }
 
     function get_rows_at($id, $num_rows) {
-        $sql = "SELECT * FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
+        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($id));
     }
 
@@ -35,7 +36,7 @@ class IRC {
     * Search irc table
     */
     function find_rows($search, $num_rows) {
-        $sql = "SELECT * FROM " . self::$table . " WHERE MATCH(utterance) AGAINST (?)  ORDER BY stamp DESC LIMIT $num_rows";
+        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE MATCH(utterance) AGAINST (?)  ORDER BY stamp DESC LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($search));
     }
 
