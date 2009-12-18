@@ -2,7 +2,7 @@
 
 Write a BrowserPlus Service in C++.
 
-## Architecture
+## Architecture Recap
 
 BrowserPlus Services allow new capabilities to be provided to the
 web.  
@@ -58,8 +58,7 @@ You may download the sample code from [here].
 
 ### Step 4: Build the service
 
-Build the service for your platform using the instructions in the
-downloaded file "building".
+Build files are provided in the "src/build" directory for VS 2008, gcc, and xcode.
 
 ### Step 5: Install the HelloWorld service
 
