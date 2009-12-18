@@ -127,7 +127,7 @@ distribution servers.  In "Test" mode it will show all services
 currently installed on your local machine and allow you to exercise
 them.
 
-1. Launch [Service Explore](http://browserplus.yahoo.com/developer/explore)
+1. Launch [Service Explorer](http://browserplus.yahoo.com/developer/explore)
 2. Click "Test Services"
 3. Open the HelloWorld 1.0.0 dropdown
 4. Select the greet method
