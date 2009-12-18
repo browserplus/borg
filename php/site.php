@@ -147,10 +147,17 @@ function render_line_link_cb($matches) {
 function render_line($s){
     global $EMO_SEARCH, $EMO_REPLACE;
 
+    // escape html entities
+    $s = h($s);
+
+    // replace smileys
     $s = str_replace($EMO_SEARCH, $EMO_REPLACE, $s);
+
+    // break on words to make sure none are too long
     $words = preg_split("/[\s]+/", $s);
     $out = array();
     foreach($words as $w) {
+        // if word is too long and not a url or git addr, add wbr
         if (strlen($w) > 30 && !preg_match("#^((ht|f)tps?://)|(git@github.com)#", $w)) {
             $w = preg_replace("/(.{30})/", "\\1<wbr>", $w);
         }
