@@ -66,16 +66,14 @@ Build files are provided in the "src/build" directory for VS 2008, gcc, and xcod
 
 Service binaries must be findable at runtime so that they can be
 loaded by the Browserplus daemon.  The daemon loads services that have been
-installed locally.  Let's "install" the built service on the local machine.
+installed locally.  Let's use the ServiceInstaller to install our service.
 
 Note: paths are specified below using windows backslashes.  Substitute forward slashes on osx.
 
-Run the ServiceInstaller from the build directory as shown below.  You will
+Run the ServiceInstaller from the HelloWorld build directory as shown below.  You will
 need to specify your specific path to the BrowserPlus SDK:
 
-    build> [path to bpsdk]\bpsdk\bin\ServiceInstaller -v -f HelloWorld
-    
-    C:\dev\bp-tutorial-hello\src\build>..\..\..\bpsdk\bin\ServiceInstaller -v -f HelloWorld
+    build>[path to bpsdk]\bpsdk\bin\ServiceInstaller -v -f HelloWorld
     service initialized: HelloWorld v1.0.0
     installing service locally: HelloWorld, ver 1.0.0
     HelloWorld 1.0.0 validated and installed in 0.375s
@@ -83,19 +81,7 @@ need to specify your specific path to the BrowserPlus SDK:
 
 ## Test the HelloWorld service from the console
 
-    [path to bpsdk]\bpsdk\bin\ServiceRunner HelloWorld 1.0.0
-    > desc
-    > a
-    > i greet '{"name":"World"}'
-    > q
-    [show entire session]
-    
-    C:\dev\bp-tutorial-hello\src\build>..\..\..\bpsdk\bin\ServiceInstaller -v -f HelloWorld
-    service initialized: HelloWorld v1.0.0
-    installing service locally: HelloWorld, ver 1.0.0
-    HelloWorld 1.0.0 validated and installed in 0.375s
-    
-    C:\dev\bp-tutorial-hello\src\build>..\..\..\bpsdk\bin\ServiceRunner HelloWorld 1.0.0
+    build>[path to bpsdk]\bpsdk\bin\ServiceRunner HelloWorld 1.0.0
     service initialized: HelloWorld v1.0.0
     > desc
 
@@ -116,6 +102,9 @@ need to specify your specific path to the BrowserPlus SDK:
     > q
     shutting down...
 
+Above you can see that the ServiceRunner "desc" command describes the methods and method arguments of the service.
+The "a" command allocates a service "instance" (more on that later).  
+The "i" command invokes a named method, with a JSON payload.
 
 [maybe show an arch diagram]
 
