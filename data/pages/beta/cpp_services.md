@@ -65,15 +65,15 @@ Build files are provided in the "src/build" directory for VS 2008, gcc, and xcod
 ### Step 5: Install the HelloWorld service
 
 Service binaries must be findable at runtime so that they can be
-loaded by the Browserplus daemon.  The daemon loads services that are
-installed locally.  If necessary it will fetch service binaries from
-BrowserPlus distribution servers.  For this demo we will just install the
-sample service on the local machine.
+loaded by the Browserplus daemon.  The daemon loads services that have been
+installed locally.  Let's "install" the built service on the local machine.
+
+Note: paths are specified below using windows backslashes.  Substitute forward slashes on osx.
 
 Run the ServiceInstaller from the build directory as shown below.  You will
 need to specify your specific path to the BrowserPlus SDK:
 
-    build> [path to ServiceInstaller]/ServiceInstaller -v -f HelloWorld
+    build> [path to bpsdk]\bpsdk\bin\ServiceInstaller -v -f HelloWorld
     
     C:\dev\bp-tutorial-hello\src\build>..\..\..\bpsdk\bin\ServiceInstaller -v -f HelloWorld
     service initialized: HelloWorld v1.0.0
@@ -83,7 +83,7 @@ need to specify your specific path to the BrowserPlus SDK:
 
 ## Test the HelloWorld service from the console
 
-    [path to ServiceRunner]/ServiceRunner HelloWorld 1.0.0
+    [path to bpsdk]\bpsdk\bin\ServiceRunner HelloWorld 1.0.0
     > desc
     > a
     > i greet '{"name":"World"}'
