@@ -48,9 +48,11 @@ Let's build a sample service, the HelloWorld service.
 <div id="gotbp">Checking for BrowserPlus...</div>
 <div id="downloadLink"></div>
 
-### Step 2: Install the BrowserPlus SDK (show version like b.y.c/tutorial does)
+### Step 2: Install the BrowserPlus SDK
 
-http://browserplus.yahoo.com/developer/service/sdk/ [proper version]
+Download the latest SDK appropriate for your platform: <http://browserplus.yahoo.com/developer/service/sdk/>.
+
+Once downloaded, unzip (or untar) the sdk, and a directory will be created called `bpsdk`.
 
 ### Step 3: Download the sample service
 
