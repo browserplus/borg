@@ -1,6 +1,8 @@
 # C++ Services
 
-Write a BrowserPlus Service in C++.
+This tutorial will show you how to create a BrowserPlus Service
+in C++.
+
 
 ## Architecture Recap
 
@@ -14,9 +16,6 @@ services, each of which is hosted in a harness process.
 ![Server Architecture](/i/server_arch.png)
 
 The services are packaged as dlls on Windows and dylibs on OSX.
-
-This tutorial will show you how to create a BrowserPlus Service
-in C++.
 
 
 ## Service API
