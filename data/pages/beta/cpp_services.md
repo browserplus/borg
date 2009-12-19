@@ -66,7 +66,7 @@ Build files are provided in the "src/build" directory for VS 2008, gcc, and xcod
 
 Service binaries must be findable at runtime so that they can be
 loaded by the Browserplus daemon.  The daemon loads services that have been
-installed locally.  Let's use the ServiceInstaller to install our service.
+installed locally.  Let's use the ServiceInstaller from the SDK to install our service.
 
 Note: paths are specified below using windows backslashes.  Substitute forward slashes on osx.
 
@@ -80,6 +80,10 @@ need to specify your specific path to the BrowserPlus SDK:
 
 
 ## Test the HelloWorld service from the console
+
+The BrowserPlus SDK provides a tool called the ServiceRunner that allows you to 
+test installed services from the console, without the added complexity of 
+browsers and browser plugins.  Let's use ServiceRunner to test our service:
 
     build>[path to bpsdk]\bpsdk\bin\ServiceRunner HelloWorld 1.0.0
     service initialized: HelloWorld v1.0.0
