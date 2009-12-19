@@ -45,7 +45,8 @@ Let's build a sample service, the HelloWorld service.
 
 ### Step 1: Install BrowserPlus
 
-[installer tool]
+<div id="gotbp">Checking for BrowserPlus...</div>
+<div id="downloadLink"></div>
 
 ### Step 2: Install the BrowserPlus SDK (show version like b.y.c/tutorial does)
 
@@ -137,3 +138,51 @@ This is done via metadata provided by the service author.
  ![Hello world](/i/explorer_hello_world.png)
 
 
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script>
+localPageCB = function () {
+  function myInitCB(r) {
+	var BP = BrowserPlus;
+    var instDiv = document.getElementById("gotbp");
+	if (r.success)
+	{
+      instDiv.innerHTML = "BrowserPlus installed!  Ver. " +
+		BP.getPlatformInfo().version;
+	}
+	else if (r.error === 'bp.notInstalled')
+	{
+      // render an upsell link for inpage installation
+	  while (instDiv.firstChild) instDiv.removeChild(instDiv.firstChild);
+	  var lnk = document.createElement("a");
+      lnk.onclick = function () {
+        BPTool.Installer.show({}, myInitCB);
+      }         
+	  lnk.innerHTML = "install BrowserPlus now";
+	  lnk.href= "#";
+      instDiv.appendChild(lnk);
+    }
+	else if (r.error === 'bp.notInstalled')
+	{
+      instDiv.innerHTML = "Sorry, your platform isn't yet supported, please " +
+		"try again on a <a href='/install'>supported platform</a>."; 
+	}
+	else
+	{
+      instDiv.innerHTML =
+		"Yikes, BrowserPlus encountered an error (" + r.error + ": " +
+		r.verboseError+"), please try restarting your browser, or visit " +
+		"the Troubleshooting page of the BrowserPlus Configuration panel for "
+		+ "more help in figuring out what went wrong.";
+	}
+  }
+
+  BrowserPlus.init({}, myInitCB);
+};
+
+if (window.attachEvent) {
+  window.attachEvent("onload", function(){localPageCB()});
+} else {
+  localPageCB();
+}
+
+</script>
