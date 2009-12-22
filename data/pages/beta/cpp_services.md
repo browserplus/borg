@@ -56,7 +56,7 @@ Once downloaded, unzip (or untar) the sdk, and a directory will be created calle
 
 ### Step 3: Download the sample service
 
-You may download the sample code from [here].  
+Download the sample service code from [here](http://github.com/browserplus/bp-tutorial-cpp1/archives/master).
 
 ### Step 4: Build the service
 
