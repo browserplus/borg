@@ -9,6 +9,7 @@ include("/home/websites/browserplus/php/irc.php");
 include("/home/websites/browserplus/php/git.php");
 include("/home/websites/browserplus/php/twitter.php");
 include("/home/websites/browserplus/php/forum.php");
+include("/home/websites/browserplus/php/lighthouse.php");
 
 $tableRowsToShow = 15;
 $listItemsToShow = 5; // for twitter, forum, blog, issues
@@ -77,7 +78,10 @@ $gittable = render_table($results, "tcommit", "project", "msg",
     array("show_long_dates"=>true, "top_nav" => $gitnav, "url_key" => "url", "url_pat" => "%s"));
 
 $gitwidgets = $git->render_project_widget();
-$issuewidget = $git->render_issues_widget($listItemsToShow);
+
+// lighthouse issues
+$lighthouse = new Lighthouse();
+$issuewidget = $lighthouse->render_issues_widget($listItemsToShow);
 
 // Links Widget
 $linkswidget = get_links_widget();

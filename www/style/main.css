@@ -115,6 +115,9 @@ h1.homepage {text-align:center;margin:0.75em 0; font-size:138.5%;font-style:ital
 .widget-tweet li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
 .tweet-when {color:#666;}
 
+.lighthouse-state {color:#910;}
+.lighthouse-when {color:#666;}
+
 .widget-forum li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
 .forum-when {color:#666;}
 
