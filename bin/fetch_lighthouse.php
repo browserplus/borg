@@ -7,4 +7,4 @@ $bugs = new Lighthouse();
 $secret = $bugs->get_cache_secret();
 
 $host = ((get_cfg_var('bp_env') == "local") ? "borg" : "browserplus.org");
-fetch("http://$host/site/cache_forums.php?s=$secret");
+fetch("http://$host/site/cache_lighthouse.php?s=$secret");
