@@ -50,7 +50,7 @@ Let's build a sample service, the HelloWorld service.
 
 ### Step 2: Install the BrowserPlus SDK
 
-Download the latest SDK appropriate for your platform: <http://browserplus.yahoo.com/developer/service/sdk/>.
+Download the BrowserPlus SDK for your platform from [here](http://browserplus.yahoo.com/developer/service/sdk/).
 
 Once downloaded, unzip (or untar) the sdk, and a directory will be created called `bpsdk`.
 
