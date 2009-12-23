@@ -60,7 +60,7 @@ Download the sample service code from [here](http://github.com/browserplus/bp-tu
 
 ### Step 4: Build the service
 
-Build files are provided in the "src/build" directory for VS 2008, gcc, and xcode.
+Build files are provided in the "src/build" directory for VS 2008 and gcc.
 
 ### Step 5: Install the HelloWorld service
 
