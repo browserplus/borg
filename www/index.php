@@ -81,7 +81,7 @@ $gitwidgets = $git->render_project_widget();
 
 // lighthouse issues
 $lighthouse = new Lighthouse();
-$issuewidget = $lighthouse->render_issues_widget($listItemsToShow);
+$issuewidget = $lighthouse->render_widget($listItemsToShow);
 
 // Links Widget
 $linkswidget = get_links_widget();

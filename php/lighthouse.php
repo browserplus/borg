@@ -114,7 +114,7 @@ class Lighthouse
         return $ids;
     }
 
-    function render_issues_widget($num=5) {
+    function render_widget($num=5) {
         $json = apc_fetch(self::$allTicketsKey);
 
         if ($json && ($issues = json_decode($json, 1))) {
@@ -131,5 +131,17 @@ class Lighthouse
         return "";
     }
     
+    function render_mobile($num=10) {
+        $json = apc_fetch(self::$allTicketsKey);
+
+        $s = "";
+        if ($json && ($issues = json_decode($json, 1))) {
+            foreach($issues as $i) {
+                if ($num-- == 0) break;
+                $s .=  "<li><a target=\"_self\" href=\"{$i['url']}\"><b>{$i['state']}</b>: {$i['title']} <em>(" . prettyDate($i['updated']) . ")</em></a></li>";
+            }
+        }
+        return $s;
+    }
 
 }

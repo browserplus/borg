@@ -4,13 +4,13 @@ include("/home/websites/browserplus/php/forum.php");
 include("/home/websites/browserplus/php/twitter.php");
 include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/irc.php");
-include("/home/websites/browserplus/php/git.php");
+include("/home/websites/browserplus/php/lighthouse.php");
 
 $RowsToShow = 20;
 $t = new Twitter();
 $f = new Forum();
 $irc = new IRC();
-$git = new GIT();
+$lighthouse = new Lighthouse();
 
 
 $twitterSearchItems = $t->render_search_mobile("browserplus", $RowsToShow);
@@ -19,7 +19,7 @@ $twitterUserItems = $t->render_user_mobile("browserplus", $RowsToShow);
 $max = $irc->get_max_id();
 $results    = $irc->get_rows($max, $RowsToShow);
 $ircItems   = $irc->render_mobile($results, $max);
-$issueItems = $git->render_issues_mobile($RowsToShow);
+$issueItems = $lighthouse->render_mobile($RowsToShow);
 $forumItems = $f->render_mobile($RowsToShow);
 
 ?>
