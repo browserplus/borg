@@ -38,7 +38,7 @@ function topnav($active) {
     <div id="doc4" class="yui-t7"> 
         <div id="hd" role="banner"> 
             <div id="logo">
-                <img src="/images/main-logo.gif" alt="BrowserPlus">
+                <img src="/images/main-logo.png" alt="BrowserPlus">
             </div>
             <div id="topnav">
                 <ul>
