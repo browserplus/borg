@@ -1,6 +1,9 @@
 <?php
 require("markdown.php");
 
+function dok_file_sort($a, $b) {
+    return strcasecmp($a, $b);
+}
 interface iFileScanner
 {
     public function findFile($datadir, $htmlfile);
@@ -191,8 +194,8 @@ class Dok implements iFileScanner
     // return all files + dirs in the given directory
     private function getDirContents($dir) {
 	    $dirs = array();
-	    $files = array();
-
+	    $ftmp = array(); // tmp array to be sorted
+        $fmap = array(); // array keeps key->file association
 	    if ($handle = opendir($dir)) {
 		    // correct way of iterating thru with readdir
 		    while (false !== ($file = readdir($handle))) {
@@ -203,15 +206,24 @@ class Dok implements iFileScanner
 			    } else if (is_file($full)) {
 				    $f = basename($file);
 					$key = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2.html", $f);
-				    $files[$key] = $f;
+				    $fmap[$key] = $f;
+				    $ftmp[$f] = $key; // to be sorted via actual file name
 			    }
 		    }
 
             closedir($handle);
 	    }
-	
-	    
-	    return array("dirs"=>$dirs, "files"=>$files);
+
+	    // case-insensitive sort of file names
+        uksort($ftmp, "dok_file_sort");
+
+        // exchange file/value
+        $fsort = array();
+        foreach($ftmp as $f => $key) {
+            $fsort[$key] = $fmap[$key];
+        }
+        
+	    return array("dirs"=>$dirs, "files"=>$fsort);
     }
 
     public function render($uri) {
