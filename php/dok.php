@@ -215,6 +215,7 @@ class Dok implements iFileScanner
 	    }
 
 	    // case-insensitive sort of file names
+	    // need custom sort to get case-insensivity
         uksort($ftmp, "dok_file_sort");
 
         // exchange file/value
