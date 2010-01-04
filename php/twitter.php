@@ -95,15 +95,16 @@ class Twitter
         $tweets = json_decode($json);
         $str = "<ul>";
 
-        foreach($tweets->results as $t) {
-            if ($t->from_user == $search) continue;
-            if ($rows-- == 0) { break; }
-            $time = prettyDate(strtotime($t->created_at));
+        if ($tweets && $tweets->results) {
+            foreach($tweets->results as $t) {
+                if ($t->from_user == $search) continue;
+                if ($rows-- == 0) { break; }
+                $time = prettyDate(strtotime($t->created_at));
 
-            $str .= "<li><a href=\"http://twitter.com/{$t->from_user}\">{$t->from_user}</a>: " .
-                $this->hyperlinkit($t->text) . " <span class=\"tweet-when\">({$time})<span></li>";
-        }
-    
+                $str .= "<li><a href=\"http://twitter.com/{$t->from_user}\">{$t->from_user}</a>: " .
+                    $this->hyperlinkit($t->text) . " <span class=\"tweet-when\">({$time})<span></li>";
+            }
+        }    
         $str .= "</ul>";
         return render_widget("tweet", "Twitter: <a href=\"http://search.twitter.com/search?q=$search\">Search</a>", $str);
     }
