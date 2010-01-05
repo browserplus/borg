@@ -12,7 +12,7 @@ service API has the following high level features:
 + **Cross Platform** - To the extent possible, the task of creating services that
   run on different architectures and platforms is simplified.
 + **Versioning** - Versioning of services is required, and the specification suggests
-  that service authors apply robust ("Semantic Versioning")[http://semver.org/].
+  that service authors apply robust ["Semantic Versioning"](http://semver.org/).
   Webpage authors are able to express dependencies on a version range which allows
   for automatic bugfixes without API breakage.
 + **Provisioning** - We define a packaging formant and web service API that
@@ -27,10 +27,10 @@ service API has the following high level features:
 
 This proposed service API consists of four distinct pieces:
 
-1. (A Web Services API)[/docs/developer/platform/wsapi] - How agents can query/download available services.
-2. (Packaging Format)[/docs/developer/platform/packaging] - How services should be packaged/signed.
-3. (The C Service API)[/docs/developer/platform/capi] - A simplified NPAPI focused on scriptable services.
-4. (The JavaScript API)[/docs/developer/platform/jsapi] - How untrusted websites "require" and use services.
+1. [A Web Services API](/docs/developer/platform/wsapi) - How agents can query/download available services.
+2. [Packaging Format](/docs/developer/platform/packaging) - How services should be packaged/signed.
+3. [The C Service API](/docs/developer/platform/capi) - A simplified NPAPI focused on scriptable services.
+4. [The JavaScript API](/docs/developer/platform/jsapi) - How untrusted websites "require" and use services.
 
 ## Future Work
 
