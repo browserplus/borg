@@ -1,14 +1,11 @@
 <?php
-define("DB_CONN", "/home/borg/dbpasswd.json");
-
 class DB
 {
 	private $dbh;
 	
 	function __construct($conn_name) {
 		try {
-            $json = json_decode(file_get_contents(DB_CONN), true);
-            $conn = $json[$conn_name];
+            $conn = get_secret($conn_name);
 
             $h = $conn["server"];
             $t = $conn["db"];

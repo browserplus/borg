@@ -1,5 +1,7 @@
 <?php
 define("LAYOUT_2C", "site_2c");
+define("LAYOUT_3C", "site_3c");
+define("SECRETS_FILE", "/home/borg/borg_secrets.json");
 
 $EMOTES = array(
     ":)"   => '<img alt="smile" src="/images/emote/smile.png">',
@@ -29,6 +31,14 @@ $EMOTES = array(
 $EMO_SEARCH  = array_keys($EMOTES);
 $EMO_REPLACE = array_values($EMOTES);
 
+function get_secret($key) {
+    static $json = null;
+    if (!$json) {
+        $json = json_decode(file_get_contents(SECRETS_FILE), true);
+    }
+    
+    return $json[$key];
+}
 
 /*
  * Escape html text.
@@ -46,7 +56,7 @@ function l($label, $url, $bool=true) {
 
 function render2c($title, $tab, $body, $widgets) {
     $data = array(
-        "title" => $tilte,
+        "title" => $title,
         "active" => $tab,
         "body" => $body,
         "widgets" => $widgets
@@ -55,8 +65,19 @@ function render2c($title, $tab, $body, $widgets) {
     render_page($data, LAYOUT_2C);
 }
 
+function render3c($title, $tab, $widgets_left, $body, $widgets_right) {
+    $data = array(
+        "title" => $title,
+        "active" => $tab,
+        "widgets_left" => $widgets_left,
+        "body" => $body,
+        "widgets_right" => $widgets_right
+    );
+    
+    render_page($data, LAYOUT_3C);
+}
 function get_projects() {
-    return json_decode(file_get_contents(get_cfg_var("dok_base") . "/projects/projects.json"), 1);
+    return json_decode(file_get_contents(getenv("DOK_BASE") . "/projects/projects.json"), 1);
 }
 
 function fetch($url) {
@@ -69,35 +90,74 @@ function fetch($url) {
 
 function render_page($data, $template) {
     extract($data);
-    include(get_cfg_var("dok_base") . "/layout/{$template}.php");
+    include(getenv("DOK_BASE") . "/layout/{$template}.php");
+}
+
+
+function prettyDate($ts)
+{
+    $diff = time() - $ts;
+    
+    $map = array(
+        array(60, 0, "just now"),
+        array(120, 0, "1 minute ago"),
+        array(3600, 60, "minutes ago"),
+        array(7200, 0, "1 hour ago"),
+        array(86400, 3600, "hours ago"),
+        array(172800, 0, "1 day ago"),
+        array(604800, 86400, "days ago"),
+        array(1209600, 0, "1 week ago"),
+        array(2592000, 604800, "weeks ago"),
+        array(5184000, 0, "1 month ago"),
+        array(28857600, 2592000, "months ago"),
+        array(63072000, 0, "1 year ago"),
+        array(0, 31536000, "years ago"));
+
+            
+    $cnt = count($map);
+    for ($i = 0; $i < $cnt; $i++)
+    {
+        if ($diff < $map[$i][0] && $map[$i][1] == 0) {
+            return $map[$i][2];
+        } else if ($diff < $map[$i][0] || $map[$i][0] == 0) {
+            return floor($diff/$map[$i][1]) . " " . $map[$i][2];
+        }
+    }
+    
+    return "?";
 }
 
 /*
- * If linked URL is too long, break it the label by removing everything after the '?' or
- * add <wbr>.
+ * If linked URL is too long, add some wbrs so it won't make the table too wide.
  */ 
 function render_line_link_cb($matches) {
-    $max = 50;
     $title = $matches[1];
-    if (strlen($matches[1]) > $max) {
-        if (($p = strpos($matches[1], "?")) < $max) {
-            $title = substr($title, 0, $p) . "?...";
-        } else {
-            $title = preg_replace("/(.{30})/", "\\1<wbr>", $title);
-        }
+
+    // for long urls, add some white space breaks
+    if (strlen($title) > 60) {
+        $title = preg_replace("/(.{20})/", "\\1<wbr>", $title);
     }
     return "<a target='_blank' href='{$matches[1]}'>$title</a>";
 }
+
 
 /* 
  * Render a line of text, hyperlinking urls and displaying emoticons.
  */
 function render_line($s){
     global $EMO_SEARCH, $EMO_REPLACE;
+
+    // escape html entities
+    $s = h($s);
+
+    // replace smileys
     $s = str_replace($EMO_SEARCH, $EMO_REPLACE, $s);
-    $words = preg_split("/[\s,]+/", $s);
+
+    // break on words to make sure none are too long
+    $words = preg_split("/[\s]+/", $s);
     $out = array();
     foreach($words as $w) {
+        // if word is too long and not a url or git addr, add wbr
         if (strlen($w) > 30 && !preg_match("#^((ht|f)tps?://)|(git@github.com)#", $w)) {
             $w = preg_replace("/(.{30})/", "\\1<wbr>", $w);
         }
@@ -107,10 +167,9 @@ function render_line($s){
 
     $s = implode(" ", $out);
 
-    // link hyperlinks
-    // credit for this pattern: http://daringfireball.net/2009/11/liberal_regex_for_matching_urls
-    $urlpat = "\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))"
-    $s = preg_replace_callback("#{$urlpat})#i", "render_line_link_cb", $s);
+    // http://daringfireball.net/2009/11/liberal_regex_for_matching_urls
+    $gruber = "\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))";
+    $s = preg_replace_callback("@$gruber@i", "render_line_link_cb", $s);
 
     // link git projects
     // git@github.com:lloyd/bp-imagealter.git
@@ -196,5 +255,16 @@ function render_widget($name, $title, $body) {
         </div>
     </div>
 EOS;
+}
+
+function isMobile() {
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+    if(preg_match("~Mozilla/[^ ]+ \((iPhone|iPod); U; CPU [^;]+ Mac OS X; [^)]+\) AppleWebKit/[^ ]+ \(KHTML, like Gecko\) Version/[^ ]+ Mobile/[^ ]+ Safari/[^ ]+~",$agent,$match)) {
+        return true;
+    } elseif(stristr($agent,'iphone') or stristr($agent,'ipod')){
+        return true;
+    } else {
+        return false;
+    }
 }
 ?>

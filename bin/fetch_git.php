@@ -2,10 +2,21 @@
 <?php
 include("/home/websites/browserplus/php/site.php");
 include("/home/websites/browserplus/php/db.php");
+include("/home/websites/browserplus/php/git.php");
 
 $gitbase = "http://github.com/";
 
 $db = new DB("git");
+$git = new GIT();
+
+// Fetch issues
+$secret = $git->get_cache_secret();
+
+$host = ((get_cfg_var('bp_env') == "local") ? "borg" : "browserplus.org");
+fetch("http://$host/site/cache_git.php?s=$secret");
+
+
+// Fetch commits
 
 // projects stored in data/projects/projects.json file
 $all_projects = get_projects();
