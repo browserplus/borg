@@ -1,16 +1,21 @@
 # BrowserPlus Documentation
 
-BrowserPlus.org is a developer site focused on helping developers creating sites using BrowserPlus,
-creating new services, and pushing the core platform forward.
+BrowserPlus.org is a resource to help developers create sites
+which use BrowserPlus and to create new services.  The documentation
+presently available is targeted at three different classes of
+developers, click through to the documentation that you're interested
+in:
 
-*Note*: We're currently migrating developer documentation from the original 
-[BrowserPlus site](http://browserplus.yahoo.com/).  Please refer there for any missing
-docs.
+**[Web Developers](/docs/developer/web_dev/)** -- You're interested in
+using the portable JavaScript APIs that the BrowserPlus platform and 
+library of services expose. 
 
-## Developers
+**[Service Authors](/docs/developer/services/)** -- You want to build
+a plugin for the web that's scriptable from Javascript and works almost 
+everywhere, in either native code or a high level language.
 
-What type of BrowserPlus developer are you?  If you are using BrowserPlus in a web application, 
-you are a [web developer](/docs/developer/web_dev/).  If you want to create your own service, 
-you are a [service developer](/docs/developer/service_dev/).  Either way, you'll want to take 
-a look at the [available services](/docs/developer/services/).
+**[Web Platform Developers](/docs/developer/platform/)** -- You're
+curious about how the BrowserPlus platform works to extend it, build
+on top of it, or build native support for BrowserPlus style plugins
+into a web agent.
 
