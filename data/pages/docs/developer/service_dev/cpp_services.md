@@ -3,6 +3,10 @@
 There is a lot that can be done in high level languages, but every once in a while we have a problem that requires native code. Reasons
 to write native services in BrowserPlus range from performance requirements to API accessibility.
 
+## Test
+
+This is some really valuable info - right here.
+
 ## Design Notes on the C Service API
 
 You may notice that the APIs we expose for services are very similar to NPAPI. At the core of the BrowserPlus project all we're really

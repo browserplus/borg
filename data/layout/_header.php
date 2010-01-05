@@ -10,6 +10,7 @@ function topnav($active) {
         "Docs" => "/docs/",
         "Blog" => "/blog/",
         "Discuss" => "/discuss/",
+        "Support" => "/support/",
         "About" => "/about/");
     foreach($pagetabs as $label => $url) {
         $li = ($label == $active ? '<li class="active">' : '<li>');
