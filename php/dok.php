@@ -83,11 +83,13 @@ class Dok implements iFileScanner
 
         $datadir = $this->conf['pages'] . $dir;
 
+
         $dbg = false;
         if ($dbg) echo "<pre>findFile('$datadir', '$htmlfile')\n";
         list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, $htmlfile);
 
         if ($dbg) {
+            print "datadir=$datadir\n";
             echo "htmlfile=$htmlfile\nsrcfile=$srcfile\n";
             print_r($files);
             echo "</pre>";
@@ -97,7 +99,7 @@ class Dok implements iFileScanner
         if ($srcfile) {
             $layout = "dok_2c.php";            
         } else {
-            $datadir = $this->conf['site'];
+            $datadir = $this->conf['site'] . "/";
             $layout = "dok_1c.php";
             list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, "file_not_found.html");
         }
