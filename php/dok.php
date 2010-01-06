@@ -13,11 +13,10 @@ interface iFileScanner
 class Dok implements iFileScanner
 {
     private $conf;
-    private $titlemap_keys;
-    private $titlemap_vals;
     private $varmap_keys;
     private $varmap_vals;
     private $scanner;
+    private $titlemap;
     public static $default_filename = 'index.html';
 
 	public function __construct($conf) {
@@ -28,10 +27,9 @@ class Dok implements iFileScanner
         $this->conf['pages']  = "$dok_base/" . $this->conf['pages'] ;
         include($this->conf['site'] . '/helper.php' );
 
-        // get title map ready for str_replace
-        $this->titlemap_keys = array_keys($TitleMap);
-        $this->titlemap_vals = array_values($TitleMap);
-
+        // Maps certain file names (like cpp_services) to titles (C++ Services)
+        $this->titlemap = $TitleMap;
+        
         // DokVarMap replaces @{varname} variables in documents
         $keys = array_keys($VarMap);
         
@@ -138,7 +136,9 @@ class Dok implements iFileScanner
 
     private function title_from_file($file) {
         $str = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2", $file);
-        $str = str_replace($this->titlemap_keys, $this->titlemap_vals, $str);
+        if (isset($this->titlemap[$str])) {
+            $str = $this->titlemap[$str];
+        }
         $str[0] = strtoupper($str[0]);
         $func = create_function('$s', 'return " " . strtoupper($s[1]);');
         $str = preg_replace_callback('/_([a-z])/i', $func, $str);
