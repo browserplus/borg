@@ -22,7 +22,7 @@ The services are packaged as dlls on Windows and dylibs on OSX.
 
 As shown in the figure, BrowserPlus services implement the Service
 API.  This is a C API that is declared [here](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
-to permit introspection of service methods and their parameters.  See als [Service API documentation](CAPI.html)
+to permit introspection of service methods and their parameters.  See also [Service API documentation](http://beta.browserplus.org/docs/platform/CAPI.html)
 
 C++ programmers may find the required Service API methods and
 types somewhat tedious to implement and interact with.  For this
