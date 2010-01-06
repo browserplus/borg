@@ -13,9 +13,15 @@ At present there are different roles a distribution server can serve.  *Primary*
 servers are used for all three types of information enumerated above.  *Secondary* distribution
 servers are used only to query and attain services.  
 
-## API Documentation
+## Documentation Conventions
 
-### Specifying &lt;platform&gt; 
+All web services return [JSON](http://json.org).  Throughout this document the return values of services 
+are normatively expressed in the [orderly schema language](http://orderly-json.org).
+
+Finally, when API URI paths are specified, there a couple different placeholders
+that specify "parameters" to the web service.  Those different placeholders are described here:
+
+### &lt;platform&gt; 
 
 Currently, &lt;platform&gt; may be one of two values: 
 
@@ -24,17 +30,21 @@ Currently, &lt;platform&gt; may be one of two values:
 
 NOTE: In the future it would be useful to make this a tad richer.
 
-### Specifying &lt;version&gt;
+### &lt;version&gt;
 
 A version includes a major, minor, and micro version number.  A well formed version will match the following regular expression:
 
     /([1-9][0-9]*|0)\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)/
 
-### Specifying &lt;name&gt;
+### &lt;name&gt;
 
-A Service Name may consist of any valid (url encoded) characters
+A Service Name may consist of any valid (url encoded) characters.
 
-### `/api/v3/platform/latest/version/<platform>`
+## API Documentation
+
+
+
+### /api/v3/platform/latest/version/&lt;platform>
 
 (Primary distribution servers only).
 
@@ -58,16 +68,15 @@ Example output:
 }
 ~~~
 
-### `/api/v3/platform/latest/update/<platform>`
+### /api/v3/platform/latest/update/&lt;platform>
 
 
-### `/api/v3/permissions`
+### /api/v3/permissions
 
-### `/api/v3/corelets/<platform>`
+### /api/v3/corelets/&lt;platform>
 
-### `/api/v3/corelet/metadata/<name>/<version>/<platform>`
+### /api/v3/corelet/metadata/&lt;name>/&lt;version>/&lt;platform>
 
-### `/api/v3/corelet/synopsis/<name>/<version>/<platform>`
+### /api/v3/corelet/synopsis/&lt;name>/&lt;version>/&lt;platform>
 
-### `/api/v3/corelet/package/<name>/<version>/<platform>`
-
+### /api/v3/corelet/package/&lt;name>/&lt;version>/&lt;platform>
