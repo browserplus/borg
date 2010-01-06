@@ -19,11 +19,11 @@ developers, click through to the documentation that you're interested
 in:
 
 **[Web Developers](/docs/web_dev/)** -- You're interested in
-using the portable JavaScript APIs that the BrowserPlus platform and 
-library of services expose. 
+using the new JavaScript APIs provided by BrowserPlus to build advanced
+features into your web applications.
 
-**[Service Authors](/docs/services/)** -- You want to build
-a plugin for the web that's scriptable from Javascript and works almost 
+**[Service Authors](/docs/services/)** -- You want to build a plugin
+for the web that's scriptable from Javascript and works almost
 everywhere, in either native code or a high level language.
 
 **[Browser Technologists](/docs/platform/)** -- You're
