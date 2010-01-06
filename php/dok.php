@@ -27,7 +27,7 @@ class Dok implements iFileScanner
         $this->conf['pages']  = "$dok_base/" . $this->conf['pages'] ;
         include($this->conf['site'] . '/helper.php' );
 
-        // Maps certain file names (like cpp_services) to titles (C++ Services)
+        // Maps certain file names (like cpp_services) to titles (C++ Services) 
         $this->titlemap = $TitleMap;
         
         // DokVarMap replaces @{varname} variables in documents
