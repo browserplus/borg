@@ -14,7 +14,7 @@ $VarMap = array(
 );
 
 function getFileScanner($uri) {
-    if (strpos($uri, "developer/services/") === 0) {
+    if (strpos($uri, "services/") === 0) {
         return new ServicesFileScanner();
     }
     
