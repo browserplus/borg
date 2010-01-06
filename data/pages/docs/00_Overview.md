@@ -22,7 +22,7 @@ in:
 using the new JavaScript APIs provided by BrowserPlus to build advanced
 features into your web applications.
 
-**[Service Authors](/docs/services/)** -- You want to build a plugin
+**[Service Authors](/docs/service_dev/)** -- You want to build a plugin
 for the web that's scriptable from Javascript and works almost
 everywhere, in either native code or a high level language.
 
