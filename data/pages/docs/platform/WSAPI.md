@@ -15,22 +15,22 @@ servers are used only to query and attain services.
 
 ## API Documentation
 
-### Specifying <platform> 
+### Specifying &lt;platform&gt; 
 
-Currently, <platform> may be one of two values: 
+Currently, &lt;platform&gt; may be one of two values: 
 
 * osx - Mac OSX 10.4 or greater (32bit or 64bit)
 * win32 - WinXP or greater
 
 NOTE: In the future it would be useful to make this a tad richer.
 
-### Specifying <version>
+### Specifying &lt;version&gt;
 
 A version includes a major, minor, and micro version number.  A well formed version will match the following regular expression:
 
     /([1-9][0-9]*|0)\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)/
 
-### Specifying <name>
+### Specifying &lt;name&gt;
 
 A Service Name may consist of any valid (url encoded) characters
 
