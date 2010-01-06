@@ -1,12 +1,12 @@
 # BrowserPlus for Service Developers
 
 So you wanna extend the web, eh? Well you're in the right place! This section of our site has all the tools you'll need to build and
-install BrowserPlus services that expose new APIs to browser based JavaScript.
+install BrowserPlus services that expose new APIs to browser-based JavaScript.
 
 ## Why build a BrowserPlus service?
 
 Services allow you expose new functionality to javascript running in a wide range of popular web browsers. While it's already possible
-today to do this today by authoring web browser Add-Ons (or Extensions) or by writing native plugins, the problem is that it's difficult
+to do this today by authoring web browser Add-Ons (or Extensions) or by writing native plugins, the problem is that it's difficult
 and costly to build something that runs in a lot of places, and features such as ease of installation, versioning, update, and security
 add a lot more complexity to the project. Further it's clumsy or impossible to safely share tools that we build across multiple sites.
 
@@ -15,9 +15,18 @@ services:
 
 1. Are simpler to write.
 2. Are easier for the end-user to install.
-3. Leverage robust platform provided security mechanisms.
+3. Leverage robust platform-provided security mechanisms.
 4. Are accesible to almost anything you can run in a browser, from JavaScript to Flash.
-5. So if you have an idea of something that we can do today in a native application but not in all the popular browsers on the planet, and you think it could be safely exposed to a web browser environment, we hope you'll check out our 15 minute tutorial and realize your idea!
+5. So if you have an idea of something that we can do today in a native application but not in all the popular browsers on the planet, and you think it could be safely exposed to a web browser environment, we hope you'll check out our tutorials and realize your idea!
+
+## What Services are currently available?
+
+For inspiration, check out the [currently-published services](http://beta.browserplus.org/docs/services/).  
+This will give you an idea of the kinds of things that can be done, and how broad the opportunity really is.  You can browse the API of these services to see how their authors decomposed the problem and to see some of the standard service programming idioms (e.g. callbacks, opaque file paths, etc.).
+
+## Nope, my idea hasn't been implemented yet.
+
+Great.  Let's talk about how to write new services.
 
 ## How do I get my service published?
 
