@@ -136,19 +136,24 @@ class Dok implements iFileScanner
 
     private function title_from_file($file) {
         static $func;
-
+        if (!$func) {
+            print "<!--\n";
+            print_r($this->titlemap);
+            print "\n-->\n\n";
+        }
+        echo "<!-- FILE: $file, ";
         $str = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2", $file);
-
+        echo "STR1: $str, ";
         // create the strtoupper func just once
         if (!$func) $func = create_function('$s', 'return " " . strtoupper($s[1]);');
         
         // optionally map file name to pretty title
         if (isset($this->titlemap[$str])) $str = $this->titlemap[$str];
-
+        echo "STR2: $str, ";
         // convert file_name to File_Name
         $str[0] = strtoupper($str[0]);
         $str = preg_replace_callback('/_([a-z])/i', $func, $str);
-
+        echo "STR3: $str -->\n";
         return $str;
     }
 
