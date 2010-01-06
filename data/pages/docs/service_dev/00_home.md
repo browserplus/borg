@@ -21,15 +21,15 @@ services:
 
 ## What Services are currently available?
 
-For inspiration, check out the [currently-published services](http://beta.browserplus.org/docs/services/).  This will give you an idea of the kinds of things that can be done, and how broad the opportunity really is.  You can browse the API of these services to see how their authors decomposed the problem and to see some of our programming idioms (e.g. callbacks, opaque file paths, etc.).
+For inspiration, check out the [currently-published services](/docs/services/).  This will give you an idea of the kinds of things that can be done, and how broad the opportunity really is.  You can browse the API of these services to see how their authors decomposed the problem and to see some of our programming idioms (e.g. callbacks, opaque file paths, etc.).
 
 ## Nope, my idea hasn't been implemented yet.
 
 Great!  How fun for you.  Let's show you how to write a new service.  Currently we support writing services in C/C++ and Ruby.  Check out these links for more info:
 
-* [C++ Service Overview and Tutorial](http://beta.browserplus.org/docs/service_dev/cpp_services.html)
-* [Ruby Service Overview](http://beta.browserplus.org/docs/service_dev/ruby_services.html)
-* [Ruby Service Tutorial](http://beta.browserplus.org/docs/service_dev/ruby_tutorial.html)
+* [C++ Service Overview and Tutorial](/docs/service_dev/cpp_services.html)
+* [Ruby Service Overview](/docs/service_dev/ruby_services.html)
+* [Ruby Service Tutorial](/docs/service_dev/ruby_tutorial.html)
 
 ## How do I get my service published?
 
