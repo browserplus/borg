@@ -5,7 +5,7 @@ install BrowserPlus services that expose new APIs to browser-based JavaScript.
 
 ## Why build a BrowserPlus service?
 
-Services allow you expose new functionality to javascript running in a wide range of popular web browsers. While it's already possible
+Services allow you expose new functionality to javascript running in a wide range of popular web browsers, on multiple OS's. While it's already possible 
 to do this today by authoring web browser Add-Ons (or Extensions) or by writing native plugins, the problem is that it's difficult
 and costly to build something that runs in a lot of places, and features such as ease of installation, versioning, update, and security
 add a lot more complexity to the project. Further it's clumsy or impossible to safely share tools that we build across multiple sites.
@@ -21,12 +21,14 @@ services:
 
 ## What Services are currently available?
 
-For inspiration, check out the [currently-published services](http://beta.browserplus.org/docs/services/).  
-This will give you an idea of the kinds of things that can be done, and how broad the opportunity really is.  You can browse the API of these services to see how their authors decomposed the problem and to see some of the standard service programming idioms (e.g. callbacks, opaque file paths, etc.).
+For inspiration, check out the [currently-published services](http://beta.browserplus.org/docs/services/).  This will give you an idea of the kinds of things that can be done, and how broad the opportunity really is.  You can browse the API of these services to see how their authors decomposed the problem and to see some of our programming idioms (e.g. callbacks, opaque file paths, etc.).
 
 ## Nope, my idea hasn't been implemented yet.
 
-Great.  Let's talk about how to write new services.
+Great!  How fun for you.  Let's show you how to write a new service.  Currently we support writing services in C/C++ and Ruby.  Check out these links for more info:
+    [C++ Service Overview](http://beta.browserplus.org/docs/service_dev/cpp_services.html)
+    [Ruby Service Overview]((http://beta.browserplus.org/docs/service_dev/ruby_services.html)
+    [Ruby Service Tutorial](http://beta.browserplus.org/docs/service_dev/ruby_tutorial.html)
 
 ## How do I get my service published?
 
