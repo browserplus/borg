@@ -27,10 +27,10 @@ service API has the following high level features:
 
 This proposed service API consists of four distinct pieces:
 
-1. [A Web Services API](WSAPI) - How agents can query/download available services.
-2. [Packaging Format](packaging) - How services should be packaged/signed.
-3. [The C Service API](CAPI) - A simplified NPAPI focused on scriptable services.
-4. [The JavaScript API](JSAPI) - How untrusted websites "require" and use services.
+1. [A Web Services API](WSAPI.html) - How agents can query/download available services.
+2. [Packaging Format](packaging.html) - How services should be packaged/signed.
+3. [The C Service API](CAPI.html) - A simplified NPAPI focused on scriptable services.
+4. [The JavaScript API](JSAPI.html) - How untrusted websites "require" and use services.
 
 ## Future Work
 
