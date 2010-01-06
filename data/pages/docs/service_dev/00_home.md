@@ -27,7 +27,7 @@ For inspiration, check out the [currently-published services](http://beta.browse
 
 Great!  How fun for you.  Let's show you how to write a new service.  Currently we support writing services in C/C++ and Ruby.  Check out these links for more info:
 
-* [C++ Service Overview](http://beta.browserplus.org/docs/service_dev/cpp_services.html)
+* [C++ Service Overview and Tutorial](http://beta.browserplus.org/docs/service_dev/cpp_services.html)
 * [Ruby Service Overview](http://beta.browserplus.org/docs/service_dev/ruby_services.html)
 * [Ruby Service Tutorial](http://beta.browserplus.org/docs/service_dev/ruby_tutorial.html)
 

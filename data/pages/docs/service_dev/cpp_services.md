@@ -1,28 +1,183 @@
-# Developing Native Services for BrowserPlus
+# C++ Services
 
-There is a lot that can be done in high level languages, but every once in a while we have a problem that requires native code. Reasons
-to write native services in BrowserPlus range from performance requirements to API accessibility.
+This tutorial will show you how to create a BrowserPlus Service
+in C++.
 
-## Test
 
-This is some really valuable info - right here.
+## Architecture Recap
 
-## Design Notes on the C Service API
+BrowserPlus Services allow new capabilities to be provided to the
+web.  
 
-You may notice that the APIs we expose for services are very similar to NPAPI. At the core of the BrowserPlus project all we're really
-doing is taking a subset of plugin APIs that can run cross browser (in ActiveX and NPAPI plugins). Because NPAPI is by far the most
-successful multi-vendor plugin standard, we borrowed heavily from the design. We then augmented this subset a bit with features we
-thought were important to scriptable web plugins, and tried to revise some of the semantics that we felt could be improved (for
-instance, supporting calling back into the host from different threads). Hopefully this gives you a bit of background on the flavor of
-the APIs, and with that you're ready jump in and check it out...
+As shown in the Architecture figure, browser processes communicate
+with a BrowserPlus daemon process, which communicates with BrowserPlus
+services, each of which is hosted in a harness process.
 
-## Building a native service
+![Server Architecture](/i/server_arch.png)
 
-The first step is to [download our SDK](SDK.html). The SDK includes code samples, full API documentation, C headers, and a tool that will help you
-validate and install services you build. Once you have the SDK, we recommend you start with our 15 minute tutorial. While this tutorial
-guides you through the building and installation of a Ruby service, the development flow and tools are similar for native services.
-After getting through the tutorial, you'll be ready to build and install the sample native service in the SDK. Having a full example of
-a working service to start with, you can get to hacking!
+The services are packaged as dlls on Windows and dylibs on OSX.
 
-If you have questions that aren't covered in our documentation, or have any feedback, please come talk with us and the rest of the
-community.
+
+## Service API
+
+As shown in the figure, BrowserPlus services implement the Service
+API.  This is a C API that is declared [here].  The API is designed
+to permit introspection of service methods and their parameters.
+
+C++ programmers may find the required Service API methods and
+types somewhat tedious to implement and interact with.  For this
+reason the Browserplus Service Framework was created.
+
+
+## Browserplus Service Framework
+
+The Browserplus Service Framework is a header-only framework that
+implements several classes, methods, and types to ease the interaction
+with the rest of BrowserPlus over the Service API.
+
+The remainder of this tutorial will use the service framework to
+illustrate implementing a service in C++.
+
+
+## Build a sample service using the Service Framework
+
+Let's build a sample service, the HelloWorld service. 
+
+### Step 1: Install BrowserPlus
+
+<div id="gotbp">Checking for BrowserPlus...</div>
+<div id="downloadLink"></div>
+
+### Step 2: Install the BrowserPlus SDK
+
+Download the BrowserPlus SDK for your platform from [here](http://browserplus.yahoo.com/developer/service/sdk/).
+
+Once downloaded, unzip (or untar) the sdk, and a directory will be created called `bpsdk`.
+
+### Step 3: Download the sample service
+
+Download the sample service code from [here](http://github.com/browserplus/bp-tutorial-cpp1/archives/master).
+
+### Step 4: Build the service
+
+Build files are provided in the "src/build" directory for VS 2008 and gcc.
+
+### Step 5: Install the HelloWorld service
+
+Service binaries must be findable at runtime so that they can be
+loaded by the Browserplus daemon.  The daemon loads services that have been
+installed locally.  Let's use the ServiceInstaller from the SDK to install our service.
+
+Note: paths are specified below using windows backslashes.  Substitute forward slashes on osx.
+
+Run the ServiceInstaller from the HelloWorld build directory as shown below.  You will
+need to specify your specific path to the BrowserPlus SDK:
+
+    build>[path to bpsdk]\bpsdk\bin\ServiceInstaller -v -f HelloWorld
+    service initialized: HelloWorld v1.0.0
+    installing service locally: HelloWorld, ver 1.0.0
+    HelloWorld 1.0.0 validated and installed in 0.375s
+
+
+## Test the HelloWorld service from the console
+
+The BrowserPlus SDK provides a tool called the ServiceRunner that allows you to 
+test installed services from the console, without the added complexity of 
+browsers and browser plugins.  Let's use ServiceRunner to test our service:
+
+    build>[path to bpsdk]\bpsdk\bin\ServiceRunner HelloWorld 1.0.0
+    service initialized: HelloWorld v1.0.0
+    > desc
+
+    Describing corelet 'HelloWorld', version: 1.0.0
+    A simple Browserplus service
+
+    1 function(s) supported:
+    greet:
+        Generates a hearty greeting
+
+        string name
+            name to greet
+
+    > a
+    allocated: 1
+    > i greet '{"name":"World"}'
+    "Hello, World!"
+    > q
+    shutting down...
+
+Above you can see that the ServiceRunner "desc" command describes the methods and method arguments of the service.
+The "a" command allocates a service "instance" (more on that later).  
+The "i" command invokes a named method, with a JSON payload.
+
+[maybe show an arch diagram]
+
+
+## Test the HelloWorld service from a web page
+
+We provide a web-based tool called the Service Explorer.  It has two modes.
+In the "List" mode it will show all services available on our
+distribution servers.  In "Test" mode it will show all services
+currently installed on your local machine and allow you to exercise
+them.
+
+1. Launch [Service Explorer](http://browserplus.yahoo.com/developer/explore)
+2. Click "Test Services"
+3. Open the HelloWorld 1.0.0 dropdown
+4. Select the greet method
+5. Fill in the "name" box and Execute the method
+
+Note you can also use this tool to view the documentation for methods on services.
+This is done via metadata provided by the service author.
+
+ ![Hello world](/i/explorer_hello_world.png)
+
+
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script>
+localPageCB = function () {
+  function myInitCB(r) {
+	var BP = BrowserPlus;
+    var instDiv = document.getElementById("gotbp");
+	if (r.success)
+	{
+      instDiv.innerHTML = "BrowserPlus installed!  Ver. " +
+		BP.getPlatformInfo().version;
+	}
+	else if (r.error === 'bp.notInstalled')
+	{
+      // render an upsell link for inpage installation
+	  while (instDiv.firstChild) instDiv.removeChild(instDiv.firstChild);
+	  var lnk = document.createElement("a");
+      lnk.onclick = function () {
+        BPTool.Installer.show({}, myInitCB);
+      }         
+	  lnk.innerHTML = "install BrowserPlus now";
+	  lnk.href= "#";
+      instDiv.appendChild(lnk);
+    }
+	else if (r.error === 'bp.notInstalled')
+	{
+      instDiv.innerHTML = "Sorry, your platform isn't yet supported, please " +
+		"try again on a <a href='/install'>supported platform</a>."; 
+	}
+	else
+	{
+      instDiv.innerHTML =
+		"Yikes, BrowserPlus encountered an error (" + r.error + ": " +
+		r.verboseError+"), please try restarting your browser, or visit " +
+		"the Troubleshooting page of the BrowserPlus Configuration panel for "
+		+ "more help in figuring out what went wrong.";
+	}
+  }
+
+  BrowserPlus.init({}, myInitCB);
+};
+
+if (window.attachEvent) {
+  window.attachEvent("onload", function(){localPageCB()});
+} else {
+  localPageCB();
+}
+
+</script>
