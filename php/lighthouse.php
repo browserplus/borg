@@ -138,7 +138,7 @@ class Lighthouse
         if ($json && ($issues = json_decode($json, 1))) {
             foreach($issues as $i) {
                 if ($num-- == 0) break;
-                $s .=  "<li><a target=\"_self\" href=\"{$i['url']}\"><b>{$i['state']}</b>: {$i['title']} <em>(" . prettyDate($i['updated']) . ")</em></a></li>";
+                $s .=  "<li><a target=\"_self\" href=\"{$i['url']}\"><b>{$i['state']}</b>: {$i['title']} <span class=\"when\">" . prettyDate($i['updated']) . "</span></a></li>";
             }
         }
         return $s;

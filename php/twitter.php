@@ -81,7 +81,7 @@ class Twitter
         foreach($tweets as $t) {
             if ($rows-- == 0) { break; }
             $time = prettyDate(strtotime($t->created_at));
-            $str .= "<div class=\"row\">" . $this->hyperlinkit($t->text) . " <span class=\"when\">({$time})<span></div>";
+            $str .= "<div class=\"row\">" . $this->hyperlinkit($t->text) . " <span class=\"when\">{$time}<span></div>";
         }
     
         return $str;
@@ -123,7 +123,7 @@ class Twitter
             $time = prettyDate(strtotime($t->created_at));
 
             $str .= "<div class=\"row\"><a href=\"http://twitter.com/{$t->from_user}\">{$t->from_user}</a>: " .
-                $this->hyperlinkit($t->text) . " <span class=\"when\">({$time})<span></div>";
+                $this->hyperlinkit($t->text) . " <span class=\"when\">{$time}<span></div>";
         }
     
         return $str;
