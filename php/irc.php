@@ -109,7 +109,7 @@ class IRC {
         $str = "";
         if (is_array($results) && count($results) > 0) {
             foreach($results as $row) {
-                $when = date("g:ia", strtotime($row['stamp']));
+                $when = date("D M j, g:ia", strtotime($row['stamp']));
                 $who = h($row['who']);
                 $what = render_line($row['utterance']);
                 $max_id = $row['id'];
