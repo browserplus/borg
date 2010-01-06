@@ -1,10 +1,10 @@
 <?php
-include("/home/websites/browserplus/php/site.php");
-include("/home/websites/browserplus/php/forum.php");
-include("/home/websites/browserplus/php/twitter.php");
-include("/home/websites/browserplus/php/db.php");
-include("/home/websites/browserplus/php/irc.php");
-include("/home/websites/browserplus/php/lighthouse.php");
+include("../../php/site.php");
+include("../../php/forum.php");
+include("../../php/twitter.php");
+include("../../php/db.php");
+include("../../php/irc.php");
+include("../../php/lighthouse.php");
 
 $RowsToShow = 20;
 $t = new Twitter();

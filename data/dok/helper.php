@@ -30,8 +30,8 @@ class ServicesFileScanner implements iFileScanner
     var $homepage = "00_home";
     
 	public function __construct() {
-        include("/home/websites/browserplus/php/site.php");
-        include("/home/websites/browserplus/php/bpservices.php");
+        include("../../php/site.php");
+        include("../../php/bpservices.php");
         $this->bp = new BPServices();
     }
 

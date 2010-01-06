@@ -1,6 +1,6 @@
 <?php
-include("/home/websites/browserplus/php/site.php");
-include("/home/websites/browserplus/php/twitter.php");
+include("../../php/site.php");
+include("../../php/twitter.php");
 
 $t = new Twitter();
 

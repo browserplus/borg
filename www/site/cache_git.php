@@ -1,7 +1,7 @@
 <?php
-include("/home/websites/browserplus/php/site.php");
-include("/home/websites/browserplus/php/db.php");
-include("/home/websites/browserplus/php/git.php");
+include("../../php/site.php");
+include("../../php/db.php");
+include("../../php/git.php");
 
 $g = new GIT();
 
