@@ -1,20 +1,18 @@
 # Overview
 
-*BrowserPlus* is a proposal and reference implementation of a new 
-type of web plugins, called "services".  These services can be used
-from regular webpages and add new JavaScript APIs to most modern 
-browsers to provide features like:
+*BrowserPlus* is a proposal and reference implementation for a new
+type of scriptable web plugins (or "services").  These services can be
+used from regular web apps and add new JavaScript APIs for features like:
  
 + Desktop Notifications
 + Peer To Peer File Transfer
 + Client side Compression and Archiving
 + Device Access (like the Motion sensor or Accelerometer on modern laptops) 
 + Client side storage
-+ etc...
 
 ## Choose Your Own Adventure 
 
-This website is a resource to help developers use BrowserPlus in
+This website is a resource to both help developers use BrowserPlus in
 their web applications and to create new services.  The documentation
 presently available is targeted at three different classes of
 developers, click through to the documentation that you're interested
@@ -31,4 +29,4 @@ everywhere, in either native code or a high level language.
 **[Web Technologists](/docs/platform/)** -- You're
 curious about how the BrowserPlus platform works to extend it, build
 on top of it, or build native support for BrowserPlus plugins into an
-application.
+existing application (like, say, a web browser).
