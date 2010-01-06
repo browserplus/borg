@@ -24,12 +24,12 @@ As shown in the figure, BrowserPlus services implement the Service
 API.  This is a C API that is declared [here](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
 to permit introspection of service methods and their parameters.  See also [Service API documentation](http://beta.browserplus.org/docs/platform/CAPI.html)
 
+
+## Browserplus Service Framework
+
 C++ programmers may find the required Service API methods and
 types somewhat tedious to implement and interact with.  For this
 reason the Browserplus Service Framework was created.
-
-
-## Browserplus Service Framework
 
 The Browserplus Service Framework is a header-only framework that
 implements several classes, methods, and types to ease the interaction
