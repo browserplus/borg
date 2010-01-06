@@ -5,7 +5,7 @@ $TitleMap = array(
     "cpp_services" => "C++ Services",
     "service_dev" => "Service Authors",
     "web_dev" => "Web Developers",
-    "platform" => "Browser Technologists"
+    "platform" => "Browser Technologists",
     "services" => "Available Services"
 );
 
