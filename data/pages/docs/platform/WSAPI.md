@@ -50,8 +50,16 @@ object {
   integer size;
 };
 ~~~
+Example output:
+~~~
+{
+  "version":"2.4.21",
+  "size":2174174
+}
+~~~
 
 ### `/api/v3/platform/latest/update/<platform>`
+
 
 ### `/api/v3/permissions`
 
