@@ -70,7 +70,7 @@ Example output:
 
 ### /api/v3/platform/latest/update/&lt;platform&gt;
 
-Returns an LZMA compressed signed bundle containing an update to the BrowserPlus platform.
+Returns an LZMA compressed [signed bundle](packaging.html) containing an update to the BrowserPlus platform.
 The contents of this bundle are out of the scope of the web service api.  Further information
 can be found in the BrowserPlus platform [source code](http://github.com/browserplus/platform).
 
@@ -90,7 +90,7 @@ object {
       # A version specification:  may be a major version "1",
       # major and minor "1.2", or an exact version "1.2.3".  
       string /^([1-9][0-9]*|0)(\.([1-9][0-9]*|0)(\.([1-9][0-9]*|0))?)?$/;
-    }
+    };
   ] blacklist;
 
   # an array of versions of the platform that should be blacklisted.
@@ -105,11 +105,11 @@ object {
     # keys are the names of permissions.  Values are objects whose keys are
     # in turn locales (RFC5646) that map to utf8 localized strings which are
     # a user visible description of the permission.
-    
+
     # NOTE: orderly's handling of "additionalProperties" should be augmented
     # so that we can properly represent this a schema.
-  } servicePermissionLocalizations*;
-}
+  }* servicePermissionLocalizations;
+};
 ~~~
 
 Example permissions file:
