@@ -3,8 +3,10 @@
 // map file names to page titles
 $TitleMap = array(
     "cpp_services" => "C++ Services",
-    "service_dev" => "Service Developers",
-    "web_dev" => "Web Developers"
+    "service_dev" => "Service Authors",
+    "web_dev" => "Web Developers",
+    "platform" => "Browser Technologists"
+    "services" => "Available Services"
 );
 
 // replace @{varname} with below

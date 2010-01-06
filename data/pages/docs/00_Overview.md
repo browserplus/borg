@@ -26,7 +26,7 @@ library of services expose.
 a plugin for the web that's scriptable from Javascript and works almost 
 everywhere, in either native code or a high level language.
 
-**[Web Technologists](/docs/platform/)** -- You're
+**[Browser Technologists](/docs/platform/)** -- You're
 curious about how the BrowserPlus platform works to extend it, build
 on top of it, or build native support for BrowserPlus plugins into an
 existing application (like, say, a web browser).
