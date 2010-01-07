@@ -25,7 +25,7 @@ API.  The Service API is a C API.  The headers for the Service API are on [githu
 to permit discoverability of service methods and their parameters, among other things.  See the [Service API documentation](http://browserplus.github.com/bp-service-api/) for detailed info.
 
 
-## Browserplus Service Framework
+## The Browserplus Service Framework
 
 C++ programmers may find the required Service API methods and
 types somewhat tedious to implement and interact with.  For this
@@ -39,30 +39,61 @@ The remainder of this tutorial will use the service framework to
 illustrate implementing a service in C++.
 
 
-## Build a sample service using the Service Framework
-
-Let's build a sample service, the HelloWorld service. 
-
-### Step 1: Install BrowserPlus
+## Step 1: Install BrowserPlus
 
 <div id="gotbp">Checking for BrowserPlus...</div>
 <div id="downloadLink"></div>
 
-### Step 2: Install the BrowserPlus SDK
+## Step 2: Install the BrowserPlus SDK
 
 Download the BrowserPlus SDK for your platform from [here](http://browserplus.yahoo.com/developer/service/sdk/).
 
 Once downloaded, unzip (or untar) the sdk, and a directory will be created called `bpsdk`.
 
-### Step 3: Download the sample service
+## Step 3: Download the sample service
 
-Download the sample service code from [here](http://github.com/browserplus/bp-tutorial-cpp1/archives/master).  We'll look at the actual source in just a bit.
+Download the sample service code from [here](http://github.com/browserplus/bp-tutorial-cpp1/archives/master).
 
-### Step 4: Build the service
+## Step 4: Let's look at some code!
+
+Below is the main source file for the service.
+
+~~~
+//////////////////////////////
+// HelloWorld.cpp 
+//
+// Demonstrates use of the Browserplus Service Framework to generate Browserplus
+// services.
+//
+#include <sstream>
+#include "bpservice/bpservice.h"
+
+using namespace bplus::service;
+
+class HelloWorld : public Service
+{
+public:    
+    BP_SERVICE( HelloWorld );
+    
+    void greet( const Transaction& tran, const bplus::Map& args ) {
+        std::stringstream ss;
+        ss << "Hello, " << std::string(args["name"]) << "!";
+        tran.complete( bplus::String( ss.str() ) );
+    }
+};
+
+BP_SERVICE_DESC( HelloWorld, "HelloWorld", "1.0.0", "A simple Browserplus service" )
+    ADD_BP_METHOD( HelloWorld, greet, "Generates a hearty greeting" )
+      ADD_BP_METHOD_ARG( greet, "name", String, true, "name to greet" )
+END_BP_SERVICE_DESC
+~~~
+
+## Step 5: Build the service
 
 Build files are provided in the "src/build" directory for VS 2008 and gcc.
+For VS08, just double-click the .sln file.  For osx, type "make" from the build directory.
 
-### Step 5: Install the HelloWorld service
+## Step 6: Install the HelloWorld service
 
 Service binaries must be findable at runtime so that they can be
 loaded by the Browserplus daemon.  The daemon loads services that have been
@@ -79,7 +110,7 @@ need to specify your specific path to the BrowserPlus SDK:
     HelloWorld 1.0.0 validated and installed in 0.375s
 
 
-## Test the HelloWorld service from the console
+## Step 7: Test the HelloWorld service from the console
 
 The BrowserPlus SDK provides a tool called the ServiceRunner that allows you to 
 test installed services from the console, without the added complexity of 
@@ -113,7 +144,7 @@ The "i" command invokes a named method, with a JSON payload.
 [maybe show an arch diagram]
 
 
-## Test the HelloWorld service from a web page
+## Step 8: Test the HelloWorld service from a web page
 
 We provide a web-based tool called the Service Explorer.  It has two modes.
 In the "List" mode it will show all services available on our
@@ -133,37 +164,6 @@ This is done via metadata provided by the service author.
  ![Hello world](/i/explorer_hello_world.png)
 
 
-## Let's look at some code!
-
-~~~
-//////////////////////////////
-// HelloWorld.cpp 
-//
-// Demonstrates use of the Browserplus Service Framework to generate Browserplus
-// services.
-//
-#include <sstream>
-#include "bpservice/bpservice.h"
-
-using namespace bplus::service;
-
-class HelloWorld : public Service
-{
-public:    
-    BP_SERVICE( HelloWorld );
-    
-    void greet( const Transaction& tran, const bplus::Map& args ) {
-        std::stringstream ss;
-        ss << "Hello, " << std::string(args["name"]) << "!";
-        tran.complete( bplus::String( ss.str() ) );
-    }
-};
-
-BP_SERVICE_DESC( HelloWorld, "HelloWorld", "1.0.0", "A simple Browserplus service" )
-    ADD_BP_METHOD( HelloWorld, greet, "Generates a hearty greeting" )
-      ADD_BP_METHOD_ARG( greet, "name", String, true, "name to greet" )
-END_BP_SERVICE_DESC
-~~~
 
 <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
 <script>
