@@ -9,20 +9,20 @@ in C++.
 BrowserPlus Services allow new capabilities to be provided to the
 web.  
 
-As shown in the Architecture figure, browser processes communicate
+As shown in the figure below, browser processes communicate
 with a BrowserPlus daemon process, which communicates with BrowserPlus
 services, each of which is hosted in a harness process.
 
-![Server Architecture](/i/server_arch.png)
+Services are physically packaged as dlls on Windows and dylibs on OSX.
 
-The services are packaged as dlls on Windows and dylibs on OSX.
+![Server Architecture](/i/server_arch.png)
 
 
 ## Service API
 
 As shown in the figure, BrowserPlus services implement the Service
-API.  This is a C API that is declared [here](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
-to permit introspection of service methods and their parameters.  See also [Service API documentation](/docs/platform/CAPI.html)
+API.  The Service API is a C API.  The headers for the Service API are on github [here](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
+to permit discoverability of service methods and their parameters.  See [Service API documentation](/docs/platform/CAPI.html) for detailed info.
 
 
 ## Browserplus Service Framework
