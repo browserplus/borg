@@ -10,9 +10,7 @@ body {
     margin-bottom:20px;
 }
 
-em {
-    font-style:italic;
-}
+em { font-style:italic; }
 
 .main ol li { list-style: decimal outside; }
 .main ul li { list-style: disc outside; }
@@ -158,6 +156,7 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 .even {background:#fff;}
 
 
+dt em {  color:#070; }
 
 .api h2 {
     font-family:consolas, monaco, "courier new", courier, monospace;
@@ -170,10 +169,6 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
     border:1px solid #bbb; 
 }
 
-dt em {
-    color:#070;
-}
-
 .api h3 {
     font-size: 116%; 
     font-weight:bold;
@@ -181,9 +176,10 @@ dt em {
     color:#900;
 }
 
-.api p, .api dl {
+.api p, .api dl, .api li {
     font-size:93%;
 }
+
 
 /* http://www.neuroticweb.com/recursos/3-columns-layout/index.php */
 #wrapper {width:974px; text-align:left; margin:0px auto; padding:0px; border:0;}

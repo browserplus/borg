@@ -1,4 +1,7 @@
+
 # Web Services API - v3
+
+<div markdown="1" class="api">
 
 The BrowserPlus web services API is a RESTFUL means of accessing information about
 three different types of information:
@@ -7,13 +10,16 @@ three different types of information:
 + **Permissions** - Attain a signed "permissions" bundle
 + **Updates** - Determine the latest version of BrowserPlus software available 
 
-## Distribution Server Roles
+
+
+### Distribution Server Roles
 
 At present there are different roles a distribution server can serve.  *Primary* distribution
 servers are used for all three types of information enumerated above.  *Secondary* distribution
 servers are used only to query and attain services.  
 
-## Documentation Conventions
+
+### Documentation Conventions
 
 All web services return [JSON](http://json.org).  Throughout this document the return values of services 
 are normatively expressed in the [orderly schema language](http://orderly-json.org).
@@ -21,35 +27,30 @@ are normatively expressed in the [orderly schema language](http://orderly-json.o
 Finally, when API URI paths are specified, there a couple different placeholders
 that specify "parameters" to the web service.  Those different placeholders are described here:
 
-### &lt;platform&gt; 
+&lt;platform&gt;
+: Currently, &lt;platform&gt; may be one of two values:  
+**osx** - Mac OSX 10.4 or greater (32bit or 64bit)  
+**win32** - WinXP or greater
 
-Currently, &lt;platform&gt; may be one of two values: 
 
-* osx - Mac OSX 10.4 or greater (32bit or 64bit)
-* win32 - WinXP or greater
+&lt;version&gt;
+: A version includes a major, minor, and micro version number.  A well formed version will match the following regular expression: `/([1-9][0-9]*|0)\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)/`
 
-NOTE: In the future it would be useful to make this a tad richer.
+&lt;name&gt;
+: A Service Name may consist of any valid (url encoded) characters.
 
-### &lt;version&gt;
-
-A version includes a major, minor, and micro version number.  A well formed version will match the following regular expression:
-
-    /([1-9][0-9]*|0)\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)/
-
-### &lt;name&gt;
-
-A Service Name may consist of any valid (url encoded) characters.
-
-## "Primary Server" API Documentation
+### "Primary Server" API Documentation
 
 A primary distribution server provides access to permissions and platform updates *in addition to services*.  It is only 
 useful to host a primary distribution server (and hence the api calls documented here) if you wish to maintain a custom 
 version of the BrowserPlus platform.  
 
-### /api/v3/platform/latest/version/&lt;platform&gt;
+## /api/v3/platform/latest/version/&lt;platform&gt;
 
 Determine the latest available platform version.  Response payload is JSON
 of the following form:
+
+### Response
 
 ~~~
 object {
@@ -60,7 +61,9 @@ object {
   integer size;
 };
 ~~~
-Example output:
+
+### Example
+
 ~~~
 {
   "version":"2.4.21",
@@ -68,16 +71,18 @@ Example output:
 }
 ~~~
 
-### /api/v3/platform/latest/update/&lt;platform&gt;
+## /api/v3/platform/latest/update/&lt;platform&gt;
 
 Returns an LZMA compressed [signed bundle](packaging.html) containing an update to the BrowserPlus platform.
 The contents of this bundle are out of the scope of the web service api.  Further information
 can be found in the BrowserPlus platform [source code](http://github.com/browserplus/platform).
 
-### /api/v3/permissions
+## /api/v3/permissions
 
 Returns a [signed bundle](packaging.html) containing "permissions".  The JSON file contained within
 the signed bundle has the following format:
+
+### Response
 
 ~~~
 object {
@@ -112,7 +117,8 @@ object {
 };
 ~~~
 
-Example permissions file:
+### Example
+
 ~~~
 {                
   "blacklist" : [
@@ -148,12 +154,15 @@ Example permissions file:
 }
 ~~~
 
-## "Secondary Server" API Documentation
+### "Secondary Server" API Documentation
 
-### /api/v3/corelets/&lt;platform&gt;
+## /api/v3/corelets/&lt;platform&gt;
 
-### /api/v3/corelet/metadata/&lt;name&gt;/&lt;version&gt;/&lt;platform&gt;
+## /api/v3/corelet/metadata/&lt;name&gt;/&lt;version&gt;/&lt;platform&gt;
 
-### /api/v3/corelet/synopsis/&lt;name&gt;/&lt;version&gt;/&lt;platform&gt;
+## /api/v3/corelet/synopsis/&lt;name&gt;/&lt;version&gt;/&lt;platform&gt;
 
-### /api/v3/corelet/package/&lt;name&gt;/&lt;version&gt;/&lt;platform&gt; 
+## /api/v3/corelet/package/&lt;name&gt;/&lt;version&gt;/&lt;platform&gt;
+
+</div>
+
