@@ -84,7 +84,7 @@ class ServicesFileScanner implements iFileScanner
 /*
  * Rend
  */
-function dok_pages_widget($parents, $dirs, $files, $current_file) {
+function dok_pages_widget($parents, $dirs, $files, $current_file, $linkmap) {
     ob_start();
     if (count($files) > 0 || count($dirs) > 0) {
         echo "<div class=\"widget widget-pages\">\n";
@@ -105,7 +105,11 @@ function dok_pages_widget($parents, $dirs, $files, $current_file) {
                 if ($file == $current_file) {
                     echo "<li class=\"active\">&raquo; $title</li>\n";
                 } else {
-                    echo "<li><a href=\"$file\">$title</a></li>\n";
+                    if (isset($linkmap[$file])) {
+                        echo "<li><a href=\"{$linkmap[$file]}\">" . $title . "</a> <img src=\"/images/link_go.png\"></li>\n";
+                    } else {
+                        echo "<li><a href=\"$file\">$title</a></li>\n";
+                    }
                 }
             }
         }

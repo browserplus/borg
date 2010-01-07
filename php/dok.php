@@ -18,6 +18,8 @@ class Dok implements iFileScanner
     private $varmap_vals;
     private $scanner;
     private $titlemap;
+    private $linkmap;
+    
     public static $default_filename = 'index.html';
 
 	public function __construct($conf) {
@@ -30,6 +32,10 @@ class Dok implements iFileScanner
 
         // Maps certain file names (like cpp_services) to titles (C++ Services) 
         $this->titlemap = $TitleMap;
+
+        // Remembers the contents in *.link files so we can have external links in the 
+        // navigation bar
+        $this->linkmap = array();
         
         // DokVarMap replaces @{varname} variables in documents
         $keys = array_keys($VarMap);
@@ -124,6 +130,7 @@ class Dok implements iFileScanner
                 "filename" => $htmlfile,
                 "parents" => $hierarchy,
                 "title" => $this->title_from_file($htmlfile),
+                "linkmap" => $this->linkmap,
                 "type" => $fileext,
 	            "body" => $body,
 	            "dirs" => $dirs,
@@ -215,6 +222,13 @@ class Dok implements iFileScanner
 			    } else if (is_file($full)) {
 				    $f = basename($file);
 					$key = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2.html", $f);
+                    if (preg_match("/.link$/", $f)) {
+                        // just get first word in first line in *.link file
+                        $lines = file($full);
+                        $words = preg_split("/[\s]+/", $lines[0]);
+                        $this->linkmap[$key] = $words[0];
+                    }
+
 				    $fmap[$key] = $f;
 				    $ftmp[$f] = $key; // to be sorted via actual file name
 			    }
