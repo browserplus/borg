@@ -20,9 +20,9 @@ Services are physically packaged as dlls on Windows and dylibs on OSX.
 
 ## Service API
 
-As shown in the figure, BrowserPlus services implement the Service
-API.  The Service API is a C API.  The headers for the Service API are on github [here](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
-to permit discoverability of service methods and their parameters.  See [Service API documentation](/docs/platform/CAPI.html) for detailed info.
+As shown in the figure, BrowserPlus services communicate with the BrowserPlus Daemon over the Service
+API.  The Service API is a C API.  The headers for the Service API are on [github](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
+to permit discoverability of service methods and their parameters, among other things.  See the [Service API documentation](http://browserplus.github.com/bp-service-api/) for detailed info.
 
 
 ## Browserplus Service Framework
