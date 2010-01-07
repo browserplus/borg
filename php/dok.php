@@ -223,7 +223,10 @@ class Dok implements iFileScanner
 				    $f = basename($file);
 					$key = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2.html", $f);
                     if (preg_match("/.link$/", $f)) {
-                        $this->linkmap[$key] = file_get_contents($full);
+                        // just get first word in first line in *.link file
+                        $lines = file($full);
+                        $words = preg_split("/[\s]+/", $lines[0]);
+                        $this->linkmap[$key] = $words[0];
                     }
 
 				    $fmap[$key] = $f;
