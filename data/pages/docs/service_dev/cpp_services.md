@@ -58,7 +58,7 @@ Download the sample service code from [here](http://github.com/browserplus/bp-tu
 
 We're going to create a service called "HelloWorld".  It implements one JS-callable method: "greet" that takes one argument: "name".  The service will assemble an appropriate greeting and return that to JS.
 
-Below is the service.cpp file from the sample.  
+Below is the "service.cpp" file from the sample.  
 
 You can see that the service derives from bplus::service::Service.  Our method receives its arguments in a bplus::Map.  We use a Transaction object to send our results back asynchronously to JS.  More on this later.
 The last 4 lines of the file are macrology that allows the Browserplus Daemon to introspect the methods and arguments of the service.  This introspection allows the service to document itself, and also allows BrowserPlus to peform runtime error checking.  
