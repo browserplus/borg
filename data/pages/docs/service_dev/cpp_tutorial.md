@@ -6,6 +6,8 @@ in C++.
 
 ## Architecture Recap
 
+<div style="float: right; margin 15px;"><img src="/i/server_arch.png"></div>
+
 BrowserPlus Services allow new capabilities to be provided to the
 web.  
 
@@ -14,9 +16,6 @@ with a BrowserPlus daemon process, which communicates with BrowserPlus
 services.  Each service is hosted in a "harness" process.  The harness performs the Daemon communication responsibilities, and hosting services in separate processes aids system robustness.
 
 Services are physically packaged as dlls on Windows and dylibs on OSX.
-
-![Server Architecture](/i/server_arch.png)
-
 
 ## Service API
 
