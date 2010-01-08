@@ -27,7 +27,7 @@ For inspiration, check out the [currently-published services](/docs/services/). 
 
 Great!  How fun for you.  Let's show you how to write a new service.  Currently we support writing services in C/C++ and Ruby.  Check out these links for more info:
 
-* [C++ Service Overview and Tutorial](/docs/service_dev/cpp_services.html)
+* [C++ Service Overview and Tutorial](/docs/service_dev/cpp_tutorial.html)
 * [Ruby Service Overview](/docs/service_dev/ruby_services.html)
 * [Ruby Service Tutorial](/docs/service_dev/ruby_tutorial.html)
 
