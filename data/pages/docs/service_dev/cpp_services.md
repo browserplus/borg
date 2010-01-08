@@ -62,7 +62,7 @@ Below is the "service.cpp" file from the sample.
 
 You can see that the service derives from bplus::service::Service.  Our method receives its arguments in a bplus::Map.  We use a Transaction object to send our results back asynchronously to JS.  More on this later.
 The last 4 lines of the file are macrology that allows the Browserplus Daemon to introspect the methods and arguments of the service.  This introspection allows the service to document itself, and also allows BrowserPlus to peform runtime error checking.  
-The "1.0.0" specifies the version of the service, an important topic for which [more information](todo) is available.
+The "1.0.0" specifies the version of the service, an important topic for which [more information](/docs/web_dev/JavaScript_API_Overview.html#service_versioning) is available.
 
 ~~~
 #include <sstream>
