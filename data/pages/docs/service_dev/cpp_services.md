@@ -56,7 +56,10 @@ Download the sample service code from [here](http://github.com/browserplus/bp-tu
 
 ## Step 4: Let's look at some code!
 
-Below is the main source file for the service.
+We're going to create a service called "HelloWorld".  It implements one JS-callable method: "greet" that takes one argument: "name".  The service will assemble an appropriate greeting and return that to JS.
+Below is the main implementation file for the service.  
+You can see that the service derives from bplus::service::Service.  We call Transaction::complete to send our results back to JS.  More on this later.
+The last 4 lines of the file are macrology that allows the Browserplus Daemon to introspect the methods and arguments of the service.  This introspection allows the service to document itself, and also allows BrowserPlus to peform syntax checking at runtime.
 
 ~~~
 //////////////////////////////
