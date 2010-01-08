@@ -2,7 +2,7 @@
 
 // map file names to page titles
 $TitleMap = array(
-    "cpp_services" => "C++ Services",
+    "cpp_tutorial" => "C++ Tutorial",
     "service_dev" => "Service Authors",
     "web_dev" => "Web Developers",
     "platform" => "Browser Technologists",
