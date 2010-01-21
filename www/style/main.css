@@ -45,10 +45,9 @@ pre {
 }
 
 hr  {
-    border:0;
-    background: #ccc;
-    height: 2px;
-    width:450px;
+    margin-top:40px;
+    border:1px solid #36c;
+    width:550px;
 }
 
 h1,h2,h3,h4 {
