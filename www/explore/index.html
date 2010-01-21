@@ -1,0 +1,553 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Service Explorer: BrowserPlus</title>
+    <link rel="stylesheet" type="text/css" href="explorer.css">
+</head>
+<body class="yui-skin-sam">
+    
+<div id="explorer">
+    <!-- h1>Service Explorer</h1 -->
+    <div id="navlists">
+        <div id="services">
+            <h2>Services</h2>
+            <select id="servicelist" size="7"><option>Loading...</option></select>
+        </div>
+
+        <div id="versions">
+            <h2>Versions</h2>
+            <select id="versionlist" size="7"></select>
+        </div>
+
+        <div id="functions">
+            <h2>Functions</h2>
+            <select id="functionlist" size="7"></select>
+        </div>
+    </div>
+
+    <div id="container">
+        <div id="method">
+            <h3>Select the Service, Version and Function Above</h3>
+            <form><fieldset><br></fieldset></form>
+        </div>
+		<h3>Console</h3>
+		<div id="result" class="prettyprint"></div>
+	</div>
+
+</div>
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+<script type="text/javascript" src="json2.js"></script>
+<script type="text/javascript" src="parameters.js"></script>
+<script type="text/javascript">
+YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
+    var ServiceOS = (BrowserPlus.clientSystemInfo().os == "Mac" ? "osx" : "win32");
+    var ServiceVersions = {};
+    var ServiceDetails = {};
+    var CurrentService = null;
+    var CurrentFunction = null;
+    var FileHandles;
+
+    // for log(LEVEL, str)
+    var FUNC = "func";
+    var RETVAL = "retval";
+    var ERROR = "error";
+    var INFO = "info";
+    var TIME = "time";
+    
+    var Tmpl = {
+        EmptyForm:
+            '<h3>Select the Service, Version and Function Above</h3>' + 
+            '<form><fieldset><br></fieldset></form>',
+
+		FunctionForm: 
+            '<h3>BrowserPlus.{sname}.{fname}()</h3>' +
+			'<form name="fparams">' + 
+			'    <fieldset>' + 
+			'        <ol>' + 
+			'{fields}' +
+			'	         <li><input class="runAction" type="button" value="Run" id="submit"></li>' + 
+			'        </ol>' + 
+			'    </fieldset>' +
+			'</form>',
+
+		FunctionParams:
+			'<dt class="parameter">' + 
+			'	  <span class="varBlock">' + 
+			'		  <span class="varName">{opt1}{name}:</span>' + 
+			'		  <span class="varType">{type}</span>{opt2}' + 
+			'	  </span>' +
+			'</dt>' + 
+			'<dd>{doc}</dd>'
+		};
+
+    
+	function getTimeStamp() {
+		var d = new Date(),
+			h = d.getHours(),
+			m = d.getMinutes(),
+			s = d.getSeconds();
+		h = (h < 10 ? "0" + h : h);
+		m = (m < 10 ? "0" + m : m);
+		s = (s < 10 ? "0" + s : s);
+		return ("[" + h + ":" + m + ":" + s + "] ");
+	}
+
+	function asciiquo(value) {
+		return value.replace(/[^\x20-\x7f]/g, "_").replace(/"/g, "&quot;");
+	}
+
+    var QueryParams = function() {
+	    var i, nv, ret = {}, q = window.location.search.substring(1).split("&"), len = q.length;
+
+	    for (i = 0; i < len; i++) {
+		    nv = q[i].split("=");
+		    ret[nv[0]] = nv[1];
+	    }
+	
+	    return ret;
+    };
+    
+    function opt(name) {
+        return '<option value="' + name + '">' + name + '</option>';
+    }
+
+    function setFunctionList(details) {
+        var opts=[], funcs = details.functions;
+        for(var i = 0, len=funcs.length; i < len; i++) {
+            opts.push(opt(funcs[i].name));
+        }
+
+        Y.one("#functionlist").setContent(opts.join(""));
+        Y.one("#functionlist").set("selectedIndex", -1);
+    }
+
+    // util method to convert version strings into sortable strings (1.2.3 into 100020003)
+    function versionNum(versionString) {
+	    var arr = versionString.match(/(\d+)/g);
+	    // (v added so a string is returned instead of an int)
+	    return "v" + (parseInt(arr[0],10)*1000000 + parseInt(arr[1]*1000,10) + parseInt(arr[2],10));
+    }
+
+	// Called in response to AJAX request (for builtin functions not described by InactiveServices)
+	function gotServiceDetails(id, o, args) {
+        var obj = JSON.parse(o.responseText);
+        ServiceDetails[args.s + args.v] = obj;
+        args.cb(obj);
+	};
+
+    // Service name is selected from Service List
+    function serviceListChangedEvent(e) {
+        var opts=[], versions, selectedValue = Y.one("#servicelist").get("value");
+        
+        // only set when function is chosen
+        CurrentService = null;
+        CurrentFunction = null;
+
+
+        if (selectedValue) {
+            // sort version numbers from new to old (versionNum makes 1.2.3 into string like "v100020003")
+            versions = ServiceVersions[selectedValue];
+            versions.sort(function(a,b){
+	            return versionNum(b).localeCompare(versionNum(a));
+            });
+
+            for (var i = 0, len = versions.length; i < len; i++) {
+                opts.push(opt(versions[i]));
+            }
+        }
+        
+        Y.one("#versionlist").setContent(opts.join(""));
+        Y.one("#versionlist").set("selectedIndex", -1);
+        Y.one("#functionlist").setContent(opt(""));
+
+        // replace function form with empty form
+        Y.one("#method").setContent(Tmpl.EmptyForm, {});
+    }
+
+    // Version string is selected from Versions List
+    function versionListChangedEvent(e) {
+
+        // only set when function is chosen
+        CurrentService = null;
+        CurrentFunction = null;
+
+        var service = Y.one("#servicelist").get("value");
+        var version = Y.one("#versionlist").get("value");
+    
+        // replace function form with empty form
+        Y.one("#method").setContent(Tmpl.EmptyForm, {});
+
+        if (service && version) {
+            if (ServiceDetails[service+version]) {
+                // details already cache from call to Describe below
+                setFunctionList(ServiceDetails[service+version]);
+            } else {
+                // this will take a little time, so show Loading... in this case
+                Y.one("#functionlist").setContent(opt("Loading..."));
+                BrowserPlus.InactiveServices.Describe({service:service, version:version}, function(r) {
+                    if (r.success) {
+                        var ver = r.value.version;
+                        var fqn = r.value.name + ver.major + "." + ver.minor + "." + ver.micro;
+                        ServiceDetails[fqn] = r.value;
+                        setFunctionList(r.value);
+                    } else {
+                        // Builtin services not described by InactiveServices, so get it thru AJAX
+		                Y.io(
+		                    "/api/v1/service/" + service + "/" + version + "/" + ServiceOS, 
+		                    {
+		                        on: {success: gotServiceDetails}, 
+		                        arguments:{s:service, v:version, cb:setFunctionList}
+	                        }
+	                    );
+                    }
+                });
+            }
+        }
+    }
+
+    // Version string is selected from Versions List
+    function functionListChangedEvent(e) {
+        var sname = Y.one("#servicelist").get("value");
+        var vname = Y.one("#versionlist").get("value");
+        var fname = Y.one("#functionlist").get("value");    
+
+        if (!sname || !vname || !fname) { return; }
+
+        // get reference to current service
+        var i, len;
+        
+        CurrentService = ServiceDetails[sname + vname];
+        
+
+        // get reference into current function
+        for(i = 0, len = CurrentService.functions.length; i < len; i++) {
+            if (CurrentService.functions[i].name == fname) {
+                CurrentFunction = CurrentService.functions[i];
+                break;
+            }
+        }
+
+        FileHandles = {};
+        
+        var plen = CurrentFunction.parameters.length, p, value, params="", opt1, opt2, form="", help, enabled, style, key, hint;
+
+		if (plen === 0) {
+			params = '<dt class="noparams">No parameters</dt>';
+			form = '<p class="noparams formp">No parameters</p>';
+		} else {
+			for (i = 0; i < plen; i++) {
+				p = CurrentFunction.parameters[i];
+				if (p.required) {
+					opt1 = "<b>"; opt2 = " (req)</b>";
+				} else {
+					opt1 = "<em>"; opt2 = " (opt)</em>";
+				}
+
+				params += Y.Lang.substitute(Tmpl.FunctionParams, { 
+					name: p.name, type: p.type, opt1: opt1, opt2: opt2});
+				
+				key = CurrentService.name + "_" + CurrentFunction.name + "_" + p.name;
+
+				enabled = "";
+				style = "";
+
+				help = ExParamHelp[key] || "";
+				if (help) { 
+				    help = '<span class="paramhelp">' + help + "</span>";
+			    }
+
+				value = QueryParams[p.name] || ExParamValues[key] || "";
+				hint  = ExParamHints[key] || "";
+				//dbg("key="+key + ", help="+help + ", value="+value +", hint="+hint);
+				if (p.type === "callback") {
+					enabled = "disabled";
+					style = 'style="background:#ffc"';
+					value = 'callback provided';
+				} else if (p.type === "path") {
+					enabled = "disabled";
+					help = "<input id=\"h_" + p.name + "\" class=\"fileAction\" type=\"button\" value=\"Select File\">";
+					style = 'style="background:#def"';
+				} else if (hint === "filemap" || hint === "filelist") {
+					enabled = "disabled";
+					help = "<input id=\"h_" + p.name + "\" class=\"filesAction\" type=\"button\" value=\"Select Files\">";
+					style = 'style="background:#def"';
+				}
+
+				
+				form += '<li><label>' + opt1 + p.name + ":" + p.type + opt2 + "</label>";
+				form += '<input ' + enabled + ' type="text" name="f_' + p.name + 
+					'" ' + style + ' value="' + value.replace(/"/g, "&quot;") + '" "size="40">' + help;
+				form += '</li>';
+			}
+		}
+
+        Y.one("#method").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {sname:sname, fname:fname, fields:form}));
+	}
+
+	function log(level, str) {
+
+        var r = Y.one("#result");
+        if (r) {
+		    r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
+		        '<span class="log_' + level + '">' + str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</span></div>");
+		    //r.append("<br>");
+            //prettyPrint();
+            r.set("scrollTop", r.get("scrollHeight"));
+            /*
+		    if(r.outerHTML) {
+    		    r.outerHTML = '<pre id="result">'+str+'</pre>';
+		        } else {
+			    r.innerHTML = str;
+		        }
+		        */
+        }
+	}
+
+    function formClickedEvent(e) {
+        var node = e.target;
+
+        if (node.hasClass("runAction")) {
+            e.preventDefault();
+            log(INFO, "==== Run! ====")
+            runAction();
+        } else if (node.hasClass("fileAction") || node.hasClass("filesAction")) {
+            e.preventDefault();
+			log(INFO, "==== Open File Browser ====\n");
+			selectFilesAction(node);
+		}
+    }
+
+	function testInvokeFunc(name) {
+		return function(res) {
+			if (res.success) {
+			    log(INFO, "SUCCESS");
+                log(RETVAL, JSON.stringify(res.value, null, "  "));
+			} else {
+			    log(INFO, "FAILURE");
+                log(ERROR, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
+			}
+		};
+	}
+
+	function testCallbackFunc(name) {
+		return function(res) {
+            log(INFO, name + " CALLBACK");
+		    log(RETVAL, JSON.stringify(res, null, "  "));
+	    };
+    }
+
+	function getRequireCallback(serviceName, functionName, version, obj, prettyObj) {
+		return function(res) {
+            if (res.success) {
+			    log(FUNC, "BrowserPlus." + serviceName + "." + functionName + "(" + JSON.stringify(prettyObj, null) + ", function(){});");
+			    BrowserPlus[serviceName][version][functionName](obj, testInvokeFunc(functionName));
+		    } else {
+		        log(ERROR, "Error requiring " + serviceName + "." + functionName + "(" + version + ")");
+		    }
+		};
+	}
+
+	function progressCallback(status) {
+        log(INFO, "Loading " + status.name + " Service - " + status.totalPercentage + "%");
+	}
+
+
+    function selectFilesAction(node) {
+        var limit;
+        
+        // limit to 1 file for "fileAction", N for filesAction
+        limit = node.hasClass("fileAction") ? {limit:1} : {};
+        limit.includeGestureInfo = true;
+
+        // FileBrowse 2.0.0 changed to use Directory Service, so fixing this to original 1.0.1
+		BrowserPlus.FileBrowse["1.0.1"].OpenBrowseDialog(limit, function(res) {
+			var i, handles = [], name, files = res.value.actualSelection, len = files.length, fnames=[];
+            log(RETVAL, JSON.stringify(files, null, " "));
+			if (Y.Lang.isArray(files) && len > 0) {
+				for (i = 0; i < len; i++) {
+					handles.push(files[i]);
+					fnames.push(files[i].BrowserPlusHandleName);
+				}
+
+				name = node.get("id").substring(2);
+				FileHandles[name] = handles;
+				document.fparams["f_" + name].value = fnames.join(", ");
+			}
+		});
+    }
+
+	function runAction() {
+		var i, j, len, params, el, name, type, required, val, obj = {}, prettyObj = {}, error = false, sname, fname, version,
+			errorStyle = "2px solid #e33", filemap, fstr=[];
+
+		if (!CurrentService || !CurrentFunction) { return; }
+		
+		sname  = CurrentService.name;
+		version   = CurrentService.versionString;
+		fname  = CurrentFunction.name;
+		params = CurrentFunction.parameters;
+
+		for (i = 0, len=params.length; i < len; i++) {
+
+			name	 = params[i].name;
+			type	 = params[i].type;
+			required = params[i].required;
+
+			el = document.fparams['f_'+name];
+			val = Y.Lang.trim(el.value);
+
+			//dbg("name=" + name + " type=" + type);
+			if (val) {
+				el.style.border = "";
+
+				switch (type) {
+				case "any":
+					try {
+						obj[name] = JSON.parse(val);
+						prettyObj[name] = JSON.parse(val);
+					} catch(er1) {
+						// send as string
+						obj[name] = val;
+						prettyObj[name] = '"' + asciiquo(val) + '"';
+					}
+
+					break;
+				case "list":
+					try {
+						if (FileHandles[name]) {
+							obj[name] = FileHandles[name];
+							for (j = 0; j < FileHandles[name].length; j++) {
+								fstr.push("&lt;file"+j+"&gt;");
+							}
+							prettyObj[name] = "[" + fstr.join(", ") + "]";
+						} else {
+							obj[name] = JSON.parse(val);
+							prettyObj[name] = JSON.parse(val);
+						}
+					} catch (er2) {
+						el.style.border = errorStyle;
+						error = true;
+					}
+					break;
+				case "map":
+					try {
+						if (FileHandles[name]) {
+							filemap = {};
+							for (j = 0; j < FileHandles[name].length; j++) {
+								filemap["f" + j] = FileHandles[name][j];
+								fstr.push("f"+j + ": &lt;file"+j + "&gt;");
+							}
+
+							obj[name] = filemap;
+							prettyObj[name] = "{" + fstr.join(", ") + "}";
+						} else {
+							obj[name] = JSON.parse(val);
+							prettyObj[name] = JSON.parse(val);
+						}
+					} catch (er3) {
+						el.style.border = errorStyle;
+						error = true;
+					}
+					break;
+				case "integer": 
+					obj[name] = parseInt(val, 10);
+					prettyObj[name] = parseInt(val, 10);
+					break;
+				case "double": 
+					obj[name] = parseFloat(val);
+					prettyObj[name] = parseFloat(val);
+					break;
+				case "boolean":
+					obj[name] = /^(1|t|true|y|yes)$/i.test(val);
+					prettyObj[name] = /^(1|t|true|y|yes)$/i.test(val);
+					break;
+				case "path":
+					obj[name] = FileHandles[name][0];
+					prettyObj[name] = "&lt;file&gt;";
+					break;
+				case "callback":
+					obj[name] = testCallbackFunc(name);
+					prettyObj[name] = "function(r){}";
+					break;
+				default:
+					obj[name] = val;
+					prettyObj[name] = val;
+					break;
+				}
+			} else if (required) {
+				el.style.border = errorStyle;
+				error = true;
+			}
+		}
+		
+		if (error) {
+            log(ERROR, "Error - Please set all required values.");
+	    } else if (BrowserPlus[sname] && BrowserPlus[sname][version]) {
+		    log(FUNC, "BrowserPlus." + sname + "." + fname + "(" + JSON.stringify(prettyObj, null) + ", function(){});");
+		    BrowserPlus[sname][version][fname](obj, testInvokeFunc(fname));
+	    } else {
+            log(INFO, "Requiring Service " + sname + " (" + version + ")");
+		    BrowserPlus.require({ services: [{service:sname, minversion:version}], progressCallback: progressCallback }, 
+		        getRequireCallback(sname, fname, version, obj, prettyObj));
+	    }
+	}
+
+    // Action happens once BrowserPlus is initialized
+    // TODO - change this to BPTools to install it
+    BrowserPlus.init({}, function(r){
+
+        var services = [
+            {service: "FileBrowse", version:"1"},
+            {service: "InactiveServices", version:"1"}
+        ];
+
+	    if (r.success) {
+		    BrowserPlus.require({services: services}, function(x){
+                if (x.success) {
+                    BrowserPlus.InactiveServices.All({}, function(all) {
+                        if (all.success) {
+                            var opts = [], s, i, len = all.value.length, slist=Y.one("#servicelist"), 
+                            builtIns = ["DragAndDrop", "FileBrowse", "Log", "InactiveServices"], builtInVersion = "1.0.1";
+
+                            // Add stand alone services
+                            for(i = 0; i < len; i++) {
+                                s = all.value[i];
+
+                                if (ServiceVersions[s.name]) {
+                                    ServiceVersions[s.name].push(s.version);
+                                } else {
+                                    opts.push(opt(s.name));
+                                    ServiceVersions[s.name] = [s.version];
+                                }
+                            }
+
+                            // Add Built-in services if not already present
+                            for (i = 0, len = builtIns.length; i < len; i++) {
+                                s = builtIns[i];
+                                if (!ServiceVersions[s]) {
+                                    opts.push(opt(s));
+                                    ServiceVersions[s] = [builtInVersion];
+                                }
+                            }
+
+                            opts.sort();
+                            
+                            slist.setContent(opts.join(""));
+                            slist.set("selectedIndex", -1);
+                            Y.on('change', serviceListChangedEvent, "#servicelist");
+                            Y.on('change', versionListChangedEvent, "#versionlist");
+                            Y.on('change', functionListChangedEvent, "#functionlist");
+                            Y.on("click",  formClickedEvent, '#method');//' input[type="button"]');
+                        }
+                    });
+                }
+	        });
+        }
+    });
+});
+
+</script>
+</body>
+</html>

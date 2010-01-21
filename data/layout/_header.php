@@ -8,8 +8,9 @@ function topnav($active) {
     $pagetabs = array(
         "Home" => "/",
         "Docs" => "/docs/",
-        "Blog" => "/blog/",
         "Discuss" => "/discuss/",
+        "Explore" => "/explore/",
+        "Blog" => "/blog/",
         "Support" => "/support/",
         "About" => "/about/");
     foreach($pagetabs as $label => $url) {

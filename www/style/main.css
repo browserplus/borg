@@ -1,7 +1,6 @@
 body {
     color:#333;
-    /*font-family: "trebuchet ms", arial, sans-serif;*/
-    font-family:georgia,verdana,"trebuchet ms",sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .main {
@@ -67,8 +66,10 @@ h4 {font-size: 116%;}
 #logo { padding: 10px 0 6px 0; text-align:center;}
 #topnav .active a { font-weight:bold;}
 #topnav { text-align:center; padding-bottom:2px; border:1px solid #d5dae7; background:#f0f5ff; margin-bottom:10px;}
-#topnav ul { margin: 0; }
-#topnav ul li { display: inline; padding:0 10px;}
+#topnav ul { margin: 0;}
+#topnav ul li { display: inline; padding:0 10px; border-left:1px solid #bcd;}
+#topnav ul li:first-child { border-left:0;}
+
 #topnav ul li a {
     text-decoration:none;
     font-family:"century gothic",helvetica,arial,sans-serif;

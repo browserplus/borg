@@ -45,7 +45,12 @@ class ServicesFileScanner implements iFileScanner
         $bn = $this->basename($htmlfile);
         
         $foundIt = false;
-        $services = $this->bp->getAllServices();
+
+        // get (json) services as php object
+        $json = $this->bp->getAllServices();
+        if (!$json) return array();
+        $services = json_decode($json, 1);
+        
         foreach($services as $s) {
             $name = $s['name'];
             if ($name == $bn) $foundIt = true;
@@ -82,7 +87,7 @@ class ServicesFileScanner implements iFileScanner
  */
 
 /*
- * Rend
+ * Render right navigation colum for documentation pages.
  */
 function dok_pages_widget($parents, $dirs, $files, $current_file, $linkmap) {
     ob_start();

@@ -1,6 +1,4 @@
 <?php
-define("LAYOUT_2C", "site_2c");
-define("LAYOUT_3C", "site_3c");
 define("SECRETS_FILE", "/home/borg/borg_secrets.json");
 
 $EMOTES = array(
@@ -54,6 +52,22 @@ function l($label, $url, $bool=true) {
     return $bool ? "<a href=\"$url\">$label</a>" : $label;
 }
 
+
+function render1c($title, $tab, $body, $extras=null) {
+    $data = array(
+        "title" => $title,
+        "active" => $tab,
+        "body" => $body
+    );
+    
+    if (isset($extras)) {
+        if (isset($extras["js"]))  $data["jslibs"]      = $extras["js"];
+        if (isset($extras["css"])) $data["stylesheets"] = $extras["css"];
+    }
+    
+    render_page($data, "dok_1c");
+}
+
 function render2c($title, $tab, $body, $widgets) {
     $data = array(
         "title" => $title,
@@ -62,7 +76,7 @@ function render2c($title, $tab, $body, $widgets) {
         "widgets" => $widgets
     );
     
-    render_page($data, LAYOUT_2C);
+    render_page($data, "site_2c");
 }
 
 function render3c($title, $tab, $widgets_left, $body, $widgets_right) {
@@ -74,7 +88,7 @@ function render3c($title, $tab, $widgets_left, $body, $widgets_right) {
         "widgets_right" => $widgets_right
     );
     
-    render_page($data, LAYOUT_3C);
+    render_page($data, "site_3c");
 }
 function get_projects() {
     return json_decode(file_get_contents(getenv("DOK_BASE") . "/projects/projects.json"), 1);
