@@ -399,7 +399,6 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 			el = document.fparams['f_'+name];
 			val = Y.Lang.trim(el.value);
 
-			//dbg("name=" + name + " type=" + type);
 			if (val) {
 				el.style.border = "";
 
@@ -420,7 +419,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 						if (FileHandles[name]) {
 							obj[name] = FileHandles[name];
 							for (j = 0; j < FileHandles[name].length; j++) {
-								fstr.push("&lt;file"+j+"&gt;");
+								fstr.push("<file"+j+">");
 							}
 							prettyObj[name] = "[" + fstr.join(", ") + "]";
 						} else {
@@ -438,7 +437,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 							filemap = {};
 							for (j = 0; j < FileHandles[name].length; j++) {
 								filemap["f" + j] = FileHandles[name][j];
-								fstr.push("f"+j + ": &lt;file"+j + "&gt;");
+								fstr.push("f"+j + ": <file"+j + ">");
 							}
 
 							obj[name] = filemap;
@@ -466,7 +465,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 					break;
 				case "path":
 					obj[name] = FileHandles[name][0];
-					prettyObj[name] = "&lt;file&gt;";
+					prettyObj[name] = "<file>";
 					break;
 				case "callback":
 					obj[name] = testCallbackFunc(name);
