@@ -28,9 +28,9 @@ var ExParamValues = {
 };
 
 var ExParamHelp = {
-	DragAndDrop_AddDropTarget_id: 'use "result" to drag+drop files to "Results" box below',
+	DragAndDrop_AddDropTarget_id: 'use "result" to drag+drop files to "Console" box below',
 	DragAndDrop_AddDropTarget_mimeTypes: 'Ex/ ["image/gif", "image/jpeg"]',
-	DragAndDrop_AttachCallbacks_id: 'use "result" to drag+drop files to "Results" box below',
+	DragAndDrop_AttachCallbacks_id: 'use "result" to drag+drop files to "Console" box below',
 	
 	FileBrowse_OpenBrowseDialog_mimeTypes: 'Ex/ ["image/png", "image/jpeg", "image/gif"]',
 	
