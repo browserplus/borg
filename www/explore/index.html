@@ -36,10 +36,11 @@
 	</div>
 
 </div>
-<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-<script type="text/javascript" src="json2.js"></script>
-<script type="text/javascript" src="parameters.js"></script>
+<script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+<script src="http://bp.yahooapis.com/toolbox/installer/1.0.11/install-min.js"></script>  
+<script src="json2.js"></script>
+<script src="parameters.js"></script>
 <script type="text/javascript">
 YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
     var ServiceOS = (BrowserPlus.clientSystemInfo().os == "Mac" ? "osx" : "win32");
@@ -495,8 +496,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	}
 
     // Action happens once BrowserPlus is initialized
-    // TODO - change this to BPTools to install it
-    BrowserPlus.init({}, function(r){
+    BPTool.Installer.show({}, function(r){
 
         var services = [
             {service: "FileBrowse", version:"1"},
