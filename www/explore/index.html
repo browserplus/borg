@@ -63,7 +63,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
             '<form><fieldset><br></fieldset></form>',
 
 		FunctionForm: 
-            '<h3>BrowserPlus.{sname}.{fname}()</h3>' +
+            '<h3><a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a></h3>' +
 			'<form name="fparams">' + 
 			'    <fieldset>' + 
 			'        <ol>' + 
@@ -284,7 +284,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 			}
 		}
 
-        Y.one("#method").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {sname:sname, fname:fname, fields:form}));
+        Y.one("#method").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {sname:sname, fname:fname, version: vname, fields:form}));
 	}
 
 	function log(level, str) {
