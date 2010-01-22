@@ -1,15 +1,15 @@
 # Frequently Asked Questions
 
-1. [How do I get BrowserPlus support?](#support)
+1. [How do I get help with BrowserPlus?](#support)
 2. [How do I diagnose installer problems?](#diagnoseInstallerProblem)
-3. [How do I use BrowserPlus only when it's already installed?](#initProgressively)
+3. [How do I use BrowserPlus only my site only if it's already installed?](#initProgressively)
 4. [How do I find BrowserPlus logs?](#findLogfiles)
 5. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
 6. [How do I send a bug report?](#bugReport)
 7. [How do I get BrowserPlus to display an installation dialog if not already installed?](#installDialog)
 
 <a name="support"></a>
-## How do I get BrowserPlus support?
+## How do I get help with BrowserPlus?
 
 If you are a BrowserPlus **user** and need help, please head over to [our forums](http://developer.yahoo.net/forum/index.php?s=887c0d15830324ed1fd45a1180d3dcf6&showforum=83).
 
@@ -42,7 +42,7 @@ Subject line (like "YIKES, Installer failure!").
 
 
 <a name="initProgressively"></a>
-## How do I use BrowserPlus only when it's already installed?
+## How do I use BrowserPlus only my site only if it's already installed?
 
 You can progressively enhance a web page to only use BrowserPlus if it is installed with the built-in init method.
 
