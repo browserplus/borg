@@ -28,7 +28,7 @@ var ExParamValues = {
 };
 
 var ExParamHelp = {
-	DragAndDrop_AddDropTarget_id: 'use "result" to drag+drop files to "Console" box below',
+	DragAndDrop_AddDropTarget_id: 'use "result" to drag+drop files to "Console" below, then run AttachCallbacks()',
 	DragAndDrop_AddDropTarget_mimeTypes: 'Ex/ ["image/gif", "image/jpeg"]',
 	DragAndDrop_AttachCallbacks_id: 'use "result" to drag+drop files to "Console" box below',
 	
