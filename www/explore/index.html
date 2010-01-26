@@ -182,28 +182,30 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
         if (service && version) {
             if (ServiceDetails[service+version]) {
-                // details already cache from call to Describe below
+                // details already cached from call to Describe below
                 setFunctionList(ServiceDetails[service+version]);
             } else {
                 // this will take a little time, so show Loading... in this case
                 Y.one("#functionlist").setContent(opt("Loading..."));
-                BrowserPlus.InactiveServices.Describe({service:service, version:version}, function(r) {
-                    if (r.success) {
-                        var ver = r.value.version;
-                        var fqn = r.value.name + ver.major + "." + ver.minor + "." + ver.micro;
-                        ServiceDetails[fqn] = r.value;
-                        setFunctionList(r.value);
+
+                BrowserPlus.describeService({service:service, version:version, minversion:version}, function(r1) {
+                    if (r1.success) {
+                        // fetching service description locally
+                        ServiceDetails[r1.value.name+r1.value.versionString] = r1.value;
+                        setFunctionList(r1.value);
                     } else {
-                        // Builtin services not described by InactiveServices, so get it thru AJAX
-		                Y.io(
-		                    "/api/v1/service/" + service + "/" + version + "/" + ServiceOS, 
-		                    {
-		                        on: {success: gotServiceDetails}, 
-		                        arguments:{s:service, v:version, cb:setFunctionList}
-	                        }
-	                    );
+                        // get description of service from web services
+                        BrowserPlus.InactiveServices.Describe({service:service, version:version}, function(r2) {
+                            if (r2.success) {
+                                ServiceDetails[r2.value.name + r2.value.versionString] = r2.value;
+                                setFunctionList(r2.value);
+                            } else {
+                                // failed getting service description in 2 ways
+                            }
+                        });
                     }
                 });
+
             }
         }
     }
@@ -221,7 +223,6 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         
         CurrentService = ServiceDetails[sname + vname];
         
-
         // get reference into current function
         for(i = 0, len = CurrentService.functions.length; i < len; i++) {
             if (CurrentService.functions[i].name == fname) {
@@ -489,61 +490,89 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		    BrowserPlus[sname][version][fname](obj, testInvokeFunc(fname));
 	    } else {
             log(INFO, "Requiring Service " + sname + " (" + version + ")");
-		    BrowserPlus.require({ services: [{service:sname, minversion:version}], progressCallback: progressCallback }, 
+		    BrowserPlus.require({ services: [{service:sname, version: version, minversion:version}], progressCallback: progressCallback }, 
 		        getRequireCallback(sname, fname, version, obj, prettyObj));
 	    }
 	}
 
+    function addVersion(name, version) {
+        if (ServiceVersions[name]) {
+            ServiceVersions[name].push(version);
+        } else {
+            ServiceVersions[name] = [version];
+        }
+    }
+
+
     // Action happens once BrowserPlus is initialized
-    BPTool.Installer.show({}, function(r){
+    BPTool.Installer.show({}, function(initres){
 
         var services = [
             {service: "FileBrowse", version:"1"},
             {service: "InactiveServices", version:"1"}
         ];
 
-	    if (r.success) {
-		    BrowserPlus.require({services: services}, function(x){
-                if (x.success) {
-                    BrowserPlus.InactiveServices.All({}, function(all) {
-                        if (all.success) {
-                            var opts = [], s, i, len = all.value.length, slist=Y.one("#servicelist"), 
-                            builtIns = ["DragAndDrop", "FileBrowse", "Log", "InactiveServices"], builtInVersion = "1.0.1";
+        if (!initres.success) {
+            // BrowserPlus did not start
+            alert("ERROR - not able to initialize BrowserPlus.  Error is " +
+                initres.error + (initres.verboseError ? " - " + initres.verboseError : ""));
+            return;
+        }
 
-                            // Add stand alone services
-                            for(i = 0; i < len; i++) {
-                                s = all.value[i];
+	    BrowserPlus.require({services: services}, function(x) {
+            if (!x.success) { 
+                // Could not require services
+                alert("ERROR - not able to require basic level to services.  Error is " +
+                    x.error + (x.verboseError ? " - " + x.verboseError : ""));
+                return;
+            }
 
-                                if (ServiceVersions[s.name]) {
-                                    ServiceVersions[s.name].push(s.version);
-                                } else {
-                                    opts.push(opt(s.name));
-                                    ServiceVersions[s.name] = [s.version];
+            // Get of available services
+            BrowserPlus.InactiveServices.All({}, function(all) {
+                if (all.success) {
+                    var s, i, len = all.value.length,allServices = {};
+
+                    // 1. Fetch all available services thru web services api
+                    for(i = 0; i < len; i++) {
+                        s = all.value[i];
+                        allServices[s.name + s.version] = true;
+                        addVersion(s.name, s.version);
+                    }
+
+                    // 2. Add builtin and "developer" services (service installed thru sdk)
+                    BrowserPlus.listActiveServices(function(r) {
+                        var services = [], slist=Y.one("#servicelist"), name, version;
+                        if (r.success) {
+                            for (i = 0, len = r.value.length; i < len; i++) {  
+                                name = r.value[i].name;
+                                version = r.value[i].version;
+
+                                // service may already have been added thru step 1 
+                                if (!allServices[name+version]) {
+                                    addVersion(name, version);
                                 }
                             }
-
-                            // Add Built-in services if not already present
-                            for (i = 0, len = builtIns.length; i < len; i++) {
-                                s = builtIns[i];
-                                if (!ServiceVersions[s]) {
-                                    opts.push(opt(s));
-                                    ServiceVersions[s] = [builtInVersion];
-                                }
-                            }
-
-                            opts.sort();
-                            
-                            slist.setContent(opts.join(""));
-                            slist.set("selectedIndex", -1);
-                            Y.on('change', serviceListChangedEvent, "#servicelist");
-                            Y.on('change', versionListChangedEvent, "#versionlist");
-                            Y.on('change', functionListChangedEvent, "#functionlist");
-                            Y.on("click",  formClickedEvent, '#method');//' input[type="button"]');
                         }
+
+                        // create a select list [option] for each service
+                        for (s in ServiceVersions) {
+                            if (ServiceVersions.hasOwnProperty(s)) {
+                                services.push(opt(s));
+                            }
+                        }
+
+                        // and sort services
+                        services.sort();
+                        slist.setContent(services.join(""));
+                        slist.set("selectedIndex", -1);
+                        Y.on('change', serviceListChangedEvent, "#servicelist");
+                        Y.on('change', versionListChangedEvent, "#versionlist");
+                        Y.on('change', functionListChangedEvent, "#functionlist");
+                        Y.on("click",  formClickedEvent, '#method');//' input[type="button"]');
                     });
                 }
-	        });
-        }
+            });
+        });
     });
 });
 </script>
