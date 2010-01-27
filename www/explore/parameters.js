@@ -53,6 +53,6 @@ var ExParamHints = {
     Tar_tar_files: "filelist",         // version >= 2
     Directory_list_files: "filelist",
     Directory_recursiveList_files: "filelist",
-    Directory_recursiveListWithStructure_files: "filelist"
+    Directory_recursiveListWithStructure_files: "filelist",
     Archiver_archive_files: "filelist"
 };
