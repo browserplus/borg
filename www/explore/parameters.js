@@ -50,8 +50,9 @@ var ExParamHints = {
 	Zipper_create_files: "filelist",  // version < 2
 	Zipper_zip_files: "filelist",     // version >= 2
 	Tar_create_files: "filelist",     // version < 2
-        Tar_tar_files: "filelist",         // version >= 2
-        Directory_list_files: "filelist",
-        Directory_recursiveList_files: "filelist",
-        Directory_recursiveListWithStructure_files: "filelist"
+    Tar_tar_files: "filelist",         // version >= 2
+    Directory_list_files: "filelist",
+    Directory_recursiveList_files: "filelist",
+    Directory_recursiveListWithStructure_files: "filelist"
+    Archiver_archive_files: "filelist"
 };
