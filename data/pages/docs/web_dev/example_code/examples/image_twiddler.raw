@@ -1,0 +1,184 @@
+<html>
+<head>
+  <title>The Image Twiddler</title>
+
+  <!-- site-specific styling code -->
+  <style type="text/css" media="screen">
+    #dropArea {
+      width:  600px;
+      height: 400px;
+      border: 1px dashed #999;
+    }
+  </style>
+  
+</head>
+<body>
+<div id="dropArea"> drop a photo here... </div>
+<div id="controls">
+<a href="#" id="rotateLeft">rotate left</a> |
+<a href="#" id="rotateRight">rotate right</a> |
+<select id="effectSelection">
+  <option value="">apply effect</option>
+  <option value="grayscale">Gray Scale</option>
+  <option value="solarize">Solarize</option>
+  <option value="sepia">Sepia</option>
+  <option value="swirl">Swirl</option>
+  <option value="oil_paint">Oil Paint</option>
+</select>
+<select id="cropSelection">
+  <option value="">crop image</option>
+  <option value="crop_center">middle 50%</option>
+  <option value="right_half">right half</option>
+  <option value="left_half">left half</option>
+</select>
+</div>
+<!-- inclusion of JS library for BrowserPlus access -->
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+
+<!-- site-specific javascript code -->
+<script type="text/javascript">
+
+var requiredServices = [
+  {service: "DragAndDrop"},
+  {service: "ImageAlter", version: "2"},
+  {service: "FileAccess", version: "1"}
+];
+
+// the set of modifications are to be performed on the image
+var imageParameters = {
+  file: null,
+  maxwidth: 600,
+  maxheight: 400,
+  crop: { x1: 0.0, x2: 1.0, y1: 0.0, y2: 1.0 },
+  rotation: 0,
+  quality: "low", // low is a bit faster but the result is lower quality
+  effects: [],
+  format: "png"      
+};
+
+function removeChildren(target) {
+  while (target && target.childNodes.length > 0) 
+  {
+     var kid = target.removeChild(target.firstChild);
+     if (kid) { delete kid; }
+  }
+}
+
+function renderImage() {
+  BrowserPlus.ImageAlter.Alter(imageParameters,
+    function (result) {
+      if (!result.success) {
+        alert("failed to modify image: " + result.error +
+              result.verboseError); 
+        return;
+      }
+      BrowserPlus.FileAccess.GetURL(
+        { file: result.value.file },
+        function (r) {        
+          var img = document.createElement('img')
+          img.setAttribute('src', r.value);
+          img.setAttribute('width', result.value.width);
+          img.setAttribute('height', result.value.height);
+          var target = document.getElementById("dropArea");
+          removeChildren(target);
+          target.appendChild(img);
+        });
+    });
+}
+
+function cropRequested() {
+  var s = document.getElementById("cropSelection");
+  if (s.selectedIndex > 0)  {
+    var o = s.options[s.selectedIndex];
+    if (o.value == "right_half") {
+      imageParameters.crop = { x1: 0.5, x2: 1.0, y1: 0.0, y2: 1.0 };
+    } else if (o.value == "left_half") {
+      imageParameters.crop = { x1: 0.0, x2: .5, y1: 0.0, y2: 1.0 };
+    } else {
+      imageParameters.crop = { x1: .25, x2: .75, y1: .25, y2: .75 };
+    }
+  } else {
+    imageParameters.crop = { x1: 0.0, x2: 0.0, y1: 1.0, y2: 1.0 };
+  }
+  renderImage();
+  return false; // no navigation
+}
+
+function effectSelected() {
+  var s = document.getElementById("effectSelection");
+  if (s.selectedIndex > 0)  {
+    var o = s.options[s.selectedIndex];
+    imageParameters.effects = [ o.value ];
+  } else {
+    imageParameters.effects = [ ];
+  }
+  renderImage();
+  return false; // no navigation
+}
+
+function rotateLeftClicked() {
+  imageParameters.rotation -= 90;
+  var c = imageParameters.crop;
+  imageParameters.crop = {x1: c.y1, x2: c.y2, y1: 1 - c.x2, y2: 1 - c.x1};
+  renderImage();
+  return false; // no navigation
+}
+
+function rotateRightClicked() {
+  imageParameters.rotation += 90;
+  var c = imageParameters.crop;
+  imageParameters.crop = {x1: 1 - c.y2, x2: 1 - c.y1, y1: c.x1, y2: c.x2};
+  renderImage();
+  return false; // no navigation
+}
+
+function imageDropped(r) {
+  // ignore multiple files dropped
+  imageParameters.file = r[0];
+  renderImage();
+}
+
+function userHovering(isHovering) {
+ var tgt = document.getElementById('dropArea');
+  var msg = (isHovering ? "Drop it, mang!" : "drop a photo here...");
+  tgt.innerHTML = msg;
+}
+
+function loadUI(result) {
+  if (!result.success) {
+    alert("you must install the required services " +
+      "if you want to use this site.");
+    return;
+  }
+
+  // cool, we've got what we need let's set up a drop target 
+  BrowserPlus.DragAndDrop.AddDropTarget({id: "dropArea"}, function(){});
+  BrowserPlus.DragAndDrop.AttachCallbacks({
+    id: "dropArea",
+    hover: userHovering,
+    drop: imageDropped},
+    function(){});
+
+    // now set up controls
+    var e = document.getElementById("rotateLeft");
+    e.onclick = rotateLeftClicked;
+    e = document.getElementById("rotateRight");
+    e.onclick = rotateRightClicked;
+    e = document.getElementById("effectSelection");
+    e.onchange = effectSelected;
+    e = document.getElementById("cropSelection");
+    e.onchange = cropRequested;
+  }
+
+  BrowserPlus.init(function(result) {
+    if (!result.success) {
+      alert("you must install browserplus to run this demo");
+      return;
+    }
+    // cool, B+ is installed, let's specify the services we want
+    BrowserPlus.require({services: requiredServices}, loadUI);
+});
+
+</script>
+</body>
+</html>

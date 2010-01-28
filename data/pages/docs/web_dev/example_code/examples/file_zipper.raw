@@ -1,0 +1,108 @@
+<html>
+<head><title>Zip Uploads</title></head>
+<body>
+    <p>Select one or more files to <em>ZIP</em> them before upload.</p>
+    <input id="sel" type="button" value="Select Files...">
+    <input id="up" type="button" value="Upload File" disabled>
+
+    <p id="files">[<em>Select files above</em>]</p>
+    <pre id="zip"></pre>
+</body>  
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript">
+var ZippedFiles = null,
+    elFile = document.getElementById("files"),
+    elZip  = document.getElementById("zip"),
+    elSel  = document.getElementById("sel"),
+    elUp   = document.getElementById("up");
+
+function bytes(size) {
+    var i, units = [' B',' KB',' MB', ' GB',' TB'];
+    for (i = 0; size > 1024; i++) { size /= 1024; }
+    return Math.round(size*10)/10 + units[i];
+}
+
+function selectFiles(e) {
+    BrowserPlus.FileBrowse.OpenBrowseDialog({"includeGestureInfo":true}, function(res) {
+        var i, files, origSize=0;
+
+        ZippedFiles = null;
+
+        if (res.success) {
+            // using "files" here to calculate size before zipping
+            files = res.value.files;
+            for (i = 0; i < files.length; i++) {
+                origSize += files[i].handle.size
+            }
+
+            elFile.innerHTML =  ""+ files.length + 
+                " file(s) selected, Original Size=" + bytes(origSize);
+            elZip.innerHTML = "Zip Size=<em>zipping...</em>";
+
+            // using "actualSelection" to give ZIP the files user explictly
+            // chose, otherwise ZIPPER would recurse folder and get dups
+            BrowserPlus.Zipper.createZip({files: res.value.actualSelection}, function (res) {
+                var msg, pc, zf;
+                
+                if (res.success) {
+                    zf = res.value.zipFile;
+                    pc = Math.round((1 - (zf.size / origSize))*100);
+                    msg = "Zip Size=" + bytes(zf.size) + 
+                        " - a savings of " + pc + "% or " + 
+                        bytes(origSize - zf.size);
+                    ZippedFiles = zf;
+                    elUp.disabled = false;
+                 } else {
+                     msg = "ERROR zipping files";
+                 }
+                 elZip.innerHTML = msg;
+            });
+        }
+    });
+    return false;
+}
+
+function uploadFiles(e) {
+    elFile.innerHTML ="Uploading...";
+    elZip.innerHTML = "";
+
+    if (ZippedFiles != null) {
+        BrowserPlus.Uploader.upload( 
+            {
+                url: "upload.php", 
+                files: {"file": ZippedFiles} 
+            }, 
+            function(res) {
+                if (res.success) {
+                    elFile.innerHTML ="Uploaded!  Result:";
+                    elZip.innerHTML = res.value.body;
+                } else {
+                    elZip.innerHTML = "ERROR: " + res.error;
+                }
+            });
+    }
+    return false;
+}
+
+BrowserPlus.init(function(res) {
+    if (res.success) {
+        BrowserPlus.require({
+            services: [
+                { service: "Uploader", version: "3", minversion: "3.1.5" },
+                { service: "FileBrowse", version: "1" },
+                { service: "Zipper", version: "1"}
+            ]}, function(res) {
+                if (res.success) {
+                    elSel.onclick = selectFiles;
+                    elUp.onclick = uploadFiles;
+                } else {
+                    alert("Call to BrowserPlus.require failed: " + res.error);
+                }
+            });
+
+    } else {
+        alert("Call to BrowserPlus.init failed: " + res.error);
+    }
+}); 
+</script> 
+</html>

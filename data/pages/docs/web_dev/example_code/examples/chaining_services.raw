@@ -1,0 +1,132 @@
+<html>
+  <head><title>Uploading Thumbnails</title>
+  <style type="text/css" media="screen">  
+    #dropArea { width: 200px; height:200px; border: 1px solid #999; }  
+  </style>    
+</head>
+
+<body>
+  <p>
+    <div id="dropNotes"> loading ... </div>
+    <div id="dropArea"> <img id="droppedThumbnail"> </div>
+    File Name: <span id="lastDropInfo"> ... </span> <br>
+    Client MD5: <span id="clientMD5"> ... </span> <br>
+    Server MD5: <span id="serverMD5"> ... </span>
+  </p>
+</body>  
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript">
+// a convenience function to alter the content of the "dropNotes" div
+// to give user feedback
+function setDropAreaTitle(txt) {
+  var div = document.getElementById("dropNotes");
+  while (div.firstChild) {div.removeChild(div.firstChild);}
+  div.appendChild(document.createTextNode(txt));
+}
+
+// a function that will be invoked when the user is hovering over
+// the drop target.
+function hovering(hoverOn) {
+  if (hoverOn) {setDropAreaTitle("drop it!");}
+  else {setDropAreaTitle("drag another image to the box below");}
+} 
+
+// a function invoked when the user drops content matching the
+// mime-types specified in AddDropTarget below
+function dropped(arg) {
+  var textArea = document.getElementById("lastDropContents");
+
+  var txt = arg[0].name;
+ 
+  // set summary text
+  lds = document.getElementById("lastDropInfo");
+  while (lds.firstChild) lds.removeChild(lds.firstChild);
+  lds.innerHTML = txt;
+
+  // We've got a drop that contains the specified mime types (an image),
+  // let's route that image through the ImageAlter service to generate
+  // a thumbnail
+  BrowserPlus.ImageAlter.Alter({
+	file: arg[0],
+	maxwidth: 200,
+	maxheight: 200,
+	quality:  "low"
+  }, function (r) {
+	if (!r.success) {
+	  alert('image alter failed');
+	} else {
+      // We successfully scaled the image! 
+
+	  // first, let's render a preview for the user
+	  BrowserPlus.FileAccess.GetURL(
+		{ file: r.value.file },
+		function (r) {
+		  if (r.success) {
+			var tn = document.getElementById("droppedThumbnail");			
+			tn.src = r.value;
+		  }
+		});
+
+	  // next, let's automatically start an upload
+	  BrowserPlus.Uploader.upload(
+		{
+		  files: { thumbnail: r.value.file },
+		  url: "/misc/calculate_md5.php"
+		},
+		function (r) {
+		  if (r.success) {
+			var md5 = document.getElementById("serverMD5");			
+			md5.innerHTML = r.value.body;
+		  }
+		});
+
+	  // finally, let's calculate the MD5 sum of the file on the client
+	  BrowserPlus.FileChecksum.md5(
+		{ file: r.value.file },
+		function (r) {
+		  if (r.success) {
+			var md5 = document.getElementById("clientMD5");			
+			md5.innerHTML = r.value;
+		  }
+		});
+	}
+  });
+}
+
+BrowserPlus.init(function(res) {
+  if (res.success) {
+   BrowserPlus.require({
+      services: [
+		{service: 'DragAndDrop', version: "1"},
+		{service: 'ImageAlter', version: "2"},
+		{service: 'Uploader', version: "3", minversion: "3.1.5" },
+		{service: 'FileAccess', version: "1" },
+		{service: 'FileChecksum', version: "1" }
+	  ]},
+      function(res) {
+        if (res.success) {
+          var dnd = BrowserPlus.DragAndDrop;
+          dnd.AddDropTarget(
+            {
+			  id: "dropArea",
+			  mimeTypes: [ "image/png", "image/jpeg", "image/gif" ]
+			},
+            function(res) {
+              dnd.AttachCallbacks({
+                id: "dropArea",
+                hover: hovering,
+                drop: dropped
+              },
+              function(){});  
+            setDropAreaTitle("drag an image to the box below.");
+          });
+        } else {
+          alert("Error Loading DragAndDrop: " + res.error);
+        }
+      });
+  } else {
+    alert("Failed to initialize BrowserPlus: " + res.error);
+  }
+}); 
+</script> 
+</html>
