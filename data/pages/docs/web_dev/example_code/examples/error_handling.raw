@@ -1,0 +1,63 @@
+<html>
+<head>
+  <title>Errors and Return Values.</title>
+  <style type="text/css" media="screen">
+    #outputArea { width: 80%; padding: 10px; height:150px;
+      border: 1px solid #999; }
+  </style>
+</head>
+
+<body>
+<a href="#" id="runValidCall"> run successful BrowserPlus call</a>
+<br>
+<a href="#" id="runInvalidCall"> run invalid BrowserPlus call</a>
+<pre id="outputArea">
+</div>
+
+<script type="text/javascript" src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript" src="/explore/json2.js"></script>
+<script type="text/javascript">
+var requiredServices = [
+  { 
+    service: "PStore"
+  }
+];
+
+function dumpOutput(res) {
+  var jsonText = JSON.stringify(res, null, "  ");
+  var outputArea = document.getElementById("outputArea");
+  while (outputArea.firstChild) {
+    outputArea.removeChild(outputArea.firstChild);
+  }
+  outputArea.appendChild(document.createTextNode(jsonText));
+}
+
+function bpLoaded(res) {
+  if (res.success) {
+    BrowserPlus.PStore.set({key: 'foo', value: [1,2,3,'bar'] },
+      function(){});
+
+    // set up our links 
+    document.getElementById("runValidCall").onclick = function() {
+      BrowserPlus.PStore.get({key: 'foo'}, dumpOutput);
+      return false;
+    }
+
+    document.getElementById("runInvalidCall").onclick = function() {
+      BrowserPlus.PStore.get({key: 'foo', bogus: 'no such param'},
+        dumpOutput);
+      return false;
+    }
+  }
+}
+
+BrowserPlus.init(function(res) {
+  if (res.success) {
+    BrowserPlus.require({services: requiredServices}, bpLoaded);
+  } else {
+    alert("BrowserPlus required!");
+  }
+});
+</script>
+</body>
+</html>
