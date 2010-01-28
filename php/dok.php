@@ -237,7 +237,7 @@ class Dok implements iFileScanner
 
             // replace @{insert examples/file_name.html}
             //         @{service DragAndDrop}
-            $body = preg_replace_callback('/@\{([a-z]+)\s*(.+)\}/i', array(&$this, 'at_actions'), $body);
+            $body = preg_replace_callback('/@\{([a-z]+)\s*(.+?)\}/i', array(&$this, 'at_actions'), $body);
 
             // Using Google Code Prettyify cause it seems to be the lightest 
             // weight JavaScript prettifier.  Just 2 files.
