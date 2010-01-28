@@ -189,21 +189,31 @@ class Dok implements iFileScanner
         return $tbl;
     }
 
-    private function at_insert($matches) {
-        $dir = $this->pagedata['datadir'];
-        $path = $dir . $matches[1];
-        if (file_exists($path)) {
-            $code = file_get_contents($path);
-            // could by @{var} patterns in file.
-            $code = str_replace($this->varmap_keys, $this->varmap_vals, $code);
-            $tr = "<tr><td class=\"runex\" colspan=2 align=\"right\"><a href=\"" . 
-                str_replace(".raw", ".html", $matches[1]) . "\">Run Example</a></td></tr>";
-            $str = $this->fmt_code_with_line_numbers($code, $tr);
+    // replace @{action data} vars
+    // actions: 
+    //     include - include example source code
+    //     service - link to explorewr
+    private function at_actions($matches) {
+        $action = $matches[1];
+        if ($action == "include") {
+            // include source code
+            $dir = $this->pagedata['datadir'];
+            $path = $dir . $matches[2];
+            if (file_exists($path)) {
+                $code = file_get_contents($path);
+                // could by @{var} patterns in file.
+                $code = str_replace($this->varmap_keys, $this->varmap_vals, $code);
+                $tr = "<tr><td class=\"runex\" colspan=2 align=\"right\"><a href=\"" . 
+                    str_replace(".raw", ".html", $matches[2]) . "\">Run Example</a></td></tr>";
+                $str = $this->fmt_code_with_line_numbers($code, $tr);
 
-        } else {
-            $str = "<pre style=\"color:#900\">ERROR - could not find\n$path</pre>";
+            } else {
+                $str = "<pre style=\"color:#900\">ERROR - could not find\n$path</pre>";
+            }
+        } else if ($action == "service") {
+            $s = $matches[2];
+            $str = "<a href=\"/explore/index.html?s=$s\">$s</a>";
         }
-
         return $str;
     }
 
@@ -225,8 +235,9 @@ class Dok implements iFileScanner
             // Substitute our homegrown @{varname} syntax.  Values set in data/dok/helper.php
             $body = str_replace($this->varmap_keys, $this->varmap_vals, $body);
 
-            // replace {@insert examples/file_name.html}
-            $body = preg_replace_callback('/@\{include\s*(.+)\}/i', array(&$this, 'at_insert'), $body);
+            // replace @{insert examples/file_name.html}
+            //         @{service DragAndDrop}
+            $body = preg_replace_callback('/@\{([a-z]+)\s*(.+)\}/i', array(&$this, 'at_actions'), $body);
 
             // Using Google Code Prettyify cause it seems to be the lightest 
             // weight JavaScript prettifier.  Just 2 files.

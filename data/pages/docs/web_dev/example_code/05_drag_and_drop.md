@@ -1,4 +1,4 @@
-The BrowserPlus [DragAndDrop Service](/explore/?s=DragAndDrop) allows a web developer to make any HTML node a target for
+The BrowserPlus @{service DragAndDrop} service allows a web developer to make any HTML node a target for
 native drops of files. The general usage of DragAndDrop is thus:
 
 1. Developer `requires()` the DragAndDrop built-in service
@@ -9,6 +9,6 @@ native drops of files. The general usage of DragAndDrop is thus:
 @{include examples/drag_and_drop.raw}
 
 DragAndDrop gives javascript a means of attaining opaque FileHandles, which can then be passed to other services, such as
-[ImageAlter](/explore/?s=ImageAlter). A "FileHandle" is simply a javascript object which contains an opaque numeric
+@{service ImageAlter}. A "FileHandle" is simply a javascript object which contains an opaque numeric
 identifier of the selected file, and a "display name" in the `BrowserPlusHandleName` property. The latter is simply the
 filename with path information removed, which makes it meaningful for display to the end user.

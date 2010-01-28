@@ -1,5 +1,5 @@
-This sample demonstrates the conventions used when data is returned from a BrowserPlus service. The [PStore
-Service](/explore/?s=PStore) is the tool we use to explore return values.
+This sample demonstrates the conventions used when data is returned from a BrowserPlus service. The @{service PStore}
+Service is the tool we use to explore return values.
 
 @{include examples/error_handling.raw}
 
