@@ -13,7 +13,7 @@
 </p>
 <img id="lastDropImg">
 
-<script type="text/javascript" src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
 <script type="text/javascript">
 $BP = BrowserPlus;
 

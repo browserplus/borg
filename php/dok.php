@@ -169,12 +169,12 @@ class Dok implements iFileScanner
         $str = htmlentities($str);
         $tbl = "\n<table>\n<tr><td><pre class=\"linenumbers\">";
         if ($cnt < 10) { 
-            $fmt = "%d:\n";
+            $fmt = "%d\n";
         } else if ($cnt < 100) {
-            $fmt = "%02d:\n";
+            $fmt = "%02d\n";
         } else {
             // if we're showing more than 1,000 code of lines at a time, we're doing something wrong
-            $fmt = "%03d:\n";
+            $fmt = "%03d\n";
         }
 
         for($i = 1; $i <= $cnt; $i++) {
@@ -201,7 +201,7 @@ class Dok implements iFileScanner
             $path = $dir . $matches[2];
             if (file_exists($path)) {
                 $code = file_get_contents($path);
-                // could by @{var} patterns in file.
+                // replace @{var} patterns in file (for things like bpver).
                 $code = str_replace($this->varmap_keys, $this->varmap_vals, $code);
                 $tr = "<tr><td class=\"runex\" colspan=2 align=\"right\"><a href=\"" . 
                     str_replace(".raw", ".html", $matches[2]) . "\">Run Example</a></td></tr>";

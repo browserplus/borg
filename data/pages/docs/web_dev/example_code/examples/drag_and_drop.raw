@@ -10,7 +10,7 @@
 <p>
 <div id="lastDropDetails"></div>   
 
-<script type="text/javascript" src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
 <script type="text/javascript">
 function setDropAreaText(txt) {
   var div = document.getElementById("myTarget");

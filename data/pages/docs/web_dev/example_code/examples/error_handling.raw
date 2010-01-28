@@ -14,8 +14,8 @@
 <pre id="outputArea">
 </div>
 
-<script type="text/javascript" src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript" src="/explore/json2.js"></script>
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript" src="/misc/json2.js"></script>
 <script type="text/javascript">
 var requiredServices = [
   { 
