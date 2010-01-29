@@ -145,7 +145,7 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 /* for code examples with line numbers, remove margin */
 td pre { margin:0;}
 .runex {font-size:85%;font-family:Arial,sans-serif;}
-.linenumbers { background:#f2eee9;}
+.linenumbers { background:#f0eee9;}
 
 
 /* log (git and irc tables) */

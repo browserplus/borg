@@ -13,9 +13,6 @@ class Lighthouse
     private static $ticketsKey = "lighthouse.tickets.";
     private static $allTicketsKey = "lighthouse.tickets.all";
     
-    // keep N items 
-    private static $itemsToKeep = 20;
-
     private static $projectsUrl = "http://browserplus.lighthouseapp.com/projects.xml?_token=%s";
     private static $ticketsUrl  = "http://browserplus.lighthouseapp.com/projects/%s/tickets.xml?_token=%s";
     private static $token = null;
@@ -31,7 +28,7 @@ class Lighthouse
         return get_secret("cachekey");
     }
     
-    // return a size limited list ('itemsToKeep') list of bugs for all projects
+    // return a list of bugs for all projects
     function get_all_bugs() {
         $key = self::$allTicketsKey;
         $bugs = array();
@@ -48,7 +45,6 @@ class Lighthouse
             // newest on top
             usort($bugs, "lighthouse_update_cmp");
         
-            $bugs = array_slice($bugs, 0, self::$itemsToKeep);
             apc_store($key, json_encode($bugs));
         }
         
