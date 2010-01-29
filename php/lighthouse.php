@@ -16,9 +16,12 @@ class Lighthouse
     private static $projectsUrl = "http://browserplus.lighthouseapp.com/projects.xml?_token=%s";
     private static $ticketsUrl  = "http://browserplus.lighthouseapp.com/projects/%s/tickets.xml?_token=%s";
     private static $token = null;
+
+    var $clean_cache = 0;
     var $projectNameMap = array();
     
-	function __construct() {
+	function __construct($clean_cache=0) {
+	    $this->clean_cache = $clean_cache;
 	    $this->token = get_secret("lighthouse");
     }
 
@@ -33,7 +36,7 @@ class Lighthouse
         $key = self::$allTicketsKey;
         $bugs = array();
 
-        if (!($json = apc_fetch($key))) {
+        if ($this->clean_cache || !($json = apc_fetch($key))) {
             $ids = $this->get_project_ids();
 
             if (count($ids) > 0) {
@@ -61,7 +64,7 @@ class Lighthouse
         $key = self::$ticketsKey . $project_id;
         $bugs = array();
         apc_store($key, null);
-        if (!($xml = apc_fetch($key))) {
+        if ($this->clean_cache || !($xml = apc_fetch($key))) {
             $url = sprintf(self::$ticketsUrl, $project_id, $this->token);
 
             $xml = fetch($url);
@@ -92,7 +95,7 @@ class Lighthouse
         $ids = array();
         $key = self::$projectKey;
         
-        if (!($xml = apc_fetch($key))) {
+        if ($this->clean_cache || !($xml = apc_fetch($key))) {
             $url = sprintf(self::$projectsUrl, $this->token);
             $xml = fetch($url);
             apc_store($key, $xml);

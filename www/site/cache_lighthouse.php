@@ -2,7 +2,7 @@
 include("../../php/site.php");
 include("../../php/lighthouse.php");
 
-$bugs = new Lighthouse();
+$bugs = new Lighthouse(1);
 
 // to make sure we're the ones calling
 if (isset($_GET["s"]) && $_GET["s"] == $bugs->get_cache_secret()) {
