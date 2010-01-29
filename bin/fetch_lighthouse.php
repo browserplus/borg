@@ -3,6 +3,10 @@
 include("/home/websites/browserplus/php/site.php");
 include("/home/websites/browserplus/php/lighthouse.php");
 
+// DOK_BASE - normally set in apache, but not available to scripts
+putenv("DOK_BASE=/home/websites/browserplus/data");
+
+
 $bugs = new Lighthouse();
 $secret = $bugs->get_cache_secret();
 
