@@ -26,8 +26,6 @@ class GIT {
 
     // fetch browserplus platform issues from GIT
     function fetch_platform_issues() {
-        echo "<pre>fetch_platform_issues";
-
         // 1. Fetch the json encoded issues from github
         // 2. Iterate thru issues, just keeping data we need (title/number)
         // 3. Sort "temp" by updated_at (stored in key)
