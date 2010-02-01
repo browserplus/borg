@@ -12,17 +12,17 @@
     <div id="navlists">
         <div id="services">
             <h2>Services</h2>
-            <select id="servicelist" size="7"><option>Loading...</option></select>
+            <select id="servicelist" size="8"><option>Loading...</option></select>
         </div>
 
         <div id="versions">
             <h2>Versions</h2>
-            <select id="versionlist" size="7"></select>
+            <select id="versionlist" size="8"></select>
         </div>
 
         <div id="functions">
             <h2>Functions</h2>
-            <select id="functionlist" size="7"></select>
+            <select id="functionlist" size="8"></select>
         </div>
     </div>
 
@@ -288,12 +288,24 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         Y.one("#method").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {sname:sname, fname:fname, version: vname, fields:form}));
 	}
 
-	function log(level, str) {
+	function log(level, str, fmt) {
 
-        var r = Y.one("#result");
+        var cnt, r = Y.one("#result");
         if (r) {
+            str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+ 	        try {
+		        cnt = ((str.match(/[^\n]*\n[^\n]*/gi).length));
+	        } catch(e) {
+		        cnt = 0;
+	        }
+
+            if (fmt && cnt > 0) {
+                str = "VALUE:\n<pre>" + str + "</pre>";
+            }
+
 		    r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
-		        '<span class="log_' + level + '">' + str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</span></div>");
+		        '<span class="log_' + level + '">' + str + "</span></div>");
 		    //r.append("<br>");
             //prettyPrint();
             r.set("scrollTop", r.get("scrollHeight"));
@@ -325,7 +337,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		return function(res) {
 			if (res.success) {
 			    log(INFO, "SUCCESS");
-                log(RETVAL, JSON.stringify(res.value, null, "  "));
+                log(RETVAL, JSON.stringify(res.value, null, "  "), true);
 			} else {
 			    log(INFO, "FAILURE");
                 log(ERROR, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
@@ -336,7 +348,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	function testCallbackFunc(name) {
 		return function(res) {
             log(INFO, name + " CALLBACK");
-		    log(RETVAL, JSON.stringify(res, null, "  "));
+		    log(RETVAL, JSON.stringify(res, null, "  "), true);
 	    };
     }
 
@@ -366,7 +378,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         // FileBrowse 2.0.0 changed to use Directory Service, so fixing this to original 1.0.1
 		BrowserPlus.FileBrowse["1.0.1"].OpenBrowseDialog(limit, function(res) {
 			var i, handles = [], name, files = res.value.actualSelection, len = files.length, fnames=[];
-            log(RETVAL, JSON.stringify(files, null, " "));
+            log(RETVAL, JSON.stringify(files, null, " "), true);
 			if (Y.Lang.isArray(files) && len > 0) {
 				for (i = 0; i < len; i++) {
 					handles.push(files[i]);
