@@ -294,6 +294,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         if (r) {
             str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+            // from http://snippets.dzone.com/posts/show/5770
  	        try {
 		        cnt = ((str.match(/[^\n]*\n[^\n]*/gi).length));
 	        } catch(e) {
