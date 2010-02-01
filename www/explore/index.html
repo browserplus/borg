@@ -8,7 +8,6 @@
 <body class="yui-skin-sam">
     
 <div id="explorer">
-    <!-- h1>Service Explorer</h1 -->
     <div id="navlists">
         <div id="services">
             <h2>Services</h2>
@@ -28,8 +27,8 @@
 
     <div id="container">
         <div id="method">
-            <h3>Select the Service, Version and Function Above</h3>
-            <form><fieldset><br></fieldset></form>
+            <h3 id="title">Select the Service, Version and Function Above</h3>
+            <form id="frm" name="fparams"><fieldset id="fields"><br></fieldset></form>
         </div>
 		<h3>Console</h3>
 		<div id="result" class="prettyprint"></div>
@@ -58,20 +57,17 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
     var TIME = "time";
     
     var Tmpl = {
-        EmptyForm:
-            '<h3>Select the Service, Version and Function Above</h3>' + 
-            '<form><fieldset><br></fieldset></form>',
+        EmptyTitle: 'Select the Service, Version and Function Above</h3>',
+        EmptyForm:  '<br>',
+
+        FunctionTitle: 
+            '<a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a>',
 
 		FunctionForm: 
-            '<h3><a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a></h3>' +
-			'<form name="fparams">' + 
-			'    <fieldset>' + 
-			'        <ol>' + 
-			'{fields}' +
-			'	         <li><input class="runAction" type="button" value="Run" id="submit"></li>' + 
-			'        </ol>' + 
-			'    </fieldset>' +
-			'</form>',
+			'<ol>' + 
+			'    {fields}' +
+			'    <li><input class="runAction" type="button" value="Run" id="submit"></li>' + 
+			'</ol>',
 
 		FunctionParams:
 			'<dt class="parameter">' + 
@@ -164,7 +160,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         Y.one("#functionlist").setContent(opt(""));
 
         // replace function form with empty form
-        Y.one("#method").setContent(Tmpl.EmptyForm, {});
+        Y.one("#title").setContent(Tmpl.EmptyTitle);
+        Y.one("#fields").setContent(Tmpl.EmptyForm);
     }
 
     // Version string is selected from Versions List
@@ -178,7 +175,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         var version = Y.one("#versionlist").get("value");
     
         // replace function form with empty form
-        Y.one("#method").setContent(Tmpl.EmptyForm, {});
+        Y.one("#title").setContent(Tmpl.EmptyTitle);
+        Y.one("#fields").setContent(Tmpl.EmptyForm);
 
         if (service && version) {
             if (ServiceDetails[service+version]) {
@@ -233,7 +231,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
         FileHandles = {};
         
-        var plen = CurrentFunction.parameters.length, p, value, params="", opt1, opt2, form="", help, enabled, style, key, hint;
+        var plen = CurrentFunction.parameters.length, p, value, params="", opt1, opt2, form="", help, enabled, style, key, hint, firstFocus;
 
 		if (plen === 0) {
 			params = '<dt class="noparams">No parameters</dt>';
@@ -277,15 +275,20 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 					style = 'style="background:#def"';
 				}
 
-				
+                if (!firstFocus) { firstFocus = "f_" + p.name; }
 				form += '<li><label>' + opt1 + p.name + ":" + p.type + opt2 + "</label>";
-				form += '<input ' + enabled + ' type="text" name="f_' + p.name + 
+				form += '<input ' + enabled + ' type="text" id="f_' + p.name + '" name="f_' + p.name + 
 					'" ' + style + ' value="' + value.replace(/"/g, "&quot;") + '" "size="40">' + help;
 				form += '</li>';
 			}
 		}
 
-        Y.one("#method").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {sname:sname, fname:fname, version: vname, fields:form}));
+            '<a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a>',
+
+        Y.one("#title").setContent(Y.Lang.substitute(Tmpl.FunctionTitle, {sname:sname, fname:fname, version: vname}));
+        Y.one("#fields").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {fields:form}));
+
+        if (firstFocus) { Y.one("#"+firstFocus).focus();}
 	}
 
 	function log(level, str, fmt) {
@@ -323,7 +326,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
     function formClickedEvent(e) {
         var node = e.target;
 
-        if (node.hasClass("runAction")) {
+        // Run button pressed or 'Enter' key pressed
+        if (node.hasClass("runAction") || node.get("id") == "frm") {
             e.preventDefault();
             log(INFO, "==== Run! ====")
             runAction();
@@ -581,7 +585,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
                         Y.on('change', serviceListChangedEvent, "#servicelist");
                         Y.on('change', versionListChangedEvent, "#versionlist");
                         Y.on('change', functionListChangedEvent, "#functionlist");
-                        Y.on("click",  formClickedEvent, '#method');//' input[type="button"]');
+                        Y.on("click",  formClickedEvent, '#fields');//' input[type="button"]');
+                        Y.on("submit", formClickedEvent, '#frm');//' input[type="button"]');
                     });
                 }
             });
