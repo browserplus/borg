@@ -40,19 +40,17 @@
 
 var requiredServices = [
   {service: "DragAndDrop"},
-  {service: "ImageAlter", version: "2"},
+  {service: "ImageAlter", version: "4", minversion: "4.0.4"},
   {service: "FileAccess", version: "1"}
 ];
 
 // the set of modifications are to be performed on the image
 var imageParameters = {
   file: null,
-  maxwidth: 600,
-  maxheight: 400,
-  crop: { x1: 0.0, x2: 1.0, y1: 0.0, y2: 1.0 },
-  rotation: 0,
-  quality: "low", // low is a bit faster but the result is lower quality
-  effects: [],
+  quality: 50,
+  actions: [
+    { scale: { maxwidth: 600, maxheight: 400 } }
+  ],
   format: "png"      
 };
 
@@ -65,7 +63,7 @@ function removeChildren(target) {
 }
 
 function renderImage() {
-  BrowserPlus.ImageAlter.Alter(imageParameters,
+  BrowserPlus.ImageAlter.transform(imageParameters,
     function (result) {
       if (!result.success) {
         alert("failed to modify image: " + result.error +
@@ -116,27 +114,57 @@ function effectSelected() {
   return false; // no navigation
 }
 
+function setRotate(degChange) {
+  var action = null;
+  var scale = null;
+  for (var i = 0; i < imageParameters.actions.length; i++) {
+    if (imageParameters.actions[i].rotate) {
+      action = imageParameters.actions[i];
+    }                  
+    else if (imageParameters.actions[i].scale) {
+      scale = imageParameters.actions[i].scale;
+    }                  
+  }
+  if (!scale) {
+    throw "couldn't find scale argument!  inconsistent state";
+  }
+  if (!action) {
+    action = {rotate: 0};
+    imageParameters.actions.push(action); 
+  }
+  action.rotate += degChange;
+  var swp = scale.maxheight;
+  scale.maxheight = scale.maxwidth;
+  scale.maxwidth = swp;
+}
+
 function rotateLeftClicked() {
-  imageParameters.rotation -= 90;
-  var c = imageParameters.crop;
-  imageParameters.crop = {x1: c.y1, x2: c.y2, y1: 1 - c.x2, y2: 1 - c.x1};
+  setRotate(-90);
   renderImage();
   return false; // no navigation
 }
 
 function rotateRightClicked() {
-  imageParameters.rotation += 90;
-  var c = imageParameters.crop;
-  imageParameters.crop = {x1: 1 - c.y2, x2: 1 - c.y1, y1: c.x1, y2: c.x2};
+  setRotate(90);
   renderImage();
   return false; // no navigation
 }
 
 function imageDropped(r) {
-  // ignore multiple files dropped
-  imageParameters.file = r[0];
-  renderImage();
-}
+  // let's downscale a version of the image at drop time
+  BrowserPlus.ImageAlter.transform({
+    // ignore multiple files dropped
+    file: r[0],
+    quality: 50,
+    actions: [ { scale: { maxwidth: 600, maxheight: 400 } } ],
+    format: "png"
+  }, function(r) {
+    if (r.success) {
+      imageParameters.file = r.value.file;
+      renderImage();
+    }
+  });
+};
 
 function userHovering(isHovering) {
  var tgt = document.getElementById('dropArea');
