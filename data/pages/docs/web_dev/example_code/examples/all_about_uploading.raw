@@ -1,0 +1,101 @@
+<html>
+  <head><title>More Uploading...</title>
+  <style type="text/css" media="screen">  
+    #dropArea { width: 600px; height:100px; border: 1px solid #999; }  
+    #dropTable th { background: #ccc; padding: 4px; }
+  </style>    
+</head>
+
+<body>
+  <p>
+    <div id="dropNotes"> loading ... </div>
+    <div id="dropArea"> </div>
+    Progress: <span id="fileProgress">...</span>/<span id="totalProgress">...</span>
+    <h2>Server Response:</h2>
+    <pre id="serverResponse"></pre>
+</body>  
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script class="javascript">
+$BP = BrowserPlus;
+
+// a convenience function to alter the content of the "dropNotes" div
+// to give user feedback
+function setDropAreaTitle(txt) {
+  var div = document.getElementById("dropNotes");
+  while (div.firstChild) {div.removeChild(div.firstChild);}
+  div.appendChild(document.createTextNode(txt));
+}
+
+// a function that will be invoked when the user is hovering over
+// the drop target.
+function hovering(hoverOn) {
+  if (hoverOn) {setDropAreaTitle("drop it!");}
+  else {setDropAreaTitle("drag more files the box below");}
+} 
+
+function updateProgress(p) {
+  var tp = document.getElementById("totalProgress");
+  var fp = document.getElementById("fileProgress");
+  tp.innerHTML = p.totalPercent;
+  fp.innerHTML = p.filePercent;
+} 
+
+// a function invoked when the user drops content on the target
+function dropped(arg) {
+  var filesToUpload = {};
+  var id = 0;
+  for (var i = 0; i < arg.length; i++) {
+    // skip folders
+	if (arg[i].mimeType == "application/x-folder") continue;
+	filesToUpload[id++] = arg[i];
+  }
+  $BP.Uploader.upload(
+	{
+	  files: filesToUpload,
+	  url:   "upload.php",
+	  postvars: {
+        foo: "bar",
+		baz: "bing"
+	  },
+	  progressCallback: updateProgress
+	}, function(r) {
+	  var o = document.getElementById("serverResponse");
+	  o.innerHTML = r.value.body;
+	});
+}
+
+BrowserPlus.init(function(res) {
+  if (res.success) {
+   BrowserPlus.require({
+      services: [
+		{service: 'DragAndDrop', version: "1"},
+		{service: 'Uploader', version: "3", minversion: "3.1.5" },
+		{service: 'FileChecksum', version: "1" }
+	  ]},
+      function(res) {
+        if (res.success) {
+          var dnd = BrowserPlus.DragAndDrop;
+          dnd.AddDropTarget(
+            {
+			  id: "dropArea"
+              // accept all file types in drop 
+			},
+            function(res) {
+              dnd.AttachCallbacks({
+                id: "dropArea",
+                hover: hovering,
+                drop: dropped
+              },
+              function(){});  
+            setDropAreaTitle("why not drag some files to the box below?");
+          });
+        } else {
+          alert("Error Loading DragAndDrop: " + res.error);
+        }
+      });
+  } else {
+    alert("Failed to initialize BrowserPlus: " + res.error);
+  }
+}); 
+</script> 
+</html>

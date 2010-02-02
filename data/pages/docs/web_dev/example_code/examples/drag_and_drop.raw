@@ -1,0 +1,75 @@
+<html>
+  <head><title>Your first drop target</title>
+  <style type="text/css" media="screen">
+    #myTarget { width: 200px; height:200px; border: 1px solid #999; }
+  </style>
+</head>
+
+<body>
+<div id="myTarget"> loading... </div>
+<p>
+<div id="lastDropDetails"></div>   
+
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript">
+function setDropAreaText(txt) {
+  var div = document.getElementById("myTarget");
+  while (div.firstChild) {div.removeChild(div.firstChild);}
+  div.appendChild(document.createTextNode(txt));
+}
+
+function hovering(hoverOn) {
+  if (hoverOn) {setDropAreaText("drop it!");}
+  else {setDropAreaText("drag something to me.");}
+} 
+
+function dropped(arg) {
+  var div = document.getElementById("lastDropDetails");
+  while (div.firstChild) {div.removeChild(div.firstChild);}
+
+  var title = document.createElement("b");
+  title.innerHTML = "Last drop details:";
+  div.appendChild(title);                
+  div.appendChild(document.createTextNode(arg.length +
+    " files dropped"));
+  div.appendChild(document.createElement("p"));
+  var lst = document.createElement("ul");
+
+  for (var i = 0; i < arg.length; i++) {
+    var item = document.createElement("li");
+    var e = document.createTextNode(arg[i].BrowserPlusHandleName);
+    item.appendChild(e);
+    lst.appendChild(item);
+  }
+  div.appendChild(lst);
+}
+
+BrowserPlus.init(function(res) {
+  if (res.success) {
+   BrowserPlus.require({
+      services: [{service: 'DragAndDrop'}]},
+      function(res) {
+        if (res.success) {
+          var dnd = BrowserPlus.DragAndDrop;
+          dnd.AddDropTarget(
+            {id: "myTarget"},
+            function(res) {
+              dnd.AttachCallbacks({
+                id: "myTarget",
+                hover: hovering,
+                drop: dropped
+              },
+              function(){});  
+            setDropAreaText("drag something to me.");
+          });
+        } else {
+          alert("Error Loading DragAndDrop: " + res.error);
+        }
+      });
+  } else {
+    alert("Failed to initialize BrowserPlus: " + res.error);
+  }
+}); 
+</script> 
+</body>
+</html>

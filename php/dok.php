@@ -19,6 +19,7 @@ class Dok implements iFileScanner
     private $scanner;
     private $titlemap;
     private $linkmap;
+    private $pagedata;
     
     public static $default_filename = 'index.html';
 
@@ -129,6 +130,7 @@ class Dok implements iFileScanner
 	        return array(
                 "filename" => $htmlfile,
                 "parents" => $hierarchy,
+                "datadir" => $datadir,
                 "title" => $this->title_from_file($htmlfile),
                 "linkmap" => $this->linkmap,
                 "type" => $fileext,
@@ -160,9 +162,67 @@ class Dok implements iFileScanner
         return $str;
     }
 
+    private function fmt_code_with_line_numbers($code, $extra_tr="") {
+        $lines = explode("\n", trim($code));
+        $cnt = count($lines);
+        $str = implode("\n", $lines);
+        $str = htmlentities($str);
+        $tbl = "\n<table>\n<tr><td><pre class=\"linenumbers\">";
+        if ($cnt < 10) { 
+            $fmt = "%d\n";
+        } else if ($cnt < 100) {
+            $fmt = "%02d\n";
+        } else {
+            // if we're showing more than 1,000 code of lines at a time, we're doing something wrong
+            $fmt = "%03d\n";
+        }
+
+        for($i = 1; $i <= $cnt; $i++) {
+            $tbl .= sprintf($fmt, $i);
+        }
+        $tbl .= "</pre></td><td><pre class=\"prettyprint\">$str</pre></td></tr>\n";
+        if ($extra_tr) {
+            $tbl .= $extra_tr;
+        }
+        $tbl .= "</table>\n\n";
+
+        return $tbl;
+    }
+
+    // replace @{action data} vars
+    // actions: 
+    //     include - include example source code
+    //     service - link to explorewr
+    private function at_actions($matches) {
+        $action = $matches[1];
+        if ($action == "include") {
+            // include source code
+            $dir = $this->pagedata['datadir'];
+            $path = $dir . $matches[2];
+            if (file_exists($path)) {
+                $code = file_get_contents($path);
+                // replace @{var} patterns in file (for things like bpver).
+                $code = str_replace($this->varmap_keys, $this->varmap_vals, $code);
+                $tr = "<tr><td class=\"runex\" colspan=2 align=\"right\"><a href=\"" . 
+                    str_replace(".raw", ".html", $matches[2]) . "\">Run Example</a></td></tr>";
+                $str = $this->fmt_code_with_line_numbers($code, $tr);
+
+            } else {
+                $str = "<pre style=\"color:#900\">ERROR - could not find\n$path</pre>";
+            }
+        } else if ($action == "service") {
+            $s = $matches[2];
+            $str = "<a href=\"/explore/index.html?s=$s\">$s</a>";
+        }
+        return $str;
+    }
+
     private function _renderit($data) {
         if ($data["type"] == "raw") {
-            echo $data["body"];
+            // Substitute our homegrown @{varname} syntax.  Values set in data/dok/helper.php
+            $body = $data["body"];
+            $body = str_replace($this->varmap_keys, $this->varmap_vals, $body);
+            echo $body;
         } else {
             $page = array_merge($data, $this->conf['vars']);
             extract($page);
@@ -174,6 +234,10 @@ class Dok implements iFileScanner
 
             // Substitute our homegrown @{varname} syntax.  Values set in data/dok/helper.php
             $body = str_replace($this->varmap_keys, $this->varmap_vals, $body);
+
+            // replace @{insert examples/file_name.html}
+            //         @{service DragAndDrop}
+            $body = preg_replace_callback('/@\{([a-z]+)\s*(.+?)\}/i', array(&$this, 'at_actions'), $body);
 
             // Using Google Code Prettyify cause it seems to be the lightest 
             // weight JavaScript prettifier.  Just 2 files.
@@ -258,6 +322,8 @@ class Dok implements iFileScanner
 
         $data = $this->getPage($uri);
         if ($data) {
+            // setting page for preg_callback type functions that need access to the data
+            $this->pagedata = $data;
             $this->_renderit($data);
         } else {
             echo "Bad Request";

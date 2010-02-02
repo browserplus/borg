@@ -1,0 +1,54 @@
+<html>
+<head><title>Using BrowserPlus&trade; Services</title></head>
+<body>
+A sample which requires and uses a function on the TextToSpeech
+service.
+<p>
+  Before running <tt>BrowserPlus.require()</tt> TextToSpeech is:
+  <span id="before">checking...</span>
+</p> 
+<p>
+  After running <tt>BrowserPlus.require()</tt> TextToSpeech is:
+  <span id="after">checking...</span>
+</p> 
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript">
+
+// the "service specification" that we'll activate
+var ttsService = {
+  service: "TextToSpeech",  
+  version: "1",  
+  minversion: "1.0.2"  
+};
+
+// check for the presence of TextToSpeech, and dump results in the
+// specified div
+function checkForTextToSpeech(divName) {
+  BrowserPlus.isServiceActivated(
+    ttsService,
+    function() {
+      var _divName = divName;
+      return function(haveIt) {
+        var d = document.getElementById(_divName);
+        d.innerHTML = haveIt;            
+      };
+    }());
+}
+
+BrowserPlus.init(function(res) {
+  if (res.success) {
+    checkForTextToSpeech("before");
+    BrowserPlus.require({services: [ ttsService ]},
+      function(r) {
+        checkForTextToSpeech("after");
+        if (r.success) {
+          BrowserPlus.TextToSpeech.Say(
+            { utterance: "text to speech is activated" },
+              function() {} );
+             }
+        });
+  }
+});
+</script>
+</body>
+</html>

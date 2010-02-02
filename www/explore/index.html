@@ -8,28 +8,27 @@
 <body class="yui-skin-sam">
     
 <div id="explorer">
-    <!-- h1>Service Explorer</h1 -->
     <div id="navlists">
         <div id="services">
             <h2>Services</h2>
-            <select id="servicelist" size="7"><option>Loading...</option></select>
+            <select id="servicelist" size="8"><option>Loading...</option></select>
         </div>
 
         <div id="versions">
             <h2>Versions</h2>
-            <select id="versionlist" size="7"></select>
+            <select id="versionlist" size="8"></select>
         </div>
 
         <div id="functions">
             <h2>Functions</h2>
-            <select id="functionlist" size="7"></select>
+            <select id="functionlist" size="8"></select>
         </div>
     </div>
 
     <div id="container">
         <div id="method">
-            <h3>Select the Service, Version and Function Above</h3>
-            <form><fieldset><br></fieldset></form>
+            <h3 id="title">Select the Service, Version and Function Above</h3>
+            <form id="frm" name="fparams"><fieldset id="fields"><br></fieldset></form>
         </div>
 		<h3>Console</h3>
 		<div id="result" class="prettyprint"></div>
@@ -58,20 +57,17 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
     var TIME = "time";
     
     var Tmpl = {
-        EmptyForm:
-            '<h3>Select the Service, Version and Function Above</h3>' + 
-            '<form><fieldset><br></fieldset></form>',
+        EmptyTitle: 'Select the Service, Version and Function Above</h3>',
+        EmptyForm:  '<br>',
+
+        FunctionTitle: 
+            '<a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a>',
 
 		FunctionForm: 
-            '<h3><a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a></h3>' +
-			'<form name="fparams">' + 
-			'    <fieldset>' + 
-			'        <ol>' + 
-			'{fields}' +
-			'	         <li><input class="runAction" type="button" value="Run" id="submit"></li>' + 
-			'        </ol>' + 
-			'    </fieldset>' +
-			'</form>',
+			'<ol>' + 
+			'    {fields}' +
+			'    <li><input class="runAction" type="button" value="Run" id="submit"></li>' + 
+			'</ol>',
 
 		FunctionParams:
 			'<dt class="parameter">' + 
@@ -164,7 +160,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         Y.one("#functionlist").setContent(opt(""));
 
         // replace function form with empty form
-        Y.one("#method").setContent(Tmpl.EmptyForm, {});
+        Y.one("#title").setContent(Tmpl.EmptyTitle);
+        Y.one("#fields").setContent(Tmpl.EmptyForm);
     }
 
     // Version string is selected from Versions List
@@ -178,32 +175,35 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         var version = Y.one("#versionlist").get("value");
     
         // replace function form with empty form
-        Y.one("#method").setContent(Tmpl.EmptyForm, {});
+        Y.one("#title").setContent(Tmpl.EmptyTitle);
+        Y.one("#fields").setContent(Tmpl.EmptyForm);
 
         if (service && version) {
             if (ServiceDetails[service+version]) {
-                // details already cache from call to Describe below
+                // details already cached from call to Describe below
                 setFunctionList(ServiceDetails[service+version]);
             } else {
                 // this will take a little time, so show Loading... in this case
                 Y.one("#functionlist").setContent(opt("Loading..."));
-                BrowserPlus.InactiveServices.Describe({service:service, version:version}, function(r) {
-                    if (r.success) {
-                        var ver = r.value.version;
-                        var fqn = r.value.name + ver.major + "." + ver.minor + "." + ver.micro;
-                        ServiceDetails[fqn] = r.value;
-                        setFunctionList(r.value);
+
+                BrowserPlus.describeService({service:service, version:version, minversion:version}, function(r1) {
+                    if (r1.success) {
+                        // fetching service description locally
+                        ServiceDetails[r1.value.name+r1.value.versionString] = r1.value;
+                        setFunctionList(r1.value);
                     } else {
-                        // Builtin services not described by InactiveServices, so get it thru AJAX
-		                Y.io(
-		                    "/api/v1/service/" + service + "/" + version + "/" + ServiceOS, 
-		                    {
-		                        on: {success: gotServiceDetails}, 
-		                        arguments:{s:service, v:version, cb:setFunctionList}
-	                        }
-	                    );
+                        // get description of service from web services
+                        BrowserPlus.InactiveServices.Describe({service:service, version:version}, function(r2) {
+                            if (r2.success) {
+                                ServiceDetails[r2.value.name + r2.value.versionString] = r2.value;
+                                setFunctionList(r2.value);
+                            } else {
+                                // failed getting service description in 2 ways
+                            }
+                        });
                     }
                 });
+
             }
         }
     }
@@ -221,7 +221,6 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         
         CurrentService = ServiceDetails[sname + vname];
         
-
         // get reference into current function
         for(i = 0, len = CurrentService.functions.length; i < len; i++) {
             if (CurrentService.functions[i].name == fname) {
@@ -232,7 +231,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
         FileHandles = {};
         
-        var plen = CurrentFunction.parameters.length, p, value, params="", opt1, opt2, form="", help, enabled, style, key, hint;
+        var plen = CurrentFunction.parameters.length, p, value, params="", opt1, opt2, form="", help, enabled, style, key, hint, firstFocus;
 
 		if (plen === 0) {
 			params = '<dt class="noparams">No parameters</dt>';
@@ -276,23 +275,41 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 					style = 'style="background:#def"';
 				}
 
-				
+                if (!firstFocus) { firstFocus = "f_" + p.name; }
 				form += '<li><label>' + opt1 + p.name + ":" + p.type + opt2 + "</label>";
-				form += '<input ' + enabled + ' type="text" name="f_' + p.name + 
+				form += '<input ' + enabled + ' type="text" id="f_' + p.name + '" name="f_' + p.name + 
 					'" ' + style + ' value="' + value.replace(/"/g, "&quot;") + '" "size="40">' + help;
 				form += '</li>';
 			}
 		}
 
-        Y.one("#method").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {sname:sname, fname:fname, version: vname, fields:form}));
+            '<a target="doc" href="/docs/services/{sname}.html?v={version}#{fname}">BrowserPlus.{sname}.{fname}()</a>',
+
+        Y.one("#title").setContent(Y.Lang.substitute(Tmpl.FunctionTitle, {sname:sname, fname:fname, version: vname}));
+        Y.one("#fields").setContent(Y.Lang.substitute(Tmpl.FunctionForm, {fields:form}));
+
+        if (firstFocus) { Y.one("#"+firstFocus).focus();}
 	}
 
-	function log(level, str) {
+	function log(level, str, fmt) {
 
-        var r = Y.one("#result");
+        var cnt, r = Y.one("#result");
         if (r) {
+            str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+            // from http://snippets.dzone.com/posts/show/5770
+ 	        try {
+		        cnt = ((str.match(/[^\n]*\n[^\n]*/gi).length));
+	        } catch(e) {
+		        cnt = 0;
+	        }
+
+            if (fmt && cnt > 0) {
+                str = "VALUE:\n<pre>" + str + "</pre>";
+            }
+
 		    r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
-		        '<span class="log_' + level + '">' + str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</span></div>");
+		        '<span class="log_' + level + '">' + str + "</span></div>");
 		    //r.append("<br>");
             //prettyPrint();
             r.set("scrollTop", r.get("scrollHeight"));
@@ -309,7 +326,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
     function formClickedEvent(e) {
         var node = e.target;
 
-        if (node.hasClass("runAction")) {
+        // Run button pressed or 'Enter' key pressed
+        if (node.hasClass("runAction") || node.get("id") == "frm") {
             e.preventDefault();
             log(INFO, "==== Run! ====")
             runAction();
@@ -324,7 +342,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		return function(res) {
 			if (res.success) {
 			    log(INFO, "SUCCESS");
-                log(RETVAL, JSON.stringify(res.value, null, "  "));
+                log(RETVAL, JSON.stringify(res.value, null, "  "), true);
 			} else {
 			    log(INFO, "FAILURE");
                 log(ERROR, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
@@ -335,7 +353,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	function testCallbackFunc(name) {
 		return function(res) {
             log(INFO, name + " CALLBACK");
-		    log(RETVAL, JSON.stringify(res, null, "  "));
+		    log(RETVAL, JSON.stringify(res, null, "  "), true);
 	    };
     }
 
@@ -365,7 +383,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
         // FileBrowse 2.0.0 changed to use Directory Service, so fixing this to original 1.0.1
 		BrowserPlus.FileBrowse["1.0.1"].OpenBrowseDialog(limit, function(res) {
 			var i, handles = [], name, files = res.value.actualSelection, len = files.length, fnames=[];
-            log(RETVAL, JSON.stringify(files, null, " "));
+            log(RETVAL, JSON.stringify(files, null, " "), true);
 			if (Y.Lang.isArray(files) && len > 0) {
 				for (i = 0; i < len; i++) {
 					handles.push(files[i]);
@@ -489,61 +507,90 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		    BrowserPlus[sname][version][fname](obj, testInvokeFunc(fname));
 	    } else {
             log(INFO, "Requiring Service " + sname + " (" + version + ")");
-		    BrowserPlus.require({ services: [{service:sname, minversion:version}], progressCallback: progressCallback }, 
+		    BrowserPlus.require({ services: [{service:sname, version: version, minversion:version}], progressCallback: progressCallback }, 
 		        getRequireCallback(sname, fname, version, obj, prettyObj));
 	    }
 	}
 
+    function addVersion(name, version) {
+        if (ServiceVersions[name]) {
+            ServiceVersions[name].push(version);
+        } else {
+            ServiceVersions[name] = [version];
+        }
+    }
+
+
     // Action happens once BrowserPlus is initialized
-    BPTool.Installer.show({}, function(r){
+    BPTool.Installer.show({}, function(initres){
 
         var services = [
             {service: "FileBrowse", version:"1"},
             {service: "InactiveServices", version:"1"}
         ];
 
-	    if (r.success) {
-		    BrowserPlus.require({services: services}, function(x){
-                if (x.success) {
-                    BrowserPlus.InactiveServices.All({}, function(all) {
-                        if (all.success) {
-                            var opts = [], s, i, len = all.value.length, slist=Y.one("#servicelist"), 
-                            builtIns = ["DragAndDrop", "FileBrowse", "Log", "InactiveServices"], builtInVersion = "1.0.1";
+        if (!initres.success) {
+            // BrowserPlus did not start
+            alert("ERROR - not able to initialize BrowserPlus.  Error is " +
+                initres.error + (initres.verboseError ? " - " + initres.verboseError : ""));
+            return;
+        }
 
-                            // Add stand alone services
-                            for(i = 0; i < len; i++) {
-                                s = all.value[i];
+	    BrowserPlus.require({services: services}, function(x) {
+            if (!x.success) { 
+                // Could not require services
+                alert("ERROR - not able to require basic level to services.  Error is " +
+                    x.error + (x.verboseError ? " - " + x.verboseError : ""));
+                return;
+            }
 
-                                if (ServiceVersions[s.name]) {
-                                    ServiceVersions[s.name].push(s.version);
-                                } else {
-                                    opts.push(opt(s.name));
-                                    ServiceVersions[s.name] = [s.version];
+            // Get of available services
+            BrowserPlus.InactiveServices.All({}, function(all) {
+                if (all.success) {
+                    var s, i, len = all.value.length,allServices = {};
+
+                    // 1. Fetch all available services thru web services api
+                    for(i = 0; i < len; i++) {
+                        s = all.value[i];
+                        allServices[s.name + s.version] = true;
+                        addVersion(s.name, s.version);
+                    }
+
+                    // 2. Add builtin and "developer" services (service installed thru sdk)
+                    BrowserPlus.listActiveServices(function(r) {
+                        var services = [], slist=Y.one("#servicelist"), name, version;
+                        if (r.success) {
+                            for (i = 0, len = r.value.length; i < len; i++) {  
+                                name = r.value[i].name;
+                                version = r.value[i].version;
+
+                                // service may already have been added thru step 1 
+                                if (!allServices[name+version]) {
+                                    addVersion(name, version);
                                 }
                             }
-
-                            // Add Built-in services if not already present
-                            for (i = 0, len = builtIns.length; i < len; i++) {
-                                s = builtIns[i];
-                                if (!ServiceVersions[s]) {
-                                    opts.push(opt(s));
-                                    ServiceVersions[s] = [builtInVersion];
-                                }
-                            }
-
-                            opts.sort();
-                            
-                            slist.setContent(opts.join(""));
-                            slist.set("selectedIndex", -1);
-                            Y.on('change', serviceListChangedEvent, "#servicelist");
-                            Y.on('change', versionListChangedEvent, "#versionlist");
-                            Y.on('change', functionListChangedEvent, "#functionlist");
-                            Y.on("click",  formClickedEvent, '#method');//' input[type="button"]');
                         }
+
+                        // create a select list [option] for each service
+                        for (s in ServiceVersions) {
+                            if (ServiceVersions.hasOwnProperty(s)) {
+                                services.push(opt(s));
+                            }
+                        }
+
+                        // and sort services
+                        services.sort();
+                        slist.setContent(services.join(""));
+                        slist.set("selectedIndex", -1);
+                        Y.on('change', serviceListChangedEvent, "#servicelist");
+                        Y.on('change', versionListChangedEvent, "#versionlist");
+                        Y.on('change', functionListChangedEvent, "#functionlist");
+                        Y.on("click",  formClickedEvent, '#fields');//' input[type="button"]');
+                        Y.on("submit", formClickedEvent, '#frm');//' input[type="button"]');
                     });
                 }
-	        });
-        }
+            });
+        });
     });
 });
 </script>

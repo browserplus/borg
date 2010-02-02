@@ -9,16 +9,11 @@ function lighthouse_update_cmp($a, $b) {
 class Lighthouse
 {
     // APC key
-    private static $projectKey = "lighthouse.project.ids";
-    private static $ticketsKey = "lighthouse.tickets.";
-    private static $allTicketsKey = "lighthouse.tickets.all";
-    
-    // keep N items 
-    private static $itemsToKeep = 20;
-
+    private static $ticketsKey = "lighthouse.tickets.all";
     private static $projectsUrl = "http://browserplus.lighthouseapp.com/projects.xml?_token=%s";
     private static $ticketsUrl  = "http://browserplus.lighthouseapp.com/projects/%s/tickets.xml?_token=%s";
     private static $token = null;
+
     var $projectNameMap = array();
     
 	function __construct() {
@@ -31,26 +26,25 @@ class Lighthouse
         return get_secret("cachekey");
     }
     
-    // return a size limited list ('itemsToKeep') list of bugs for all projects
+    // Return a list of bugs for all projects.  This method should only 
+    // be called by cron scripts cause it takes a bit of time.  The results
+    // are cached and used by the render methods below.
     function get_all_bugs() {
-        $key = self::$allTicketsKey;
         $bugs = array();
 
-        if (!($json = apc_fetch($key))) {
-            $ids = $this->get_project_ids();
+        $ids = $this->get_project_ids();
 
-            if (count($ids) > 0) {
-                foreach($ids as $id) {
-                    $bugs = array_merge($bugs, $this->get_bugs($id));
-                }
+        if (count($ids) > 0) {
+            foreach($ids as $id) {
+                $bugs = array_merge($bugs, $this->get_bugs($id));
             }
-        
-            // newest on top
-            usort($bugs, "lighthouse_update_cmp");
-        
-            $bugs = array_slice($bugs, 0, self::$itemsToKeep);
-            apc_store($key, json_encode($bugs));
         }
+
+        // newest on top
+        usort($bugs, "lighthouse_update_cmp");
+
+        // store data for render functions
+        apc_store(self::$ticketsKey, json_encode($bugs));
         
         if ($json) {
             $bugs = json_decode($json, 1);
@@ -60,17 +54,11 @@ class Lighthouse
     }
 
     // return list of bugs for given project id
-    function get_bugs($project_id) {
-
-        $key = self::$ticketsKey . $project_id;
+    private function get_bugs($project_id) {
         $bugs = array();
-        apc_store($key, null);
-        if (!($xml = apc_fetch($key))) {
-            $url = sprintf(self::$ticketsUrl, $project_id, $this->token);
 
-            $xml = fetch($url);
-            apc_store($key, $xml);
-        }
+        $url = sprintf(self::$ticketsUrl, $project_id, $this->token);
+        $xml = fetch($url);
 
         if ($xml) {
             $tickets = simplexml_load_string($xml);
@@ -92,15 +80,11 @@ class Lighthouse
         return $bugs;
     }
 
-    function get_project_ids() {
+    private function get_project_ids() {
         $ids = array();
-        $key = self::$projectKey;
         
-        if (!($xml = apc_fetch($key))) {
-            $url = sprintf(self::$projectsUrl, $this->token);
-            $xml = fetch($url);
-            apc_store($key, $xml);
-        }
+        $url = sprintf(self::$projectsUrl, $this->token);
+        $xml = fetch($url);
 
         if ($xml) {
             $projects = simplexml_load_string($xml);
@@ -114,8 +98,20 @@ class Lighthouse
         return $ids;
     }
 
+    private function get_cached_data() {
+        $json = apc_fetch(self::$ticketsKey);
+        
+        // just in case it's not cached yet
+        if (!$json) {
+            $this->get_all_bugs();
+            $json = apc_fetch(self::$ticketsKey);
+        }
+
+        return $json;
+    }
+
     function render_widget($num=5) {
-        $json = apc_fetch(self::$allTicketsKey);
+        $json = $this->get_cached_data();
 
         if ($json && ($issues = json_decode($json, 1))) {
             $s = "<ul>";
@@ -132,7 +128,7 @@ class Lighthouse
     }
     
     function render_mobile($num=10) {
-        $json = apc_fetch(self::$allTicketsKey);
+        $json = $this->get_cached_data();
 
         $s = "";
         if ($json && ($issues = json_decode($json, 1))) {

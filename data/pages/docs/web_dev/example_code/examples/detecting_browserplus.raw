@@ -1,0 +1,38 @@
+<html>
+<head><title>What If BrowserPlus Isn't installed?</title></head>
+<body>
+Let's see if BrowserPlus is installed... 
+
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>
+<script class="javascript">
+BrowserPlus.init(function(r) {
+  function bplusInitialized() {
+    // this function will be called when BrowserPlus is ready,
+    // either after the user goes and installs it, or immediately if
+    // BrowserPlus was already installed.
+
+    // so... require some services!
+  }
+
+  if (r.success) {
+    // BrowserPlus is installed and ready to go!
+    alert("Yahoo! BrowserPlus installed, v" + BrowserPlus.getPlatformInfo().version);
+    bplusInitialized();
+  } else if (r.error == "bp.notInstalled") {
+    // BrowserPlus isn't installed, but the client browser/operating system
+    // is supported!  we can render a link to let our users know that
+    // more features are available if they install the thing.
+    BrowserPlus.initWhenAvailable({}, bplusInitialized);
+    alert("Get BrowserPlus! You can do it!");
+  } else if (r.error == "bp.unsupportedClient") {
+    // Uh oh, they're running a browser we don't yet support.  We should
+    // probably disable features that require browserplus, and rendering
+    // an installation link for BrowserPlus is useless.
+  } else {
+    // yikes!  Unexpected error!
+    throw(r.error + ": " + r.verboseError);
+  }
+});
+</script>
+</body>
+</html>

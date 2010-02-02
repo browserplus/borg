@@ -7,6 +7,9 @@
 5. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
 6. [How do I send a bug report?](#bugReport)
 7. [How do I get BrowserPlus to display an installation dialog if not already installed?](#installDialog)
+8. [How do I call a specific version of a service if more than one is loaded?](#specificVersion)
+
+
 
 <a name="support"></a>
 ## How do I get help with BrowserPlus?
@@ -138,3 +141,14 @@ already installed, then no dialog is presented.
         }
     });
     </script>
+
+
+<a name="specificVersion"></a>
+## How do I call a specific version of a service if more than one is loaded?
+
+In the rare case that you have more than 1 version of a specific service loaded, you can specify the version
+to call in the following way:
+
+	BrowserPlus.DragAndDrop["1.0.1"].ListTargets({}, function(){})
+	BrowserPlus.DragAndDrop["2.0.0"].ListTargets({}, function(){})
+    

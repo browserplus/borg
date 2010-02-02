@@ -4,6 +4,10 @@ include("/home/websites/browserplus/php/site.php");
 include("/home/websites/browserplus/php/db.php");
 include("/home/websites/browserplus/php/git.php");
 
+// DOK_BASE - normally set in apache, but not available to scripts
+putenv("DOK_BASE=/home/websites/browserplus/data");
+
+
 $gitbase = "http://github.com/";
 
 $db = new DB("git");

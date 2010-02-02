@@ -3,6 +3,9 @@
 include("/home/websites/browserplus/php/site.php");
 include("/home/websites/browserplus/php/forum.php");
 
+// DOK_BASE - normally set in apache, but not available to scripts
+putenv("DOK_BASE=/home/websites/browserplus/data");
+
 $f = new Forum();
 $secret = $f->get_cache_secret();
 
