@@ -3,11 +3,11 @@ class BPServices
 {
     private static $apibase = "http://browserplus.yahoo.com/api/v3";
     private static $serviceKey = "bp.services";
+    private static $serviceNamesKey = "bp.services.names";
     private static $baseKey = "bp.service.%s.%s.%s";
     private static $builtInServices = array("DragAndDrop", "FileBrowse", "InactiveServices", "Log");
     private static $ttl = 1800;
     var $builtinPath = null;
-    var $services = null;
     
 	function __construct() {
         $this->builtinPath = getenv("DOK_BASE") . "/services/";
@@ -17,17 +17,48 @@ class BPServices
         return sprintf(self::$baseKey, $name, $platform, $this->versionNum($version));
     }
 
-    function getAllServices() {
-        if ($this->services != null) {
-            return $this->services;
+    function getAllServiceNamesAndVersions($os) {
+        $key = self::$serviceNamesKey;
+        $json = apc_fetch($key);
+
+        if ($json == null) {
+            
+            // get (json) services as php object
+            $sj = $this->getAllServices();
+            if (!$sj) return null;
+            $services = json_decode($sj, 1);
+            
+            $names = array();
+            foreach($services as $s) {
+                // filter services by OS and store all versions per service(name)
+                if ($s['os'] == "ind" || $s['os'] == $os) {
+                    $n = $s['name'];
+                    $v = $s['versionString'];
+                
+                    if (isset($names[$n])) {
+                        $names[$n][] = $v;
+                    } else {
+                        $names[$n] = array($v);
+                    }
+                }
+            }
+        
+            ksort($names);
+            $json = json_encode($names);
+
+            apc_store($key, $json, self::$ttl);
         }
 
-        $key = self::$serviceKey;
-        $services = apc_fetch($key);
+        return $json;
+    }
 
-        if ($services == null) {
-            $x = fetch(self::$apibase . "/corelets");
-            $services = json_decode($x, 1);
+    function getAllServices() {
+        $key = self::$serviceKey;
+        $json = apc_fetch($key);
+
+        if ($json == null) {
+            $json = fetch(self::$apibase . "/corelets");
+            $services = json_decode($json, 1);
 
             // add some doc to the builtins
             $dnd = "Support drag and drop of files from desktop to web browser.";
@@ -54,21 +85,21 @@ EOS;
                 $services[] = $b;
             }
     
-            apc_store($key, json_encode($services), self::$ttl);
-        } else {
-            $services = json_decode($services, 1);
+            $json = json_encode($services);
+            apc_store($key, $json, self::$ttl);
         }
 
-        $this->services = $services;
-        return $services;
+        return $json;
     }
     
+    //
+    // Return description of a service as JSON string. 
+    //
     function getService($name, $platform, $version) {
         $key = $this->getServiceKey($name, $platform, $version);
         $json = apc_fetch($key);
 
         if ($json == null) {
-
             if (in_array($name, self::$builtInServices)) {
                 // Built-In Service
                 // The api doesn't yet return documentation for built-in services, so
@@ -85,10 +116,9 @@ EOS;
 
             if ($json) apc_store($key, $json, self::$ttl);
         }
-        
-        return ($json ? json_decode($json, 1) : null);
-    }
 
+        return $json;
+    }
     
     function versionNum($versionString) {
         $x = explode(".", $versionString);
@@ -98,7 +128,13 @@ EOS;
     function renderServiceHome()
     {
         $latest = array();
-        foreach($this->services as $s) {
+        
+        // get (json) services as php object
+        $json = $this->getAllServices();
+        if (!$json) return "";
+        $services = json_decode($json, 1);
+        
+        foreach($services as $s) {
             $n = $s['name'];
             $vn = $this->versionNum($s['versionString']);
             if ((isset($latest[$n]) && $vn > $latest[$n]['vn']) || !isset($latest[$n])) {
@@ -130,7 +166,12 @@ EOS;
         $versions = array();
         $validvers = array();
 
-        foreach($this->services as $s) {
+        // get (json) services as php object
+        $json = $this->getAllServices();
+        if (!$json) return "";
+        $services = json_decode($json, 1);
+        
+        foreach($services as $s) {
             if ($s['name'] == $name) {
                 $vs = $s['versionString'];
                 $vn = $this->versionNum($vs);
@@ -158,10 +199,12 @@ EOS;
             $str = "# {$name}, v{$version}\n\n";
             $str .= "Doc coming soon...\n";
         } else {
-            $str = "# {$name}, v{$version}\n\n";
+            $str = "<a href=\"/explore/index.html?s={$name}&v={$version}\"><img src=\"/images/explore_button.png\" border=\"0\" align=\"right\"></a>\n\n";
+            $str .= "# {$name}, v{$version}\n\n";
 
             // assume services are same for all platforms and fetch the "win32" version
-            $service = $this->getService($name, "win32", $version);
+            $sj = $this->getService($name, "win32", $version);
+            if ($sj) $service = json_decode($sj, 1);
 
             if ($service) {
                 $str .= $service['documentation'] . "\n\n";
@@ -197,6 +240,7 @@ EOS;
                 if (count($service['functions']) > 0) {
                     $funcs = $service['functions'];
                     foreach($funcs as $f) {
+                        $str .= "<a name=\"{$f['name']}\"></a>\n";
                         $str .= "## BrowserPlus.{$name}.{$f['name']}({params}, function{}())\n\n";
                         $str .= $f['documentation'] . "\n\n";
 
@@ -217,14 +261,6 @@ EOS;
                         }
                     }
                 }
-
-                if (false) {
-                    $str .= "~~~\n";
-                    $str .= "KEY($name): " . $this->getServiceKey($name, "win32", $version) . "\n";
-                    $str .= print_r($this->getService($name, "win32", $version), 1);
-                    $str .= "~~~\n";
-                }
-
             }
         }
 

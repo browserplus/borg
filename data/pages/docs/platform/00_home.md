@@ -27,10 +27,10 @@ service API has the following high level features:
 
 This proposed service API consists of four distinct pieces:
 
-1. [A Web Services API](/docs/developer/platform/WSAPI) - How agents can query/download available services.
-2. [Packaging Format](/docs/developer/platform/packaging) - How services should be packaged/signed.
-3. [The C Service API](/docs/developer/platform/CAPI) - A simplified NPAPI focused on scriptable services.
-4. [The JavaScript API](/docs/developer/platform/JSAPI) - How untrusted websites "require" and use services.
+1. [A Web Services API](WSAPI.html) - How agents can query/download available services.
+2. [Packaging Format](packaging.html) - How services should be packaged/signed.
+3. [The C Service API](http://browserplus.github.com/bp-service-api/) - A simplified NPAPI focused on scriptable services.
+4. [The JavaScript API](/docs/web_dev/JavaScript_API_Overview.html) - How untrusted websites "require" and use services.
 
 ## Future Work
 

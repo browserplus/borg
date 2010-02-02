@@ -4,6 +4,7 @@ require("markdown.php");
 function dok_file_sort($a, $b) {
     return strcasecmp($a, $b);
 }
+
 interface iFileScanner
 {
     public function findFile($datadir, $htmlfile);
@@ -13,11 +14,12 @@ interface iFileScanner
 class Dok implements iFileScanner
 {
     private $conf;
-    private $titlemap_keys;
-    private $titlemap_vals;
     private $varmap_keys;
     private $varmap_vals;
     private $scanner;
+    private $titlemap;
+    private $linkmap;
+    
     public static $default_filename = 'index.html';
 
 	public function __construct($conf) {
@@ -28,10 +30,13 @@ class Dok implements iFileScanner
         $this->conf['pages']  = "$dok_base/" . $this->conf['pages'] ;
         include($this->conf['site'] . '/helper.php' );
 
-        // get title map ready for str_replace
-        $this->titlemap_keys = array_keys($TitleMap);
-        $this->titlemap_vals = array_values($TitleMap);
+        // Maps certain file names (like cpp_services) to titles (C++ Services) 
+        $this->titlemap = $TitleMap;
 
+        // Remembers the contents in *.link files so we can have external links in the 
+        // navigation bar
+        $this->linkmap = array();
+        
         // DokVarMap replaces @{varname} variables in documents
         $keys = array_keys($VarMap);
         
@@ -83,11 +88,13 @@ class Dok implements iFileScanner
 
         $datadir = $this->conf['pages'] . $dir;
 
+
         $dbg = false;
         if ($dbg) echo "<pre>findFile('$datadir', '$htmlfile')\n";
         list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, $htmlfile);
 
         if ($dbg) {
+            echo "datadir=$datadir\n";
             echo "htmlfile=$htmlfile\nsrcfile=$srcfile\n";
             print_r($files);
             echo "</pre>";
@@ -97,7 +104,7 @@ class Dok implements iFileScanner
         if ($srcfile) {
             $layout = "dok_2c.php";            
         } else {
-            $datadir = $this->conf['site'];
+            $datadir = $this->conf['site'] . "/";
             $layout = "dok_1c.php";
             list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, "file_not_found.html");
         }
@@ -123,6 +130,7 @@ class Dok implements iFileScanner
                 "filename" => $htmlfile,
                 "parents" => $hierarchy,
                 "title" => $this->title_from_file($htmlfile),
+                "linkmap" => $this->linkmap,
                 "type" => $fileext,
 	            "body" => $body,
 	            "dirs" => $dirs,
@@ -135,10 +143,18 @@ class Dok implements iFileScanner
     }
 
     private function title_from_file($file) {
+        static $func;
+
         $str = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2", $file);
-        $str = str_replace($this->titlemap_keys, $this->titlemap_vals, $str);
+
+        // create the strtoupper func just once
+        if (!$func) $func = create_function('$s', 'return " " . strtoupper($s[1]);');
+        
+        // optionally map file name to pretty title
+        if (isset($this->titlemap[$str])) $str = $this->titlemap[$str];
+
+        // convert file_name to File_Name
         $str[0] = strtoupper($str[0]);
-        $func = create_function('$s', 'return " " . strtoupper($s[1]);');
         $str = preg_replace_callback('/_([a-z])/i', $func, $str);
 
         return $str;
@@ -206,6 +222,13 @@ class Dok implements iFileScanner
 			    } else if (is_file($full)) {
 				    $f = basename($file);
 					$key = preg_replace("/^(\d+_?)?(.+)(\..+)$/", "\\2.html", $f);
+                    if (preg_match("/.link$/", $f)) {
+                        // just get first word in first line in *.link file
+                        $lines = file($full);
+                        $words = preg_split("/[\s]+/", $lines[0]);
+                        $this->linkmap[$key] = $words[0];
+                    }
+
 				    $fmap[$key] = $f;
 				    $ftmp[$f] = $key; // to be sorted via actual file name
 			    }

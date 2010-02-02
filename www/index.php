@@ -1,15 +1,15 @@
 <?php
-include("/home/websites/browserplus/php/site.php");
+include("../php/site.php");
 if (isMobile()) {
     header("Location: /m/");
     exit;
 }
-include("/home/websites/browserplus/php/db.php");
-include("/home/websites/browserplus/php/irc.php");
-include("/home/websites/browserplus/php/git.php");
-include("/home/websites/browserplus/php/twitter.php");
-include("/home/websites/browserplus/php/forum.php");
-include("/home/websites/browserplus/php/lighthouse.php");
+include("../php/db.php");
+include("../php/irc.php");
+include("../php/git.php");
+include("../php/twitter.php");
+include("../php/forum.php");
+include("../php/lighthouse.php");
 
 $tableRowsToShow = 15;
 $listItemsToShow = 5; // for twitter, forum, blog, issues

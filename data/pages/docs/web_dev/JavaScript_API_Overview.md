@@ -95,7 +95,7 @@ requiring your users to reload the webpage, much less restart their browser (war
 browser restart before it will properly detect the presence of BrowserPlus, this is a known issue).
 
 
-## Service Versioning
+<h2 id="service_versioning">Service Versioning</h2>
 
 Every Service is versioned. Service versions consist of a major, minor, and micro number. A string representation
 of version is these three numbers concatenated together with separating dots. So 1.0.0 or 2.32.781 are

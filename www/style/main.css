@@ -1,7 +1,6 @@
 body {
     color:#333;
-    /*font-family: "trebuchet ms", arial, sans-serif;*/
-    font-family:georgia,verdana,"trebuchet ms",sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .main {
@@ -10,9 +9,7 @@ body {
     margin-bottom:20px;
 }
 
-em {
-    font-style:italic;
-}
+em { font-style:italic; }
 
 .main ol li { list-style: decimal outside; }
 .main ul li { list-style: disc outside; }
@@ -48,10 +45,9 @@ pre {
 }
 
 hr  {
-    border:0;
-    background: #ccc;
-    height: 2px;
-    width:450px;
+    margin-top:40px;
+    border:1px solid #36c;
+    width:550px;
 }
 
 h1,h2,h3,h4 {
@@ -69,8 +65,10 @@ h4 {font-size: 116%;}
 #logo { padding: 10px 0 6px 0; text-align:center;}
 #topnav .active a { font-weight:bold;}
 #topnav { text-align:center; padding-bottom:2px; border:1px solid #d5dae7; background:#f0f5ff; margin-bottom:10px;}
-#topnav ul { margin: 0; }
-#topnav ul li { display: inline; padding:0 10px;}
+#topnav ul { margin: 0;}
+#topnav ul li { display: inline; padding:0 10px; border-left:1px solid #bcd;}
+#topnav ul li:first-child { border-left:0;}
+
 #topnav ul li a {
     text-decoration:none;
     font-family:"century gothic",helvetica,arial,sans-serif;
@@ -158,6 +156,7 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
 .even {background:#fff;}
 
 
+dt em {  color:#070; }
 
 .api h2 {
     font-family:consolas, monaco, "courier new", courier, monospace;
@@ -170,10 +169,6 @@ h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
     border:1px solid #bbb; 
 }
 
-dt em {
-    color:#070;
-}
-
 .api h3 {
     font-size: 116%; 
     font-weight:bold;
@@ -181,9 +176,10 @@ dt em {
     color:#900;
 }
 
-.api p, .api dl {
+.api p, .api dl, .api li {
     font-size:93%;
 }
+
 
 /* http://www.neuroticweb.com/recursos/3-columns-layout/index.php */
 #wrapper {width:974px; text-align:left; margin:0px auto; padding:0px; border:0;}

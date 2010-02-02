@@ -1,6 +1,6 @@
 <?php
-include("/home/websites/browserplus/php/site.php");
-include("/home/websites/browserplus/php/lighthouse.php");
+include("../../php/site.php");
+include("../../php/lighthouse.php");
 
 $bugs = new Lighthouse();
 

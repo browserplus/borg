@@ -1,5 +1,5 @@
 <?php
-include "/home/websites/browserplus/php/dok.php";
+include "../../php/dok.php";
 
 $request = isset($_GET['__route__']) ? "/" . $_GET['__route__'] : "/";
 

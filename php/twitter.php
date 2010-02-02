@@ -60,13 +60,13 @@ class Twitter
 
         $tweets = json_decode($json);
         $str = "<ul>";
-
-        foreach($tweets as $t) {
-            if ($rows-- == 0) { break; }
-            $time = prettyDate(strtotime($t->created_at));
-            $str .= "<li>" . $this->hyperlinkit($t->text) . " <span class=\"tweet-when\">({$time})<span></li>";
+        if ($tweets) {
+            foreach($tweets as $t) {
+                if ($rows-- == 0) { break; }
+                $time = prettyDate(strtotime($t->created_at));
+                $str .= "<li>" . $this->hyperlinkit($t->text) . " <span class=\"tweet-when\">({$time})<span></li>";
+            }
         }
-    
         $str .= "</ul>";
         return render_widget("tweet", "Twitter: <a href=\"http://twitter.com/$user\">Feed</a>", $str);
     }
@@ -78,10 +78,12 @@ class Twitter
 
         $tweets = json_decode($json);
         $str = "";
-        foreach($tweets as $t) {
-            if ($rows-- == 0) { break; }
-            $time = prettyDate(strtotime($t->created_at));
-            $str .= "<div class=\"row\">" . $this->hyperlinkit($t->text) . " <span class=\"when\">({$time})<span></div>";
+        if ($tweets) {
+            foreach($tweets as $t) {
+                if ($rows-- == 0) { break; }
+                $time = prettyDate(strtotime($t->created_at));
+                $str .= "<div class=\"row\">" . $this->hyperlinkit($t->text) . " <span class=\"when\">{$time}<span></div>";
+            }
         }
     
         return $str;
@@ -123,7 +125,7 @@ class Twitter
             $time = prettyDate(strtotime($t->created_at));
 
             $str .= "<div class=\"row\"><a href=\"http://twitter.com/{$t->from_user}\">{$t->from_user}</a>: " .
-                $this->hyperlinkit($t->text) . " <span class=\"when\">({$time})<span></div>";
+                $this->hyperlinkit($t->text) . " <span class=\"when\">{$time}<span></div>";
         }
     
         return $str;

@@ -2,19 +2,22 @@
 
 // map file names to page titles
 $TitleMap = array(
-    "cpp_services" => "C++ Services",
-    "service_dev" => "Service Developers",
-    "web_dev" => "Web Developers"
+    "cpp_tutorial" => "C++ Tutorial",
+    "service_dev" => "Service Authors",
+    "web_dev" => "Web Developers",
+    "platform" => "Browser Technologists",
+    "services" => "Available Services"
 );
 
 // replace @{varname} with below
 $VarMap = array(
     "bpver" => "2.4.21",
-    "rubyver" => "4.2.6"
+    "rubyver" => "4.2.6",
+    "installver" => "1.0.11"
 );
 
 function getFileScanner($uri) {
-    if (strpos($uri, "developer/services/") === 0) {
+    if (strpos($uri, "services/") === 0) {
         return new ServicesFileScanner();
     }
     
@@ -28,8 +31,8 @@ class ServicesFileScanner implements iFileScanner
     var $homepage = "00_home";
     
 	public function __construct() {
-        include("/home/websites/browserplus/php/site.php");
-        include("/home/websites/browserplus/php/bpservices.php");
+        include("../../php/site.php");
+        include("../../php/bpservices.php");
         $this->bp = new BPServices();
     }
 
@@ -43,7 +46,12 @@ class ServicesFileScanner implements iFileScanner
         $bn = $this->basename($htmlfile);
         
         $foundIt = false;
-        $services = $this->bp->getAllServices();
+
+        // get (json) services as php object
+        $json = $this->bp->getAllServices();
+        if (!$json) return array();
+        $services = json_decode($json, 1);
+        
         foreach($services as $s) {
             $name = $s['name'];
             if ($name == $bn) $foundIt = true;
@@ -80,9 +88,9 @@ class ServicesFileScanner implements iFileScanner
  */
 
 /*
- * Rend
+ * Render right navigation colum for documentation pages.
  */
-function dok_pages_widget($parents, $dirs, $files, $current_file) {
+function dok_pages_widget($parents, $dirs, $files, $current_file, $linkmap) {
     ob_start();
     if (count($files) > 0 || count($dirs) > 0) {
         echo "<div class=\"widget widget-pages\">\n";
@@ -103,7 +111,11 @@ function dok_pages_widget($parents, $dirs, $files, $current_file) {
                 if ($file == $current_file) {
                     echo "<li class=\"active\">&raquo; $title</li>\n";
                 } else {
-                    echo "<li><a href=\"$file\">$title</a></li>\n";
+                    if (isset($linkmap[$file])) {
+                        echo "<li><a href=\"{$linkmap[$file]}\">" . $title . "</a> <img src=\"/images/link_go.png\"></li>\n";
+                    } else {
+                        echo "<li><a href=\"$file\">$title</a></li>\n";
+                    }
                 }
             }
         }
