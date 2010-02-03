@@ -18,12 +18,14 @@
 <a href="#" id="rotateLeft">rotate left</a> |
 <a href="#" id="rotateRight">rotate right</a> |
 <select id="effectSelection">
-  <option value="">apply effect</option>
+  <option value="">select an effect</option>
+  <option value="enhance">Enhance</option>
   <option value="grayscale">Gray Scale</option>
   <option value="solarize">Solarize</option>
   <option value="sepia">Sepia</option>
-  <option value="swirl">Swirl</option>
-  <option value="oil_paint">Oil Paint</option>
+  <option value="oilpaint">Oil Paint</option>
+  <option value="psychedelic">Psychedelic</option>
+  <option value="sharpen">Sharpen</option>
 </select>
 <select id="cropSelection">
   <option value="">crop image</option>
@@ -85,31 +87,68 @@ function renderImage() {
 }
 
 function cropRequested() {
+  // a workaround for ImageAlter version 4.0.4 and lower which doesn't
+  // handle integer 0 or integer 1.  Fixed in 4.0.5 by this commit:
+  // http://github.com/browserplus/bp-imagealter/commit/fe86b8a68951d08901a8e16744eed927d8763b6d
+  // once 4.0.5 is in production one should "minversion" up to it and
+  // remove this zero/one gunk
+  var zero = 0.01;
+  var one = .99;
+
   var s = document.getElementById("cropSelection");
+  var cropObj;
   if (s.selectedIndex > 0)  {
     var o = s.options[s.selectedIndex];
     if (o.value == "right_half") {
-      imageParameters.crop = { x1: 0.5, x2: 1.0, y1: 0.0, y2: 1.0 };
+      cropObj = [ 0.5, zero, one, one ];
     } else if (o.value == "left_half") {
-      imageParameters.crop = { x1: 0.0, x2: .5, y1: 0.0, y2: 1.0 };
+      cropObj = [ zero, zero, .5, one ];
     } else {
-      imageParameters.crop = { x1: .25, x2: .75, y1: .25, y2: .75 };
+      cropObj = [ .25, .25, .75, .75 ];
     }
   } else {
-    imageParameters.crop = { x1: 0.0, x2: 0.0, y1: 1.0, y2: 1.0 };
+    cropObj = [ zero, zero, one, one ];
   }
+
+  // we always apply cropping first, so that "left half" and "right half"
+  // have a consistent meaning
+  if (imageParameters.actions[0].crop) {
+    imageParameters.actions[0].crop = cropObj;
+  } else {                  
+    imageParameters.actions.splice(0, 0, { crop: cropObj });    
+  }
+
   renderImage();
   return false; // no navigation
 }
 
 function effectSelected() {
   var s = document.getElementById("effectSelection");
+  var effect = null;
   if (s.selectedIndex > 0)  {
     var o = s.options[s.selectedIndex];
-    imageParameters.effects = [ o.value ];
-  } else {
-    imageParameters.effects = [ ];
+    effect = o.value;
   }
+
+  // replace previous effect if found
+  var i;
+  for (i = 0; i < imageParameters.actions.length; i++) {
+    if (typeof imageParameters.actions[i] === 'string') {
+      break;
+    }                  
+  }
+
+  // if an effect is selected, add it or update the previous effect
+  if (effect) {                  
+    if (i == imageParameters.actions.length) {
+      imageParameters.actions.push(effect);
+    } else {
+      imageParameters.actions[i] = effect;
+    }
+  } else if (i < imageParameters.actions.length) {
+    imageParameters.actions.splice(i, 1);
+  }
+
   renderImage();
   return false; // no navigation
 }
