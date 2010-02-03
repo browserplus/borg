@@ -22,13 +22,20 @@ function get_links_widget() {
         ),
 
         array(
-            "link" => "http://developer.yahoo.net/blog/archives/2009/12/browserplus_source_code_available_now_on_github.html",
-            "title" => "BrowserPlus Source Code Available Now on Github"
+            "link" => "http://github.com/browserplus/",
+            "title" => "BrowserPlus on Github"
         ),
         
+        /*
         array(
             "link" => "http://www.creativeprogramming.it/blogs/wp/index.php/2009/12/10/yahoo-browserplus-desktop-interaction-for-your-webapplication/",
             "title" => "Yahoo! BrowserPlus– Amazing desktop interaction for your webapplication!"
+        ),
+        */
+        
+        array(
+            "link" => "http://www.plupload.com/",
+            "title" => "File uploader using HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms."
         )
     );
     
