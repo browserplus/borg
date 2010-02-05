@@ -3,7 +3,7 @@
 # talking about today, this week, and this month
 
 require "mysql"
-require "json/json.rb"
+require File.join(File.dirname(__FILE__), "json/json.rb")
 
 connInfo = JSON.parse(File.read("/home/borg/dbpasswd.json"))["irc"]
 
