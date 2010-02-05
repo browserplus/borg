@@ -52,7 +52,7 @@ function dropped(arg) {
   $BP.Uploader.upload(
 	{
 	  files: filesToUpload,
-	  url:   "upload.php",
+	  url:   "/misc/upload.php",
 	  postvars: {
         foo: "bar",
 		baz: "bing"

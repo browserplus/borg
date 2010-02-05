@@ -69,7 +69,7 @@ function uploadFiles(e) {
     if (ZippedFiles != null) {
         BrowserPlus.Uploader.upload( 
             {
-                url: "upload.php", 
+                url: "/misc/upload.php", 
                 files: {"file": ZippedFiles} 
             }, 
             function(res) {

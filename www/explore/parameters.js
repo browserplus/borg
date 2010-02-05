@@ -9,7 +9,7 @@ var ExParamValues = {
 	InactiveServices_Describe_version: "3.2.5",
 	InactiveServices_Describe_platform: "osx",
 	Motion_Coords_method: "motion", 
-	Uploader_upload_url: "/developer/web/code/full_uploader_demo/upload.php",
+	Uploader_upload_url: "/misc/upload.php",
 	Log_Fatal_location: "FatalMethodTest",
 	Log_Fatal_message: "Fatal - Hello World!",
 	Log_Error_location: "ErrorMethodTest",
