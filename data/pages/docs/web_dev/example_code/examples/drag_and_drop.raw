@@ -47,7 +47,7 @@ function dropped(arg) {
 BrowserPlus.init(function(res) {
   if (res.success) {
    BrowserPlus.require({
-      services: [{service: 'DragAndDrop'}]},
+      services: [{service: 'DragAndDrop', version: '1'}]},
       function(res) {
         if (res.success) {
           var dnd = BrowserPlus.DragAndDrop;

@@ -41,7 +41,7 @@
 <script type="text/javascript">
 
 var requiredServices = [
-  {service: "DragAndDrop"},
+  {service: "DragAndDrop", version: "1"},
   {service: "ImageAlter", version: "4", minversion: "4.0.4"},
   {service: "FileAccess", version: "1"}
 ];
