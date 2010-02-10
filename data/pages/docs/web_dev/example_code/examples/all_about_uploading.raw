@@ -16,8 +16,6 @@
 </body>  
 <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
 <script class="javascript">
-$BP = BrowserPlus;
-
 // a convenience function to alter the content of the "dropNotes" div
 // to give user feedback
 function setDropAreaTitle(txt) {
@@ -47,9 +45,9 @@ function dropped(arg) {
   for (var i = 0; i < arg.length; i++) {
     // skip folders
 	if (arg[i].mimeType == "application/x-folder") continue;
-	filesToUpload[id++] = arg[i];
+	filesToUpload["file"] = arg[i];
   }
-  $BP.Uploader.upload(
+  BrowserPlus.Uploader.upload(
 	{
 	  files: filesToUpload,
 	  url:   "/misc/upload.php",
@@ -78,7 +76,6 @@ BrowserPlus.init(function(res) {
           dnd.AddDropTarget(
             {
 			  id: "dropArea"
-              // accept all file types in drop 
 			},
             function(res) {
               dnd.AttachCallbacks({
