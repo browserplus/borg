@@ -45,7 +45,7 @@ function dropped(arg) {
   for (var i = 0; i < arg.length; i++) {
     // skip folders
 	if (arg[i].mimeType == "application/x-folder") continue;
-	filesToUpload["file"] = arg[i];
+	filesToUpload["file" + id++] = arg[i];
   }
   BrowserPlus.Uploader.upload(
 	{
