@@ -1,0 +1,429 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Uploadr</title>
+    <link rel="stylesheet" type="text/css" href="uploadr.css" media="screen">
+</head>
+<body>
+    <div id="dropArea" class="hoverOff"></div>
+
+    <h1>Uploadr</h1>
+
+    <p>
+        <em>
+            Parallel uploads, chunking, compression, so many options to upload...  If only there was a 
+            way to test all methods.
+        </em>
+    </p>
+    <p>
+        A live side by side comparison of techniques to reduce upload time by doing more on the client.
+        Drop some files on the <strong>hungry duck</strong> and watch the results.
+    </p>
+
+
+    <table cellpadding=2 cellspacing=1>
+        <thead>
+        <tr>
+            <td>&nbsp;</td>
+            <th>File</th>
+            <th>Size</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="r1">
+            <th>Serial</th>
+            <td></td><td></td><td></td>
+        </tr>                                                 
+        <tr id="r2">                                                  
+            <th>Parallel</th>                                 
+            <td></td><td></td><td></td>
+        </tr>                                                 
+        <tr id="r3">                                                  
+            <th>LZMA + Serial</th>                            
+            <td></td><td></td><td></td>
+        </tr>                                                 
+        <tr id="r4">
+            <th>LZMA + Parallel</th>                          
+            <td></td><td></td><td></td>
+        </tr>                                                 
+        </tbody>
+    </table>
+
+	<h3>Console</h3>
+	<div id="result"></div>
+
+    <script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+    <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+    <script class="javascript">
+
+YUI().use('node', function(Y) {
+    $BP = BrowserPlus;
+  
+    // a "global" containing files for uploading
+    var filesToUpload = [];
+
+    // for log(LEVEL, str)
+    var NOTE  = "note";
+    var ERROR = "error";
+    var INFO  = "info";
+    var TIME  = "time";
+
+    // INDEX TO TABLE COLUMNS
+    var FILE_NODE = 0;
+    var SIZE_NODE = 1;
+    var TIME_NODE = 2;
+    
+    // The current table row
+    var currentRow = 1;
+
+
+	function getTimeStamp() {
+		var d = new Date(),
+			h = d.getHours(),
+			m = d.getMinutes(),
+			s = d.getSeconds();
+		h = (h < 10 ? "0" + h : h);
+		m = (m < 10 ? "0" + m : m);
+		s = (s < 10 ? "0" + s : s);
+		return ("[" + h + ":" + m + ":" + s + "] ");
+	}
+
+	function log(level, str) {
+        var cnt, r = Y.one("#result");
+        if (!str) {
+            str = level;
+            level = INFO;
+        }
+        str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	    r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
+	        '<span class="log_' + level + '">' + str + "</span></div>");
+        r.set("scrollTop", r.get("scrollHeight"));
+	}
+
+    function numProps(obj) {
+        var count = 0;
+        for (k in obj) if (obj.hasOwnProperty(k)) count++;
+        return count; 
+    }
+
+    // Return a human presentable size string like "1.2GB"
+    function prettySize(size) {
+        var i, units = ['B','KB','MB','GB','TB'];
+        for (i = 0; size > 1024; i++) {
+            size /= 1024;
+        }
+        return Math.round(size*10)/10 + units[i];
+    }
+    
+    function prettyTime(time) {
+        return ""+(Math.round(time/10)/100) + "s";
+    }
+
+    function uploadStart(title, numFiles) {
+        var i, arr = new Array(numFiles);
+        log(INFO, "== " + title + " ==");
+        Y.all("#r"+currentRow+" td").toggleClass("active");
+
+        // array stores current number of bytes uploaded, indexed per file (fileObj.index)
+        for (i = 0; i < numFiles; i++) { arr[i] = 0; }
+
+        return {
+            title: title,
+            startTime: new Date(),
+            curFile: 0,
+            totalFiles: numFiles,
+            totalBytes: 0,
+            bytesUploaded: arr
+        };
+    }
+    
+    function uploadEnd(uploadObj) {
+        var endTime = new Date() - uploadObj.startTime;
+        var nodes = Y.all("#r"+currentRow+" td");
+
+        // set final number of bytes uploaded using totalBytes instead of "current" array
+        nodes.item(SIZE_NODE).setContent(prettySize(uploadObj.totalBytes));
+
+        Y.all("#r"+currentRow+" td").toggleClass("active");
+        log(NOTE, uploadObj.title + ": " + prettySize(uploadObj.totalBytes) + " uploaded in " + prettyTime(endTime));
+        currentRow++;        
+    }
+    
+    function fileStart(uploadObj, file, index) {
+        return {
+            file: file,
+            index: index,
+            origSize: file.size,
+            archiveTime: 0,
+            compressTime: 0,
+            uploadTime: 0
+        };
+    }
+
+    function fileArchiveStart(uploadObj, fileObj) {
+        fileObj.archiveTime = new Date();
+        log(INFO, "archiving " + fileObj.file.name);
+    }
+
+    function fileArchiveEnd(uploadObj, fileObj) {
+        var endTime = new Date() - fileObj.archiveTime;
+        displayStats(uploadObj);
+        log(INFO, "archived " + fileObj.file.name + " in " + prettyTime(endTime));
+    }
+
+    function fileCompressStart(uploadObj, fileObj) {
+        fileObj.compressTime = new Date();
+        log(INFO, "compressing " + fileObj.file.name);
+    }
+
+    function fileCompressEnd(uploadObj, fileObj) {
+        var endTime = new Date() - fileObj.compressTime;
+        displayStats(uploadObj);
+        log(INFO, "compressed " + fileObj.file.name + " from " + prettySize(fileObj.origSize) + " to " + prettySize(fileObj.file.size) + " in " + prettyTime(endTime));
+    }
+
+    function fileUploadStart(uploadObj, fileObj) {
+        fileObj.uploadTime = new Date();
+        log(INFO, "uploading " + fileObj.file.name + "(" + prettySize(fileObj.file.size) + ")");
+    }
+
+    function fileUploadProgress(uploadObj, fileObj, progress) {
+        uploadObj.bytesUploaded[fileObj.index] = (progress.filePercent/100 * fileObj.file.size);
+        displayStats(uploadObj);
+    }
+
+    function fileUploadEnd(uploadObj, fileObj) {
+        var endTime = new Date() - fileObj.uploadTime;
+        uploadObj.curFile++;
+        uploadObj.totalBytes += fileObj.file.size;
+        displayStats(uploadObj);
+        log(INFO, "uploaded " + fileObj.file.name + " in " + prettyTime(endTime));
+    }
+    
+    function displayStats(uploadObj) {
+        var i, bytes = 0, nodes = Y.all("#r"+currentRow+" td");
+        for (i = 0; i < uploadObj.totalFiles; i++) {
+            bytes += uploadObj.bytesUploaded[i];
+        }
+        nodes.item(FILE_NODE).setContent(uploadObj.curFile + "/" + uploadObj.totalFiles);
+        nodes.item(SIZE_NODE).setContent(prettySize(bytes));
+        nodes.item(TIME_NODE).setContent(prettyTime(new Date() - uploadObj.startTime));
+    }
+
+    function serialUploadTest() {
+        var fileStack = []
+        var fileIndex = 0;
+        var uploadObj = uploadStart("serialUploadTest", filesToUpload.length);
+
+        for (k in filesToUpload) {
+            fileStack.push(filesToUpload[k]);
+        }
+
+        var doNextUpload = function() {
+            if (fileStack.length > 0) {
+                var currentFile = fileStack.pop();
+                var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+                fileUploadStart(uploadObj, fileObj);
+                $BP.Uploader.upload({
+                    files: { "file": currentFile },
+                    url:   "http://browserpl.us/misc/upload.php",
+                    progressCallback: function(p) {
+                        fileUploadProgress(uploadObj, fileObj, p);
+                    }
+                }, function(r) {
+                    fileUploadEnd(uploadObj, fileObj);
+                    doNextUpload();
+                });
+            } else {
+                uploadEnd(uploadObj);
+                // we're done, call the next one
+                parallelUploadTest();
+            }
+        };
+
+        doNextUpload();
+    }
+
+    function parallelUploadTest () {
+        var fileIndex = 0;
+        var numComplete = 0; 
+        var uploadObj = uploadStart("parallelUploadTest", filesToUpload.length);
+        
+        var runUpload = function(currentFile) {
+            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+            fileUploadStart(uploadObj, fileObj);
+
+            $BP.Uploader.upload({
+                files: { "file": currentFile },
+                url:   "http://browserpl.us/misc/upload.php",
+                progressCallback: function(p) {
+                    fileUploadProgress(uploadObj, fileObj, p);
+                }
+            }, function(r) {
+                fileUploadEnd(uploadObj, fileObj);
+                // are we all done!?
+                numComplete += 1;
+                if (numComplete == filesToUpload.length) {
+                    uploadEnd(uploadObj);
+                    serialCompressedUploadTest();
+                }
+            });
+        };
+
+        for (k in filesToUpload) {
+            runUpload(filesToUpload[k]);
+        }
+    }
+
+    function serialCompressedUploadTest () {
+        var fileStack = [];
+        var fileIndex = 0;
+        uploadObj = uploadStart("serialCompressedUploadTest", filesToUpload.length);
+
+        for (k in filesToUpload) {
+            fileStack.push(filesToUpload[k]);
+        }
+
+        var doNextUpload = function() {
+            if (fileStack.length > 0) {
+                var currentFile = fileStack.pop();
+                var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+
+                fileCompressStart(uploadObj, fileObj);
+
+                $BP.LZMA.compress({
+                    file: currentFile
+                }, function(r) {
+                    fileObj.file = r.value;
+                    fileCompressEnd(uploadObj, fileObj);
+                    fileUploadStart(uploadObj, fileObj);
+
+                    $BP.Uploader.upload({
+                        files: { "file": r.value },
+                        url:   "http://browserpl.us/misc/upload.php",
+                        progressCallback: function(p) {
+                            fileUploadProgress(uploadObj, fileObj, p);
+                        }
+                    }, function(r) {
+                        fileUploadEnd(uploadObj, fileObj);
+                        doNextUpload();
+                    });
+                });
+            } else {
+                uploadEnd(uploadObj);
+                parallelCompressedUploadTest();
+            }
+        };
+        doNextUpload();
+    }
+
+    function parallelCompressedUploadTest () {
+        var fileIndex = 0;
+        var numComplete = 0; 
+        var uploadObj = uploadStart("parallelCompressedUploadTest", filesToUpload.length);
+
+        var runUpload = function(currentFile) {
+            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+            fileCompressStart(uploadObj, fileObj);
+
+            $BP.LZMA.compress({
+                file: currentFile
+            }, function(r) {
+                fileObj.file = r.value;
+                fileCompressEnd(uploadObj, fileObj);
+                fileUploadStart(uploadObj, fileObj);
+
+                $BP.Uploader.upload({
+                    files: { "file": r.value },
+                    url:   "http://browserpl.us/misc/upload.php",
+                    progressCallback: function(p) {
+                        fileUploadProgress(uploadObj, fileObj, p);
+                    }
+                }, function(r) {
+                    fileUploadEnd(uploadObj, fileObj);
+
+                    numComplete += 1;
+                    if (numComplete == filesToUpload.length) {
+                        uploadEnd(uploadObj);
+                        log(NOTE, "Test Complete");
+                    }
+                }); 
+            });
+        };
+
+        for (k in filesToUpload) {
+            runUpload(filesToUpload[k]);
+        }
+    }
+
+
+
+    // a function that will be invoked when the user is hovering over the drop target.
+    function dragHover(hoverOn) {
+        if (hoverOn) {
+            Y.one("#dropArea").set("className", "hoverOn");
+        } else {
+            Y.one("#dropArea").set("className", "hoverOff");
+        }
+    } 
+
+    // a function invoked when the user drops content on the target
+    function dragDropped(arg) {
+        for (var i = 0; i < arg.length; i++) {
+            if (arg[i].mimeType == "application/x-folder") continue; // skip folders
+            filesToUpload.push(arg[i]);
+        } 
+                        
+        // now let's disable that pesky drop target.
+        log(INFO, "Now processing " + numProps(filesToUpload) + " files...");
+        enableDropTarget(false);
+        serialUploadTest();
+    }  
+
+    function enableDropTarget(enable) {
+        var $DND = BrowserPlus.DragAndDrop;
+
+        if (enable) {
+            $DND.AddDropTarget(
+                { id: "dropArea" },
+                function(res) {
+                    $DND.AttachCallbacks({id: "dropArea", hover: dragHover, drop: dragDropped },
+                    function(){});  
+                }
+            );
+        } else {
+            $DND.RemoveDropTarget({ id: "dropArea" }, function(res) { });
+            Y.one("#dropArea").setStyle("visibility", "hidden");
+        }
+    }
+
+    
+    $BP.init(function(res) {
+        if (res.success) {
+            BrowserPlus.require({
+                services: [
+                {service: 'DragAndDrop', version: "1"},
+                {service: 'Uploader', version: "3", minversion: "3.1.5" },
+                {service: 'LZMA', version: "1", minversion: "1.0.1" },
+                {service: 'FileChecksum', version: "1" }
+            ]},
+            function(res) {
+                if (res.success) {
+                    enableDropTarget(true);
+                } else {
+                    log(ERROR, "Error Loading DragAndDrop: " + res.error);
+                }
+            });
+        } else {
+            log(ERROR, "Failed to initialize BrowserPlus: " + res.error);
+        }
+    }); 
+
+
+});
+</script>
+</body>
+</html>
