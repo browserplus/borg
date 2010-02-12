@@ -41,11 +41,15 @@
             <th>Parallel</th>                                 
             <td></td><td></td><td></td>
         </tr>                                                 
-        <tr id="r3">                                                  
+        <tr id="r3">
+            <th>Chunks + Parallel</th>                          
+            <td></td><td></td><td></td>
+        </tr>                                                 
+        <tr id="r4">                                                  
             <th>LZMA + Serial</th>                            
             <td></td><td></td><td></td>
         </tr>                                                 
-        <tr id="r4">
+        <tr id="r5">
             <th>LZMA + Parallel</th>                          
             <td></td><td></td><td></td>
         </tr>                                                 
@@ -57,6 +61,7 @@
 
     <script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
     <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+    <script type="text/javascript" src="/explore/json2.js"></script>
     <script class="javascript">
 
 YUI().use('node', function(Y) {
@@ -77,9 +82,12 @@ YUI().use('node', function(Y) {
     var FILE_NODE = 0;
     var SIZE_NODE = 1;
     var TIME_NODE = 2;
+
+    // smaller than 2MB default for demoing
+    var CHUNK_SIZE = 512*1024;
     
     // The current table row
-    var currentRow = 1;
+    var CURRENT_ROW = 1;
 
 
 	function getTimeStamp() {
@@ -94,7 +102,7 @@ YUI().use('node', function(Y) {
 	}
 
 	function log(level, str) {
-        var cnt, r = Y.one("#result");
+        var r = Y.one("#result");
         if (!str) {
             str = level;
             level = END;
@@ -137,8 +145,8 @@ YUI().use('node', function(Y) {
 
     function uploadStart(title, numFiles) {
         var i, arr = new Array(numFiles);
-        log(METHOD, "==== " + title + " ====");
-        Y.all("#r"+currentRow+" td").toggleClass("active");
+        log(METHOD, "==== " + title + " ==== ");
+        Y.all("#r"+CURRENT_ROW+" td").toggleClass("active");
 
         // array stores current number of bytes uploaded, indexed per file (fileObj.index)
         for (i = 0; i < numFiles; i++) { arr[i] = 0; }
@@ -155,14 +163,14 @@ YUI().use('node', function(Y) {
     
     function uploadEnd(uploadObj) {
         var endTime = new Date() - uploadObj.startTime;
-        var nodes = Y.all("#r"+currentRow+" td");
+        var nodes = Y.all("#r"+CURRENT_ROW+" td");
 
         // set final number of bytes uploaded using totalBytes instead of "current" array
         nodes.item(SIZE_NODE).setContent(prettySize(uploadObj.totalBytes));
 
-        Y.all("#r"+currentRow+" td").toggleClass("active");
+        Y.all("#r"+CURRENT_ROW+" td").toggleClass("active");
         log(RESULT, uploadObj.title + ": " + prettySize(uploadObj.totalBytes) + " uploaded in " + prettyTime(endTime));
-        currentRow++;        
+        CURRENT_ROW++;        
     }
     
     function fileStart(uploadObj, file, index) {
@@ -217,7 +225,7 @@ YUI().use('node', function(Y) {
     }
     
     function displayStats(uploadObj) {
-        var i, bytes = 0, nodes = Y.all("#r"+currentRow+" td");
+        var i, bytes = 0, nodes = Y.all("#r"+CURRENT_ROW+" td");
         for (i = 0; i < uploadObj.totalFiles; i++) {
             bytes += uploadObj.bytesUploaded[i];
         }
@@ -227,9 +235,7 @@ YUI().use('node', function(Y) {
     }
 
     function serialUploadTest() {
-        var fileStack = []
-        var fileIndex = 0;
-        var uploadObj = uploadStart("serialUploadTest", filesToUpload.length);
+        var k, fileStack = [], fileIndex = 0, uploadObj = uploadStart("serialUploadTest", filesToUpload.length);
 
         for (k in filesToUpload) {
             fileStack.push(filesToUpload[k]);
@@ -261,9 +267,7 @@ YUI().use('node', function(Y) {
     }
 
     function parallelUploadTest () {
-        var fileIndex = 0;
-        var numComplete = 0; 
-        var uploadObj = uploadStart("parallelUploadTest", filesToUpload.length);
+        var k, fileIndex = 0, numComplete = 0, uploadObj = uploadStart("parallelUploadTest", filesToUpload.length);
         
         var runUpload = function(currentFile) {
             var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
@@ -281,7 +285,7 @@ YUI().use('node', function(Y) {
                 numComplete += 1;
                 if (numComplete == filesToUpload.length) {
                     uploadEnd(uploadObj);
-                    serialCompressedUploadTest();
+                    parallelChunkUploadTest();
                 }
             });
         };
@@ -291,14 +295,73 @@ YUI().use('node', function(Y) {
         }
     }
 
+    function parallelChunkUploadTest() {
+        var k, fileIndex = 0, filesComplete = 0, chunksComplete = 0, chunkFilesToUpload = [], uploadObj, startTime = new Date();
+            
+        var runUpload = function(currentFile) {
+            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+            fileUploadStart(uploadObj, fileObj);
+
+            $BP.Uploader.upload({
+                files: { "file": currentFile },
+                url:   "http://browserpl.us/misc/upload.php",
+                progressCallback: function(p) {
+                    fileUploadProgress(uploadObj, fileObj, p);
+                }
+            }, function(r) {
+                fileUploadEnd(uploadObj, fileObj);
+                // are we all done!?
+                chunksComplete += 1;
+                if (chunksComplete == chunkFilesToUpload.length) {
+                    uploadEnd(uploadObj);
+                    serialCompressedUploadTest();
+                }
+            });
+        };
+
+        var runChunks = function() {
+            uploadObj = uploadStart("parallelChunkUploadTest", chunkFilesToUpload.length);
+            uploadObj.startTime = startTime;
+            for (k in chunkFilesToUpload) {
+                runUpload(chunkFilesToUpload[k]);
+            }
+        };
+
+        for (k in filesToUpload) {
+            $BP.FileAccess.GetFileChunks({file:filesToUpload[k], chunkSize: CHUNK_SIZE}, function(r){
+                var chunks = r.value;
+                for (var i = 0; i < chunks.length; i++) {
+                    chunkFilesToUpload.push(chunks[i].filehandle);
+                }
+                filesComplete += 1;
+                if (filesComplete == filesToUpload.length) {
+                    runChunks();
+                }
+            });
+        }
+    }
+
     function serialCompressedUploadTest () {
-        var fileStack = [];
-        var fileIndex = 0;
-        uploadObj = uploadStart("serialCompressedUploadTest", filesToUpload.length);
+        var k, fileStack = [], fileIndex = 0, uploadObj = uploadStart("serialCompressedUploadTest", filesToUpload.length);
 
         for (k in filesToUpload) {
             fileStack.push(filesToUpload[k]);
         }
+
+        var uploadIt = function(fileObj) {
+            fileUploadStart(uploadObj, fileObj);
+
+            $BP.Uploader.upload({
+                files: { "file": fileObj.file },
+                url:   "http://browserpl.us/misc/upload.php",
+                progressCallback: function(p) {
+                    fileUploadProgress(uploadObj, fileObj, p);
+                }
+            }, function(r) {
+                fileUploadEnd(uploadObj, fileObj);
+                doNextUpload();
+            });
+        };
 
         var doNextUpload = function() {
             if (fileStack.length > 0) {
@@ -306,9 +369,6 @@ YUI().use('node', function(Y) {
                 var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
 
                 if (isCompressable(currentFile.mimeType)) {
-                    //
-                    // File is compressable, do it!
-                    //
                     fileCompressStart(uploadObj, fileObj);
 
                     $BP.LZMA.compress({
@@ -316,34 +376,10 @@ YUI().use('node', function(Y) {
                     }, function(r) {
                         fileObj.file = r.value;
                         fileCompressEnd(uploadObj, fileObj);
-                        fileUploadStart(uploadObj, fileObj);
-
-                        $BP.Uploader.upload({
-                            files: { "file": r.value },
-                            url:   "http://browserpl.us/misc/upload.php",
-                            progressCallback: function(p) {
-                                fileUploadProgress(uploadObj, fileObj, p);
-                            }
-                        }, function(r) {
-                            fileUploadEnd(uploadObj, fileObj);
-                            doNextUpload();
-                        });
+                        uploadIt(fileObj);
                     });
                 } else {
-                    //
-                    // Skipping compression due to file type
-                    //
-                    fileUploadStart(uploadObj, fileObj);
-                    $BP.Uploader.upload({
-                        files: { "file": currentFile },
-                        url:   "http://browserpl.us/misc/upload.php",
-                        progressCallback: function(p) {
-                            fileUploadProgress(uploadObj, fileObj, p);
-                        }
-                    }, function(r) {
-                        fileUploadEnd(uploadObj, fileObj);
-                        doNextUpload();
-                    });
+                    uploadIt(fileObj);
                 }
             } else {
                 uploadEnd(uploadObj);
@@ -354,17 +390,32 @@ YUI().use('node', function(Y) {
     }
 
     function parallelCompressedUploadTest () {
-        var fileIndex = 0;
-        var numComplete = 0; 
-        var uploadObj = uploadStart("parallelCompressedUploadTest", filesToUpload.length);
+        var k, fileIndex = 0, numComplete = 0, uploadObj = uploadStart("parallelCompressedUploadTest", filesToUpload.length);
 
-        var runUpload = function(currentFile) {
+        var uploadIt = function(fileObj) {
+            fileUploadStart(uploadObj, fileObj);
+                    
+            $BP.Uploader.upload({
+                files: { "file": fileObj.file },
+                url:   "http://browserpl.us/misc/upload.php",
+                progressCallback: function(p) {
+                    fileUploadProgress(uploadObj, fileObj, p);
+                }
+            }, function(r) {
+                fileUploadEnd(uploadObj, fileObj);
+
+                numComplete += 1;
+                if (numComplete == filesToUpload.length) {
+                    uploadEnd(uploadObj);
+                    log(METHOD, "Test Complete!");
+                }
+            }); 
+        };
+        
+        var compressIt = function(currentFile) {
             var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
 
             if (isCompressable(currentFile.mimeType)) {
-                //
-                // File is compressable, do it!
-                //
                 fileCompressStart(uploadObj, fileObj);
 
                 $BP.LZMA.compress({
@@ -372,53 +423,17 @@ YUI().use('node', function(Y) {
                 }, function(r) {
                     fileObj.file = r.value;
                     fileCompressEnd(uploadObj, fileObj);
-                    fileUploadStart(uploadObj, fileObj);
-
-                    $BP.Uploader.upload({
-                        files: { "file": r.value },
-                        url:   "http://browserpl.us/misc/upload.php",
-                        progressCallback: function(p) {
-                            fileUploadProgress(uploadObj, fileObj, p);
-                        }
-                    }, function(r) {
-                        fileUploadEnd(uploadObj, fileObj);
-
-                        numComplete += 1;
-                        if (numComplete == filesToUpload.length) {
-                            uploadEnd(uploadObj);
-                            log(METHOD, "Test Complete");
-                        }
-                    }); 
+                    uploadIt(fileObj);
                 });
             } else {
-                //
-                // Skipping compression due to file type
-                //
-                fileUploadStart(uploadObj, fileObj);
-
-                $BP.Uploader.upload({
-                    files: { "file": currentFile },
-                    url:   "http://browserpl.us/misc/upload.php",
-                    progressCallback: function(p) {
-                        fileUploadProgress(uploadObj, fileObj, p);
-                    }
-                }, function(r) {
-                    fileUploadEnd(uploadObj, fileObj);
-                    numComplete += 1;
-                    if (numComplete == filesToUpload.length) {
-                        uploadEnd(uploadObj);
-                        log(METHOD, "Test Complete");
-                    }
-                }); 
+                uploadIt(fileObj);
             }
         };
 
         for (k in filesToUpload) {
-            runUpload(filesToUpload[k]);
+            compressIt(filesToUpload[k]);
         }
     }
-
-
 
     // a function that will be invoked when the user is hovering over the drop target.
     function dragHover(hoverOn) {
@@ -432,7 +447,7 @@ YUI().use('node', function(Y) {
     // a function invoked when the user drops content on the target
     function dragDropped(arg) {
         for (var i = 0; i < arg.length; i++) {
-            if (arg[i].mimeType[0] == "application/x-folder") continue; // skip folders
+            if (arg[i].mimeType[0] == "application/x-folder") { continue; }// skip folders
             filesToUpload.push(arg[i]);
         } 
 
@@ -467,7 +482,7 @@ YUI().use('node', function(Y) {
                 {service: 'DragAndDrop', version: "1"},
                 {service: 'Uploader', version: "3", minversion: "3.1.5" },
                 {service: 'LZMA', version: "1", minversion: "1.0.1" },
-                {service: 'FileChecksum', version: "1" }
+                {service: 'FileAccess', minversion: "1.1.0" }
             ]},
             function(res) {
                 if (res.success) {
