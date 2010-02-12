@@ -133,7 +133,7 @@ is nothing more than a JS object with up to three properties:
   representation which may specify only the major version (i.e. "2"), major and minor ("1.5"), or all three
   ("1.1.1"). For a service to match the version, everything specified in this string must be the same as the
   service version.
-**minversion** - [optional] A minimum allowable version which further restricts the set of services that will
+* **minversion** - [optional] A minimum allowable version which further restricts the set of services that will
   satisfy the requirement.
 
 This specification structure allows us to handle a representative set of use cases:
@@ -286,5 +286,21 @@ A JavaScript file handle representation contains the following elements:
 
 * **name**: the name of the file
 * **size**: the size of the file in bytes
-* **mimeType**: A mimetype of the file guessed based on the file's extension.
+* **mimeType**: An array of one or more mimetypes guessed based on the file's extension.
 * **BrowserPlusHandleID**: a randomly integer which is the file handle's ID.
+
+~~~
+{
+    "BrowserPlusType": "BPTPath",
+    "BrowserPlusHandleID": 16807,
+    "BrowserPlusHandleName": "bizplan.xls",
+    "name": "bizplan.xls",
+    "size": 118784,
+    "mimeType": [
+      "application/excel",
+      "application/vnd.ms-excel",
+      "application/x-excel",
+      "application/x-msexcel"
+    ]
+}
+~~~
