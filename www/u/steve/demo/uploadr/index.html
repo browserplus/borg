@@ -25,34 +25,17 @@
 
     <table cellpadding=2 cellspacing=1>
         <thead>
-        <tr>
-            <td>&nbsp;</td>
-            <th>File</th>
-            <th>Size</th>
-            <th>Time</th>
-        </tr>
+            <tr><td>&nbsp;</td><th>File</th><th>Size</th><th>Time</th></tr>
         </thead>
         <tbody>
-        <tr id="r1">
-            <th>Serial</th>
-            <td></td><td></td><td></td>
-        </tr>                                                 
-        <tr id="r2">                                                  
-            <th>Parallel</th>                                 
-            <td></td><td></td><td></td>
-        </tr>                                                 
-        <tr id="r3">
-            <th>Chunks + Parallel</th>                          
-            <td></td><td></td><td></td>
-        </tr>                                                 
-        <tr id="r4">                                                  
-            <th>LZMA + Serial</th>                            
-            <td></td><td></td><td></td>
-        </tr>                                                 
-        <tr id="r5">
-            <th>LZMA + Parallel</th>                          
-            <td></td><td></td><td></td>
-        </tr>                                                 
+            <tr id="r1"><th>Serial</th><td></td><td></td><td></td></tr>                                                 
+            <tr id="r2"><th>Parallel</th><td></td><td></td><td></td></tr>
+            <tr id="r3"><th>Chunks + Parallel</th><td></td><td></td><td></td></tr>
+            <tr id="r4"><th>LZMA + Serial</th><td></td><td></td><td></td></tr>
+            <tr id="r5"><th>LZMA + Parallel</th><td></td><td></td><td></td></tr>
+            <tr id="r6"><th>ZIP + Serial</th><td></td><td></td><td></td></tr>
+            <tr id="r7"><th>TAR + GZIP + Serial</th><td></td><td></td><td></td></tr>
+            <tr id="r8"><th>TAR + BZIP2 + Serial</th><td></td><td></td><td></td></tr>
         </tbody>
     </table>
 
@@ -178,21 +161,9 @@ YUI().use('node', function(Y) {
             file: file,
             index: index,
             origSize: file.size,
-            archiveTime: 0,
             compressTime: 0,
             uploadTime: 0
         };
-    }
-
-    function fileArchiveStart(uploadObj, fileObj) {
-        fileObj.archiveTime = new Date();
-        log(START, "archiving " + fileObj.file.name);
-    }
-
-    function fileArchiveEnd(uploadObj, fileObj) {
-        var endTime = new Date() - fileObj.archiveTime;
-        displayStats(uploadObj);
-        log(END, "ARCHIVED " + fileObj.file.name + " in " + prettyTime(endTime));
     }
 
     function fileCompressStart(uploadObj, fileObj) {
@@ -407,7 +378,7 @@ YUI().use('node', function(Y) {
                 numComplete += 1;
                 if (numComplete == filesToUpload.length) {
                     uploadEnd(uploadObj);
-                    log(METHOD, "Test Complete!");
+                    serialArchiveUploadTest("zip");
                 }
             }); 
         };
@@ -433,6 +404,50 @@ YUI().use('node', function(Y) {
         for (k in filesToUpload) {
             compressIt(filesToUpload[k]);
         }
+    }
+
+    function serialArchiveUploadTest(fmt) {
+        var k, uploadObj = uploadStart("SerialArchiveUploadTest(" + fmt + ")", 1),
+            compressTime = new Date(), origSize = 0;
+
+        for (k in filesToUpload) {
+            origSize += filesToUpload[k].size;
+        }
+
+        log(START, "archiving " + filesToUpload.length + " files into 1 " + fmt);
+
+        $BP.Archiver.archive({
+            files:  filesToUpload,
+            format: fmt
+        }, function(r){
+            var currentFile = r.value.archiveFile, fileObj = fileStart(uploadObj, currentFile, 0),
+                endTime = new Date() - compressTime;
+
+            displayStats(uploadObj);
+            log(END, "ARCHIVED " + fileObj.file.name + " from " + prettySize(origSize) + " to " + prettySize(fileObj.file.size) + 
+                " in " + prettyTime(endTime));
+
+            fileUploadStart(uploadObj, fileObj);            
+
+            $BP.Uploader.upload({
+                files: { "file": fileObj.file },
+                url:   "http://browserpl.us/misc/upload.php",
+                progressCallback: function(p) {
+                    fileUploadProgress(uploadObj, fileObj, p);
+                }
+            }, function(res) {
+                fileUploadEnd(uploadObj, fileObj);
+                uploadEnd(uploadObj);
+
+                if (fmt == "zip") {
+                    serialArchiveUploadTest("tar-gzip");
+                } else if (fmt == "tar-gzip") {
+                    serialArchiveUploadTest("tar-bzip2");
+                } else {
+                    log(METHOD, "Test Complete");
+                }
+            });
+        });
     }
 
     // a function that will be invoked when the user is hovering over the drop target.
@@ -482,7 +497,8 @@ YUI().use('node', function(Y) {
                 {service: 'DragAndDrop', version: "1"},
                 {service: 'Uploader', version: "3", minversion: "3.1.5" },
                 {service: 'LZMA', version: "1", minversion: "1.0.1" },
-                {service: 'FileAccess', minversion: "1.1.0" }
+                {service: 'FileAccess', minversion: "1.1.0" },
+                {service: 'Archiver', version: "1"}
             ]},
             function(res) {
                 if (res.success) {
