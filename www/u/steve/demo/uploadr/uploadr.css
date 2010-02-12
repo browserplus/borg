@@ -81,12 +81,20 @@ h3 {
 	height:250px;
 }
 
-.log_note {
-    color:#090;
+.log_result {
+    color:#080;
 }
 
-.log_info {
-    color:#222221;
+.log_method {
+    color:#008;
+}
+
+.log_start {
+    color:#666;
+}
+
+.log_end {
+    color:#000;
 }
 
 .log_error {

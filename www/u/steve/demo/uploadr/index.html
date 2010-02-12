@@ -66,10 +66,12 @@ YUI().use('node', function(Y) {
     var filesToUpload = [];
 
     // for log(LEVEL, str)
-    var NOTE  = "note";
-    var ERROR = "error";
-    var INFO  = "info";
-    var TIME  = "time";
+    var START  = "start";
+    var END    = "end";
+    var RESULT = "result";
+    var METHOD = "method";
+    var ERROR  = "error";
+    var TIME   = "time";
 
     // INDEX TO TABLE COLUMNS
     var FILE_NODE = 0;
@@ -95,7 +97,7 @@ YUI().use('node', function(Y) {
         var cnt, r = Y.one("#result");
         if (!str) {
             str = level;
-            level = INFO;
+            level = END;
         }
         str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	    r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
@@ -103,11 +105,22 @@ YUI().use('node', function(Y) {
         r.set("scrollTop", r.get("scrollHeight"));
 	}
 
-    function numProps(obj) {
-        var count = 0;
-        for (k in obj) if (obj.hasOwnProperty(k)) count++;
-        return count; 
+    // Only compress files we know to be highly compressable.  
+    // For this demo, we'll compress these mime types:
+    //   1. text/*
+    //   2. application/excel
+    //   3. application/msword
+    function isCompressable(mimeTypes) {
+        var i, len, mime;
+        for (i = 0, len = mimeTypes.length; i < len; i++) {
+            mime = mimeTypes[i];
+            if (/^(text\/|(application\/(excel|msword)))/.test(mime)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
     // Return a human presentable size string like "1.2GB"
     function prettySize(size) {
@@ -124,7 +137,7 @@ YUI().use('node', function(Y) {
 
     function uploadStart(title, numFiles) {
         var i, arr = new Array(numFiles);
-        log(INFO, "== " + title + " ==");
+        log(METHOD, "==== " + title + " ====");
         Y.all("#r"+currentRow+" td").toggleClass("active");
 
         // array stores current number of bytes uploaded, indexed per file (fileObj.index)
@@ -148,7 +161,7 @@ YUI().use('node', function(Y) {
         nodes.item(SIZE_NODE).setContent(prettySize(uploadObj.totalBytes));
 
         Y.all("#r"+currentRow+" td").toggleClass("active");
-        log(NOTE, uploadObj.title + ": " + prettySize(uploadObj.totalBytes) + " uploaded in " + prettyTime(endTime));
+        log(RESULT, uploadObj.title + ": " + prettySize(uploadObj.totalBytes) + " uploaded in " + prettyTime(endTime));
         currentRow++;        
     }
     
@@ -165,29 +178,29 @@ YUI().use('node', function(Y) {
 
     function fileArchiveStart(uploadObj, fileObj) {
         fileObj.archiveTime = new Date();
-        log(INFO, "archiving " + fileObj.file.name);
+        log(START, "archiving " + fileObj.file.name);
     }
 
     function fileArchiveEnd(uploadObj, fileObj) {
         var endTime = new Date() - fileObj.archiveTime;
         displayStats(uploadObj);
-        log(INFO, "archived " + fileObj.file.name + " in " + prettyTime(endTime));
+        log(END, "ARCHIVED " + fileObj.file.name + " in " + prettyTime(endTime));
     }
 
     function fileCompressStart(uploadObj, fileObj) {
         fileObj.compressTime = new Date();
-        log(INFO, "compressing " + fileObj.file.name);
+        log(START, "compressing " + fileObj.file.name);
     }
 
     function fileCompressEnd(uploadObj, fileObj) {
         var endTime = new Date() - fileObj.compressTime;
         displayStats(uploadObj);
-        log(INFO, "compressed " + fileObj.file.name + " from " + prettySize(fileObj.origSize) + " to " + prettySize(fileObj.file.size) + " in " + prettyTime(endTime));
+        log(END, "COMPRESSED " + fileObj.file.name + " from " + prettySize(fileObj.origSize) + " to " + prettySize(fileObj.file.size) + " in " + prettyTime(endTime));
     }
 
     function fileUploadStart(uploadObj, fileObj) {
         fileObj.uploadTime = new Date();
-        log(INFO, "uploading " + fileObj.file.name + "(" + prettySize(fileObj.file.size) + ")");
+        log(START, "uploading " + fileObj.file.name + "(" + prettySize(fileObj.file.size) + ")");
     }
 
     function fileUploadProgress(uploadObj, fileObj, progress) {
@@ -200,7 +213,7 @@ YUI().use('node', function(Y) {
         uploadObj.curFile++;
         uploadObj.totalBytes += fileObj.file.size;
         displayStats(uploadObj);
-        log(INFO, "uploaded " + fileObj.file.name + " in " + prettyTime(endTime));
+        log(END, "UPLOADED " + fileObj.file.name + " in " + prettyTime(endTime));
     }
     
     function displayStats(uploadObj) {
@@ -224,7 +237,7 @@ YUI().use('node', function(Y) {
 
         var doNextUpload = function() {
             if (fileStack.length > 0) {
-                var currentFile = fileStack.pop();
+                var currentFile = fileStack.shift();
                 var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
                 fileUploadStart(uploadObj, fileObj);
                 $BP.Uploader.upload({
@@ -289,9 +302,69 @@ YUI().use('node', function(Y) {
 
         var doNextUpload = function() {
             if (fileStack.length > 0) {
-                var currentFile = fileStack.pop();
+                var currentFile = fileStack.shift();
                 var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
 
+                if (isCompressable(currentFile.mimeType)) {
+                    //
+                    // File is compressable, do it!
+                    //
+                    fileCompressStart(uploadObj, fileObj);
+
+                    $BP.LZMA.compress({
+                        file: currentFile
+                    }, function(r) {
+                        fileObj.file = r.value;
+                        fileCompressEnd(uploadObj, fileObj);
+                        fileUploadStart(uploadObj, fileObj);
+
+                        $BP.Uploader.upload({
+                            files: { "file": r.value },
+                            url:   "http://browserpl.us/misc/upload.php",
+                            progressCallback: function(p) {
+                                fileUploadProgress(uploadObj, fileObj, p);
+                            }
+                        }, function(r) {
+                            fileUploadEnd(uploadObj, fileObj);
+                            doNextUpload();
+                        });
+                    });
+                } else {
+                    //
+                    // Skipping compression due to file type
+                    //
+                    fileUploadStart(uploadObj, fileObj);
+                    $BP.Uploader.upload({
+                        files: { "file": currentFile },
+                        url:   "http://browserpl.us/misc/upload.php",
+                        progressCallback: function(p) {
+                            fileUploadProgress(uploadObj, fileObj, p);
+                        }
+                    }, function(r) {
+                        fileUploadEnd(uploadObj, fileObj);
+                        doNextUpload();
+                    });
+                }
+            } else {
+                uploadEnd(uploadObj);
+                parallelCompressedUploadTest();
+            }
+        };
+        doNextUpload();
+    }
+
+    function parallelCompressedUploadTest () {
+        var fileIndex = 0;
+        var numComplete = 0; 
+        var uploadObj = uploadStart("parallelCompressedUploadTest", filesToUpload.length);
+
+        var runUpload = function(currentFile) {
+            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+
+            if (isCompressable(currentFile.mimeType)) {
+                //
+                // File is compressable, do it!
+                //
                 fileCompressStart(uploadObj, fileObj);
 
                 $BP.LZMA.compress({
@@ -309,49 +382,35 @@ YUI().use('node', function(Y) {
                         }
                     }, function(r) {
                         fileUploadEnd(uploadObj, fileObj);
-                        doNextUpload();
-                    });
+
+                        numComplete += 1;
+                        if (numComplete == filesToUpload.length) {
+                            uploadEnd(uploadObj);
+                            log(METHOD, "Test Complete");
+                        }
+                    }); 
                 });
             } else {
-                uploadEnd(uploadObj);
-                parallelCompressedUploadTest();
-            }
-        };
-        doNextUpload();
-    }
-
-    function parallelCompressedUploadTest () {
-        var fileIndex = 0;
-        var numComplete = 0; 
-        var uploadObj = uploadStart("parallelCompressedUploadTest", filesToUpload.length);
-
-        var runUpload = function(currentFile) {
-            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-            fileCompressStart(uploadObj, fileObj);
-
-            $BP.LZMA.compress({
-                file: currentFile
-            }, function(r) {
-                fileObj.file = r.value;
-                fileCompressEnd(uploadObj, fileObj);
+                //
+                // Skipping compression due to file type
+                //
                 fileUploadStart(uploadObj, fileObj);
 
                 $BP.Uploader.upload({
-                    files: { "file": r.value },
+                    files: { "file": currentFile },
                     url:   "http://browserpl.us/misc/upload.php",
                     progressCallback: function(p) {
                         fileUploadProgress(uploadObj, fileObj, p);
                     }
                 }, function(r) {
                     fileUploadEnd(uploadObj, fileObj);
-
                     numComplete += 1;
                     if (numComplete == filesToUpload.length) {
                         uploadEnd(uploadObj);
-                        log(NOTE, "Test Complete");
+                        log(METHOD, "Test Complete");
                     }
                 }); 
-            });
+            }
         };
 
         for (k in filesToUpload) {
@@ -373,12 +432,12 @@ YUI().use('node', function(Y) {
     // a function invoked when the user drops content on the target
     function dragDropped(arg) {
         for (var i = 0; i < arg.length; i++) {
-            if (arg[i].mimeType == "application/x-folder") continue; // skip folders
+            if (arg[i].mimeType[0] == "application/x-folder") continue; // skip folders
             filesToUpload.push(arg[i]);
         } 
-                        
+
         // now let's disable that pesky drop target.
-        log(INFO, "Now processing " + numProps(filesToUpload) + " files...");
+        log(START, "Now processing " + filesToUpload.length + " files...");
         enableDropTarget(false);
         serialUploadTest();
     }  
