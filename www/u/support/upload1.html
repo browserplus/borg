@@ -1,0 +1,23 @@
+<html><body>
+    <div style="width:500px; height:200px;" id="uploader"></div> 
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script> 
+<script type="text/javascript" src="http://bp.yahooapis.com/toolbox/uploader/1.0.6/uploader-min.js"></script> 
+<script type="text/javascript"> 
+    BPTool.Uploader.create("uploader", 
+    {
+        uploadUrl: "http://browserpl.us/misc/upload.php",
+        fileVarName: "fileName",
+        zipFiles: false,
+        fileCB: fileCB
+    }).render();
+
+    function fileCB(result){
+        alert("fileCB called");
+        if (result.success){
+            alert("fileCB upload successful: " + result.value);
+        } else{
+            alert("fileCB upload failure: " + result.verboseError + " " + result.error);
+        }
+    }
+</script>
+</body></html>
