@@ -138,7 +138,7 @@ EOS;
             $n = $s['name'];
             $vn = $this->versionNum($s['versionString']);
             if ((isset($latest[$n]) && $vn > $latest[$n]['vn']) || !isset($latest[$n])) {
-                $latest[$n] = array("vn" => $vn, "doc" => $s['documentation']);
+                $latest[$n] = array("vn" => $vn, "doc" => h($s['documentation']));
             }
         }
 
@@ -207,7 +207,7 @@ EOS;
             if ($sj) $service = json_decode($sj, 1);
 
             if ($service) {
-                $str .= $service['documentation'] . "\n\n";
+                $str .= h($service['documentation']) . "\n\n";
                 
                 if ($service['CoreletType'] == "dependent" && isset($service['CoreletRequires'])) {
                     $dn = $service['CoreletRequires']['Name'];
@@ -242,7 +242,7 @@ EOS;
                     foreach($funcs as $f) {
                         $str .= "<a name=\"{$f['name']}\"></a>\n";
                         $str .= "## BrowserPlus.{$name}.{$f['name']}({params}, function{}())\n\n";
-                        $str .= $f['documentation'] . "\n\n";
+                        $str .= h($f['documentation']) . "\n\n";
 
                         $str .= "### Parameters\n\n";
                         
@@ -254,7 +254,7 @@ EOS;
                                     $str .= " *(Optional)*";
                                 }
                                 $str .= "\n";
-                                $str .= ": " . $p['documentation'] . "\n\n";
+                                $str .= ": " . h($p['documentation']) . "\n\n";
                             }
                         } else {
                             $str .= "*No Parameters*\n\n";
