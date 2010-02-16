@@ -184,7 +184,8 @@ YUI().use('node', function(Y) {
     function fileCompressEnd(uploadObj, fileObj) {
         var endTime = new Date() - fileObj.compressTime;
         displayStats(uploadObj);
-        log(END, "COMPRESSED " + fileObj.file.name + " from " + prettySize(fileObj.origSize) + " to " + prettySize(fileObj.file.size) + " in " + prettyTime(endTime));
+        log(END, "COMPRESSED " + fileObj.file.name + " from " + prettySize(fileObj.origSize) + 
+            " to " + prettySize(fileObj.file.size) + " in " + prettyTime(endTime));
     }
 
     function fileUploadStart(uploadObj, fileObj) {
@@ -309,10 +310,10 @@ YUI().use('node', function(Y) {
         };
 
         for (k in filesToUpload) {
-            $BP.FileAccess.GetFileChunks({file:filesToUpload[k], chunkSize: CHUNK_SIZE}, function(r){
+            $BP.FileAccess.chunk({file:filesToUpload[k], chunkSize: CHUNK_SIZE}, function(r){
                 var chunks = r.value;
                 for (var i = 0; i < chunks.length; i++) {
-                    chunkFilesToUpload.push(chunks[i].filehandle);
+                    chunkFilesToUpload.push(chunks[i]);
                 }
                 filesComplete += 1;
                 if (filesComplete == filesToUpload.length) {
@@ -507,7 +508,7 @@ YUI().use('node', function(Y) {
                 {service: 'DragAndDrop', version: "1"},
                 {service: 'Uploader', version: "3", minversion: "3.1.5" },
                 {service: 'LZMA', version: "1", minversion: "1.0.1" },
-                {service: 'FileAccess', minversion: "1.1.0" },
+                {service: 'FileAccess', minversion: "2" },
                 {service: 'Archiver', version: "1"}
             ]},
             function(res) {
