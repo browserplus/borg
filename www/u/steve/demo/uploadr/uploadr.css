@@ -15,12 +15,12 @@ th {
 
 thead th {
     text-align:center;
-    width:80px;
+    width:85px;
 }
 
 tbody th {
     text-align:right;
-	width: 130px;
+	width: 140px;
 }
 
 tbody td {
@@ -40,6 +40,7 @@ td.active {
 }
 
 p.services {}
+
 
 #dropArea {
     float:right;
@@ -81,6 +82,10 @@ h3 {
     background:#f7f5f4;
     line-height:1.2em;
 	height:250px;
+}
+
+#console {
+    width:640px;
 }
 
 .log_result {
