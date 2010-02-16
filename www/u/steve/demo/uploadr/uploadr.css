@@ -39,6 +39,8 @@ td.active {
     background:#cec;
 }
 
+p.services {}
+
 #dropArea {
     float:right;
     padding:0;

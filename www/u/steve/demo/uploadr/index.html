@@ -28,7 +28,7 @@
             <tr><td>&nbsp;</td><th>File</th><th>Size</th><th>Time</th></tr>
         </thead>
         <tbody>
-            <tr id="r1"><th>Serial</th><td></td><td></td><td></td></tr>                                                 
+            <tr id="r1"><th>Serial</th><td></td><td></td><td></td></tr>
             <tr id="r2"><th>Parallel</th><td></td><td></td><td></td></tr>
             <tr id="r3"><th>Chunks + Parallel</th><td></td><td></td><td></td></tr>
             <tr id="r4"><th>LZMA + Serial</th><td></td><td></td><td></td></tr>
@@ -41,7 +41,17 @@
 
 	<h3>Console</h3>
 	<div id="result"></div>
+    <p class="services">
+        * This demo is built on the
+        <a href="http://browserplus.org/docs/services/DragAndDrop.html">DragAndDrop</a>
+        and 
+        <a href="http://browserplus.org/docs/services/Uploader.html">Uploader</a> services.
+        For archiving, compression and chunking, these additional services are used: 
+        <a href="http://browserplus.org/docs/services/Archiver.html">Archiver</a>, 
+        <a href="http://browserplus.org/docs/services/LZMA.html">LZMA</a> and 
+        <a href="http://browserplus.org/docs/services/FileAccess.html">FileAccess</a>.
 
+    </p>
     <script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
     <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
     <script type="text/javascript" src="/explore/json2.js"></script>
@@ -444,7 +454,7 @@ YUI().use('node', function(Y) {
                 } else if (fmt == "tar-gzip") {
                     serialArchiveUploadTest("tar-bzip2");
                 } else {
-                    log(METHOD, "Test Complete");
+                    log(METHOD, "Test Complete.  Reload the page to try again.");
                 }
             });
         });
