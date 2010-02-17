@@ -1,0 +1,84 @@
+<html>
+  <head><title>Accessing Files</title>
+</head>
+
+<body>
+<p>
+<div id="dropTitle">loading...</div>
+<br>
+<div id="lastDropSummary"></div>
+<textarea rows="20" cols="80" id="lastDropContents"></textarea> 
+
+<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script type="text/javascript">
+function setDropAreaTitle(txt) {
+  var div = document.getElementById("dropTitle");
+  while (div.firstChild) {div.removeChild(div.firstChild);}
+  div.appendChild(document.createTextNode(txt));
+}
+
+function hovering(hoverOn) {
+  if (hoverOn) {setDropAreaTitle("drop it!");}
+  else {setDropAreaTitle("drag a large file to the box below.");}
+} 
+
+function dropped(arg) {
+  var textArea = document.getElementById("lastDropContents");
+
+  var title = document.createElement("b");
+  title.innerHTML = "Last drop Contents (" + arg[0].BrowserPlusHandleName + " - " + 
+    arg[0].size + " bytes - " + arg[0].mimeType + ")<p>";
+ 
+  // set summary text
+  lds = document.getElementById("lastDropSummary");
+  while (lds.firstChild) lds.removeChild(lds.firstChild);
+  lds.appendChild(title);
+  textArea.value = "reading...";
+
+  BrowserPlus.FileAccess.chunk({ file: arg[0], chunkSize:65536 },
+	function (rez) {
+	  var contents = "", files, i, len, str;
+	  if (rez.success) {
+          files = rez.value;
+          for (i = 0, len=files.length; i < len; i++) {
+            contents += "File[" + i + "/" + len + "] = " + files[i].name + " (size=" + files[i].size + ")\n";
+          }
+	  } else {
+		  contents = rez.error + ": " + rez.verboseError;
+	  }      
+	  textArea.value = contents;
+	});
+}
+
+BrowserPlus.init(function(res) {
+  if (res.success) {
+   BrowserPlus.require({
+      services: [
+		{service: 'DragAndDrop', version: "1"},
+		{service: 'FileAccess', version: "2", minversion:"2.0.1"}
+	  ]},
+      function(res) {
+        if (res.success) {
+          var dnd = BrowserPlus.DragAndDrop;
+          dnd.AddDropTarget(
+            {id: "lastDropContents"},
+            function(res) {
+              dnd.AttachCallbacks({
+                id: "lastDropContents",
+                hover: hovering,
+                drop: dropped
+              },
+              function(){});  
+            setDropAreaTitle("drag something to the box below.");
+          });
+        } else {
+          alert("Error Loading DragAndDrop: " + res.error);
+        }
+      });
+  } else {
+    alert("Failed to initialize BrowserPlus: " + res.error);
+  }
+}); 
+</script> 
+</body>
+</html>
