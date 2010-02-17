@@ -8,7 +8,7 @@ BrowserPlus from javascript to leverage desktop functionality from webpages.
 We hope you'll be up and running in about 5 minutes. Here's how:
 
 1. [Install BrowserPlus](http://browserplus.yahoo.com/install/).
-2. Visit our [code samples](http://browserplus.yahoo.com/developer/web/code/introduction/) to see standalone 
+2. Visit our [code samples](/docs/web_dev/example_code/) to see standalone 
    working examples that use BrowserPlus. You may copy the source of any of these examples to your disk, 
    and start playing with it.
 3. Check out our [toolbox](http://browserplus.yahoo.com/developer/web/toolbox/installer/), which contains 
@@ -22,5 +22,5 @@ We hope you'll be up and running in about 5 minutes. Here's how:
 ## Join the Community
 
 As you build on top of BrowserPlus, we hope you'll come join us on our
-[forums](http://developer.yahoo.net/forum/index.php?showforum=90). We're here to help and are excited to see what
-you create.
+[forums](http://developer.yahoo.net/forum/index.php?showforum=90),  Or jump
+into [IRC](/discuss/). We're here to help and are excited to see what you create.
