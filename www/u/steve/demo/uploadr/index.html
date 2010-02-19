@@ -2,532 +2,99 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>Uploadr</title>
-    <link rel="stylesheet" type="text/css" href="uploadr.css" media="screen">
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Uploadr</title>
+	<link rel="stylesheet" type="text/css" href="uploadr.css" media="screen">
 </head>
 <body>
-    <div id="dropArea" class="hoverOff"></div>
+	<div id="dropArea" class="hoverOff"></div>
 
-    <h1>Uploadr</h1>
+	<h1>Uploadr</h1>
 
-    <p>
-        <em>
-            Parallel uploads, chunking, compression, so many options to upload...  If only there was a 
-            way to test all methods.
-        </em>
-    </p>
-    <p>
-        A live side by side comparison of techniques to reduce upload time by doing more on the client.
-        Drop some files on the <strong>hungry duck</strong> and watch the results.
-    </p>
+	<p>
+		<em>
+			Parallel uploads, chunking, compression, so many options to upload...  If only there was a 
+			way to test all methods.
+		</em>
+	</p>
+	<p>
+		A live side by side comparison of techniques to reduce upload time by doing more on the client.
+		Drop some files on the <strong>hungry duck</strong> and watch the results.
+	</p>
 
 
-    <table cellpadding=2 cellspacing=1>
-        <thead>
-            <tr><td>&nbsp;</td><th>File</th><th>Size</th><th>Time</th></tr>
-        </thead>
-        <tbody>
-            <tr id="r1"><th>Serial</th><td></td><td></td><td></td></tr>
-            <tr id="r2"><th>Parallel</th><td></td><td></td><td></td></tr>
-            <tr id="r3"><th>Chunks + Parallel</th><td></td><td></td><td></td></tr>
-            <tr id="r4"><th>LZMA + Serial</th><td></td><td></td><td></td></tr>
-            <tr id="r5"><th>LZMA + Parallel</th><td></td><td></td><td></td></tr>
-            <tr id="r6"><th>ZIP + Serial</th><td></td><td></td><td></td></tr>
-            <tr id="r7"><th>TAR + GZIP + Serial</th><td></td><td></td><td></td></tr>
-            <tr id="r8"><th>TAR + BZIP2 + Serial</th><td></td><td></td><td></td></tr>
-        </tbody>
-    </table>
+	<table cellpadding=2 cellspacing=1>
+		<thead>
+			<tr>
+				<th>Method</th>
+				<th>File</th>
+				<th>Size</th>
+				<th>Time(1)</th>
+				<th>Time(2)</th>
+				<th>Time(3)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="r1">
+				<th>Serial</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r2">
+				<th>Parallel</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r3">
+				<th>Resize + Chunks + Serial</th>
+				<td></td><td></td><td></td><td></td><td></td>
+				</tr>
+			<tr id="r4">
+				<th>Resize + Parallel</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r5">
+				<th>Resize + LZMA + Serial</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r6">
+				<th>Resize + LZMA + Parallel</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r7">
+				<th>Resize + ZIP + Serial</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r8">
+				<th>Resize + TAR + GZIP + Serial</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr id="r9">
+				<th>Resize + TAR + BZIP2 + Serial</th>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+		</tbody>
+	</table>
 
-    <div id="console">
-	    <h3>Console</h3>
-	    <div id="result"></div>
+	<div id="console">
+		<h3>Console</h3>
+		<div id="result"></div>
 	</div>
 
-    <p class="services">
-        * This demo is built on the
-        <a href="http://browserplus.org/docs/services/DragAndDrop.html">DragAndDrop</a>
-        and 
-        <a href="http://browserplus.org/docs/services/Uploader.html">Uploader</a> services.
-        For archiving, compression and chunking, these additional services are used: 
-        <a href="http://browserplus.org/docs/services/Archiver.html">Archiver</a>, 
-        <a href="http://browserplus.org/docs/services/LZMA.html">LZMA</a> and 
-        <a href="http://browserplus.org/docs/services/FileAccess.html">FileAccess</a>.
-
-    </p>
-    <script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-    <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-    <script type="text/javascript" src="/explore/json2.js"></script>
-    <script class="javascript">
-
-YUI().use('node', function(Y) {
-    $BP = BrowserPlus;
-  
-    // a "global" containing files for uploading
-    var filesToUpload = [];
-
-    // for log(LEVEL, str)
-    var START  = "start";
-    var END    = "end";
-    var RESULT = "result";
-    var METHOD = "method";
-    var ERROR  = "error";
-    var TIME   = "time";
-
-    // INDEX TO TABLE COLUMNS
-    var FILE_NODE = 0;
-    var SIZE_NODE = 1;
-    var TIME_NODE = 2;
-
-    // smaller than 2MB default for demoing
-    var CHUNK_SIZE = 512*1024;
-    
-    // The current table row
-    var CURRENT_ROW = 1;
-
-
-	function getTimeStamp() {
-		var d = new Date(),
-			h = d.getHours(),
-			m = d.getMinutes(),
-			s = d.getSeconds();
-		h = (h < 10 ? "0" + h : h);
-		m = (m < 10 ? "0" + m : m);
-		s = (s < 10 ? "0" + s : s);
-		return ("[" + h + ":" + m + ":" + s + "] ");
-	}
-
-	function log(level, str) {
-        var r = Y.one("#result");
-        if (!str) {
-            str = level;
-            level = END;
-        }
-        str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-	    r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
-	        '<span class="log_' + level + '">' + str + "</span></div>");
-        r.set("scrollTop", r.get("scrollHeight"));
-	}
-
-    // Only compress files we know to be highly compressable.  
-    // For this demo, we'll compress these mime types:
-    //   1. text/*
-    //   2. application/excel
-    //   3. application/msword
-    function isCompressable(mimeTypes) {
-        var i, len, mime;
-        for (i = 0, len = mimeTypes.length; i < len; i++) {
-            mime = mimeTypes[i];
-            if (/^(text\/|(application\/(excel|msword)))/.test(mime)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    // Return a human presentable size string like "1.2GB"
-    function prettySize(size) {
-        var i, units = ['B','KB','MB','GB','TB'];
-        for (i = 0; size > 1024; i++) {
-            size /= 1024;
-        }
-        return Math.round(size*10)/10 + units[i];
-    }
-    
-    function prettyTime(time) {
-        return ""+(Math.round(time/10)/100) + "s";
-    }
-
-    function uploadStart(title, numFiles) {
-        var i, arr = new Array(numFiles);
-        log(METHOD, "==== " + title + " ==== ");
-        Y.all("#r"+CURRENT_ROW+" td").toggleClass("active");
-
-        // array stores current number of bytes uploaded, indexed per file (fileObj.index)
-        for (i = 0; i < numFiles; i++) { arr[i] = 0; }
-
-        return {
-            title: title,
-            startTime: new Date(),
-            curFile: 0,
-            totalFiles: numFiles,
-            totalBytes: 0,
-            bytesUploaded: arr
-        };
-    }
-    
-    function uploadEnd(uploadObj) {
-        var endTime = new Date() - uploadObj.startTime;
-        var nodes = Y.all("#r"+CURRENT_ROW+" td");
-
-        // set final number of bytes uploaded using totalBytes instead of "current" array
-        nodes.item(SIZE_NODE).setContent(prettySize(uploadObj.totalBytes));
-
-        Y.all("#r"+CURRENT_ROW+" td").toggleClass("active");
-        log(RESULT, uploadObj.title + ": " + prettySize(uploadObj.totalBytes) + " uploaded in " + prettyTime(endTime));
-        CURRENT_ROW++;        
-    }
-    
-    function fileStart(uploadObj, file, index) {
-        return {
-            file: file,
-            index: index,
-            origSize: file.size,
-            compressTime: 0,
-            uploadTime: 0
-        };
-    }
-
-    function fileCompressStart(uploadObj, fileObj) {
-        fileObj.compressTime = new Date();
-        log(START, "compressing " + fileObj.file.name);
-    }
-
-    function fileCompressEnd(uploadObj, fileObj) {
-        var endTime = new Date() - fileObj.compressTime;
-        displayStats(uploadObj);
-        log(END, "COMPRESSED " + fileObj.file.name + " from " + prettySize(fileObj.origSize) + 
-            " to " + prettySize(fileObj.file.size) + " in " + prettyTime(endTime));
-    }
-
-    function fileUploadStart(uploadObj, fileObj) {
-        fileObj.uploadTime = new Date();
-        log(START, "uploading " + fileObj.file.name + "(" + prettySize(fileObj.file.size) + ")");
-    }
-
-    function fileUploadProgress(uploadObj, fileObj, progress) {
-        uploadObj.bytesUploaded[fileObj.index] = (progress.filePercent/100 * fileObj.file.size);
-        displayStats(uploadObj);
-    }
-
-    function fileUploadEnd(uploadObj, fileObj) {
-        var endTime = new Date() - fileObj.uploadTime;
-        uploadObj.curFile++;
-        uploadObj.totalBytes += fileObj.file.size;
-        displayStats(uploadObj);
-        log(END, "UPLOADED " + fileObj.file.name + " in " + prettyTime(endTime));
-    }
-    
-    function displayStats(uploadObj) {
-        var i, bytes = 0, nodes = Y.all("#r"+CURRENT_ROW+" td");
-        for (i = 0; i < uploadObj.totalFiles; i++) {
-            bytes += uploadObj.bytesUploaded[i];
-        }
-        nodes.item(FILE_NODE).setContent(uploadObj.curFile + "/" + uploadObj.totalFiles);
-        nodes.item(SIZE_NODE).setContent(prettySize(bytes));
-        nodes.item(TIME_NODE).setContent(prettyTime(new Date() - uploadObj.startTime));
-    }
-
-    function serialUploadTest() {
-        var k, fileStack = [], fileIndex = 0, uploadObj = uploadStart("serialUploadTest", filesToUpload.length);
-
-        for (k in filesToUpload) {
-            fileStack.push(filesToUpload[k]);
-        }
-
-        var doNextUpload = function() {
-            if (fileStack.length > 0) {
-                var currentFile = fileStack.shift();
-                var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-                fileUploadStart(uploadObj, fileObj);
-                $BP.Uploader.upload({
-                    files: { "file": currentFile },
-                    url:   "http://browserpl.us/misc/upload.php",
-                    progressCallback: function(p) {
-                        fileUploadProgress(uploadObj, fileObj, p);
-                    }
-                }, function(r) {
-                    fileUploadEnd(uploadObj, fileObj);
-                    doNextUpload();
-                });
-            } else {
-                uploadEnd(uploadObj);
-                // we're done, call the next one
-                parallelUploadTest();
-            }
-        };
-
-        doNextUpload();
-    }
-
-    function parallelUploadTest () {
-        var k, fileIndex = 0, numComplete = 0, uploadObj = uploadStart("parallelUploadTest", filesToUpload.length);
-        
-        var runUpload = function(currentFile) {
-            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-            fileUploadStart(uploadObj, fileObj);
-
-            $BP.Uploader.upload({
-                files: { "file": currentFile },
-                url:   "http://browserpl.us/misc/upload.php",
-                progressCallback: function(p) {
-                    fileUploadProgress(uploadObj, fileObj, p);
-                }
-            }, function(r) {
-                fileUploadEnd(uploadObj, fileObj);
-                // are we all done!?
-                numComplete += 1;
-                if (numComplete == filesToUpload.length) {
-                    uploadEnd(uploadObj);
-                    parallelChunkUploadTest();
-                }
-            });
-        };
-
-        for (k in filesToUpload) {
-            runUpload(filesToUpload[k]);
-        }
-    }
-
-    function parallelChunkUploadTest() {
-        var k, fileIndex = 0, filesComplete = 0, chunksComplete = 0, chunkFilesToUpload = [], uploadObj, startTime = new Date();
-            
-        var runUpload = function(currentFile) {
-            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-            fileUploadStart(uploadObj, fileObj);
-
-            $BP.Uploader.upload({
-                files: { "file": currentFile },
-                url:   "http://browserpl.us/misc/upload.php",
-                progressCallback: function(p) {
-                    fileUploadProgress(uploadObj, fileObj, p);
-                }
-            }, function(r) {
-                fileUploadEnd(uploadObj, fileObj);
-                // are we all done!?
-                chunksComplete += 1;
-                if (chunksComplete == chunkFilesToUpload.length) {
-                    uploadEnd(uploadObj);
-                    serialCompressedUploadTest();
-                }
-            });
-        };
-
-        var runChunks = function() {
-            uploadObj = uploadStart("parallelChunkUploadTest", chunkFilesToUpload.length);
-            uploadObj.startTime = startTime;
-            for (k in chunkFilesToUpload) {
-                runUpload(chunkFilesToUpload[k]);
-            }
-        };
-
-        for (k in filesToUpload) {
-            $BP.FileAccess.chunk({file:filesToUpload[k], chunkSize: CHUNK_SIZE}, function(r){
-                var chunks = r.value;
-                for (var i = 0; i < chunks.length; i++) {
-                    chunkFilesToUpload.push(chunks[i]);
-                }
-                filesComplete += 1;
-                if (filesComplete == filesToUpload.length) {
-                    runChunks();
-                }
-            });
-        }
-    }
-
-    function serialCompressedUploadTest () {
-        var k, fileStack = [], fileIndex = 0, uploadObj = uploadStart("serialCompressedUploadTest", filesToUpload.length);
-
-        for (k in filesToUpload) {
-            fileStack.push(filesToUpload[k]);
-        }
-
-        var uploadIt = function(fileObj) {
-            fileUploadStart(uploadObj, fileObj);
-
-            $BP.Uploader.upload({
-                files: { "file": fileObj.file },
-                url:   "http://browserpl.us/misc/upload.php",
-                progressCallback: function(p) {
-                    fileUploadProgress(uploadObj, fileObj, p);
-                }
-            }, function(r) {
-                fileUploadEnd(uploadObj, fileObj);
-                doNextUpload();
-            });
-        };
-
-        var doNextUpload = function() {
-            if (fileStack.length > 0) {
-                var currentFile = fileStack.shift();
-                var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-
-                if (isCompressable(currentFile.mimeType)) {
-                    fileCompressStart(uploadObj, fileObj);
-
-                    $BP.LZMA.compress({
-                        file: currentFile
-                    }, function(r) {
-                        fileObj.file = r.value;
-                        fileCompressEnd(uploadObj, fileObj);
-                        uploadIt(fileObj);
-                    });
-                } else {
-                    uploadIt(fileObj);
-                }
-            } else {
-                uploadEnd(uploadObj);
-                parallelCompressedUploadTest();
-            }
-        };
-        doNextUpload();
-    }
-
-    function parallelCompressedUploadTest () {
-        var k, fileIndex = 0, numComplete = 0, uploadObj = uploadStart("parallelCompressedUploadTest", filesToUpload.length);
-
-        var uploadIt = function(fileObj) {
-            fileUploadStart(uploadObj, fileObj);
-                    
-            $BP.Uploader.upload({
-                files: { "file": fileObj.file },
-                url:   "http://browserpl.us/misc/upload.php",
-                progressCallback: function(p) {
-                    fileUploadProgress(uploadObj, fileObj, p);
-                }
-            }, function(r) {
-                fileUploadEnd(uploadObj, fileObj);
-
-                numComplete += 1;
-                if (numComplete == filesToUpload.length) {
-                    uploadEnd(uploadObj);
-                    serialArchiveUploadTest("zip");
-                }
-            }); 
-        };
-        
-        var compressIt = function(currentFile) {
-            var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-
-            if (isCompressable(currentFile.mimeType)) {
-                fileCompressStart(uploadObj, fileObj);
-
-                $BP.LZMA.compress({
-                    file: currentFile
-                }, function(r) {
-                    fileObj.file = r.value;
-                    fileCompressEnd(uploadObj, fileObj);
-                    uploadIt(fileObj);
-                });
-            } else {
-                uploadIt(fileObj);
-            }
-        };
-
-        for (k in filesToUpload) {
-            compressIt(filesToUpload[k]);
-        }
-    }
-
-    function serialArchiveUploadTest(fmt) {
-        var k, uploadObj = uploadStart("SerialArchiveUploadTest(" + fmt + ")", 1),
-            compressTime = new Date(), origSize = 0;
-
-        for (k in filesToUpload) {
-            origSize += filesToUpload[k].size;
-        }
-
-        log(START, "archiving " + filesToUpload.length + " files into 1 " + fmt);
-
-        $BP.Archiver.archive({
-            files:  filesToUpload,
-            format: fmt
-        }, function(r){
-            var currentFile = r.value.archiveFile, fileObj = fileStart(uploadObj, currentFile, 0),
-                endTime = new Date() - compressTime;
-
-            displayStats(uploadObj);
-            log(END, "ARCHIVED " + fileObj.file.name + " from " + prettySize(origSize) + " to " + prettySize(fileObj.file.size) + 
-                " in " + prettyTime(endTime));
-
-            fileUploadStart(uploadObj, fileObj);            
-
-            $BP.Uploader.upload({
-                files: { "file": fileObj.file },
-                url:   "http://browserpl.us/misc/upload.php",
-                progressCallback: function(p) {
-                    fileUploadProgress(uploadObj, fileObj, p);
-                }
-            }, function(res) {
-                fileUploadEnd(uploadObj, fileObj);
-                uploadEnd(uploadObj);
-
-                if (fmt == "zip") {
-                    serialArchiveUploadTest("tar-gzip");
-                } else if (fmt == "tar-gzip") {
-                    serialArchiveUploadTest("tar-bzip2");
-                } else {
-                    log(METHOD, "Test Complete.  Reload the page to try again.");
-                }
-            });
-        });
-    }
-
-    // a function that will be invoked when the user is hovering over the drop target.
-    function dragHover(hoverOn) {
-        if (hoverOn) {
-            Y.one("#dropArea").set("className", "hoverOn");
-        } else {
-            Y.one("#dropArea").set("className", "hoverOff");
-        }
-    } 
-
-    // a function invoked when the user drops content on the target
-    function dragDropped(arg) {
-        for (var i = 0; i < arg.length; i++) {
-            if (arg[i].mimeType[0] == "application/x-folder") { continue; }// skip folders
-            filesToUpload.push(arg[i]);
-        } 
-
-        // now let's disable that pesky drop target.
-        log(START, "Now processing " + filesToUpload.length + " files...");
-        enableDropTarget(false);
-        serialUploadTest();
-    }  
-
-    function enableDropTarget(enable) {
-        var $DND = BrowserPlus.DragAndDrop;
-
-        if (enable) {
-            $DND.AddDropTarget(
-                { id: "dropArea" },
-                function(res) {
-                    $DND.AttachCallbacks({id: "dropArea", hover: dragHover, drop: dragDropped },
-                    function(){});  
-                }
-            );
-        } else {
-            $DND.RemoveDropTarget({ id: "dropArea" }, function(res) { });
-            Y.one("#dropArea").setStyle("visibility", "hidden");
-        }
-    }
-
-    
-    $BP.init(function(res) {
-        if (res.success) {
-            BrowserPlus.require({
-                services: [
-                {service: 'DragAndDrop', version: "1"},
-                {service: 'Uploader', version: "3", minversion: "3.1.5" },
-                {service: 'LZMA', version: "1", minversion: "1.0.1" },
-                {service: 'FileAccess', version: "2", minversion: "2.0.1" },
-                {service: 'Archiver', version: "1"}
-            ]},
-            function(res) {
-                if (res.success) {
-                    enableDropTarget(true);
-                } else {
-                    log(ERROR, "Error Loading DragAndDrop: " + res.error);
-                }
-            });
-        } else {
-            log(ERROR, "Failed to initialize BrowserPlus: " + res.error);
-        }
-    }); 
-
-
-});
-</script>
+	<p class="services">
+		* This demo is built on the
+		<a href="http://browserplus.org/docs/services/DragAndDrop.html">DragAndDrop</a>
+		and 
+		<a href="http://browserplus.org/docs/services/Uploader.html">Uploader</a> services.
+		For archiving, compression and chunking, these additional services are used: 
+		<a href="http://browserplus.org/docs/services/Archiver.html">Archiver</a>, 
+		<a href="http://browserplus.org/docs/services/LZMA.html">LZMA</a> and 
+		<a href="http://browserplus.org/docs/services/FileAccess.html">FileAccess</a>.
+		Resize is image resizing.  If a large image (gif, jpg or png) is dropped, 
+		<a href="http://browserplus.org/docs/services/ImageAlter.html">ImageAlter</a> will resize
+		the image to a maximum width or height of 800px.
+	</p>
+	<script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="/explore/json2.js"></script>
+	<script type="text/javascript" src="uploadr.js"></script>
 </body>
 </html>

@@ -20,7 +20,7 @@ thead th {
 
 tbody th {
     text-align:right;
-	width: 140px;
+	width: 180px;
 }
 
 tbody td {
@@ -85,7 +85,12 @@ h3 {
 }
 
 #console {
-    width:640px;
+    width:673px;
+}
+
+.log_dbg {
+    background:#006;
+    color:white;
 }
 
 .log_result {
