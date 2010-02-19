@@ -26,7 +26,7 @@ YUI().use('node', function(Y) {
 	var CHUNK_SIZE = 512*1024;
 	
 	var UPLOAD_URL = "http://browserpl.us/misc/upload.php";
-//	var UPLOAD_URL = "http://borg/misc/upload.php";
+
 	// The current table row
 	var CURRENT_ROW = 1;
     var TIME_OFFSET = 0;
@@ -186,7 +186,7 @@ YUI().use('node', function(Y) {
 					log(END, "RESIZED " + file.name + " from " + prettySize(file.size) +
 						" to " + prettySize(res.value.file.size) + " in " + prettyTime(endTime));
 					cb(res.value.file);
-				});
+			});
 		} else {
 			cb(file);
 		}
