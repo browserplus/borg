@@ -35,8 +35,14 @@ tbody td {
 }
 
 td.active {
-    border:1px solid green;
-    background:#cec;
+    border:1px solid #0a0;
+    background:#dfd;
+}
+
+td.winner {
+    border:2px solid #0a0;
+    font-weight:bold;
+    background:#ffd;
 }
 
 p.services {}
@@ -117,6 +123,3 @@ h3 {
     color:#787470;
 }
 
-.winner {
-    border:2px solid #090;
-}

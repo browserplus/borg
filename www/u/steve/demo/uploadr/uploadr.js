@@ -169,7 +169,7 @@ YUI().use('node', function(Y) {
 		nodes.item(TIME_NODE+TIME_OFFSET).setContent(prettyTime(endTime));
 
         // keep track of all times so we can mark the fastest
-		TIME_KEEPER["r"+CURRENT_ROW + "_" + (TIME_NODE+TIME_OFFSET)] = endTime;
+		TIME_KEEPER["r"+CURRENT_ROW + "c" + (TIME_NODE+TIME_OFFSET)] = endTime;
 	}
 
 	// resize single file if it is an image
@@ -506,22 +506,6 @@ YUI().use('node', function(Y) {
 
     function startNextUploadTest() {
         var test = TEST_FUNCS.shift(), nextUploadTest = test[0];
-        /*
-		var i, nodes = Y.all("tbody td");
-        f
-		for (i = 0; i < uploadObj.totalFiles; i++) {
-			bytes += uploadObj.bytesUploaded[i];
-		}
-		nodes.item(FILE_NODE).setContent(uploadObj.curFile + "/" + uploadObj.totalFiles);
-		nodes.item(SIZE_NODE).setContent(prettySize(bytes));
-		nodes.item(TIME_NODE+TIME_OFFSET).setContent(prettyTime(new Date() - uploadObj.startTime));
-        */
-        /*
-        var min = Number.MAX_VALUE;
-        var r, c;
-        for (r = 0; r < NUM_TESTS; r++)
-        */
-
         // we're at end of a round of tests, clear previous file/size columns
         if (test[2] > 0 && test[2] != TIME_OFFSET) {
             Y.all(".c0").setContent("&nbsp;");
@@ -530,6 +514,38 @@ YUI().use('node', function(Y) {
 
         CURRENT_ROW = test[1];
         TIME_OFFSET = test[2];
+
+        // first, find min value
+        var min = Number.MAX_VALUE;
+        var r, c, cell;
+        for (r = 1; r <= NUM_TESTS; r++) {
+            for (c = 0; c < TIME_OFFSET+1; c++) {
+                cell = "r"+r+"c"+(TIME_NODE+c);
+                if (TIME_KEEPER[cell]) {
+                    min = Math.min(min, TIME_KEEPER[cell]);
+                }
+            }
+        }
+
+        // don't unset the "winner" when test is over
+        if (CURRENT_ROW != -1) {
+            // clear out all previous "winners"
+            Y.all(".winner").toggleClass("winner");
+        }
+
+        if (min != Number.MAX_VALUE) {
+            // highlight the winners (there may be more than 1)
+            for (r = 1; r <= NUM_TESTS; r++) {
+                for (c = 0; c < TIME_OFFSET+1; c++) {
+                    cell = "r"+r+"c"+(TIME_NODE+c);
+                    if (TIME_KEEPER[cell] === min) {
+                        Y.one("#r"+r + " .c" + (TIME_NODE+c)).toggleClass("winner");
+                    }
+                }
+            }
+        }
+
+        // perform next test
         nextUploadTest();
     }
     
@@ -584,7 +600,7 @@ YUI().use('node', function(Y) {
     // are already defined.  Array is:
     //    [TestFunction, TableRow, TimeColOffset]
     var NUM_TESTS = 9;
-    var NUM_TIMES = 3;
+    var NUM_ROUNDS = 3;
     var TEST_FUNCS = [
         [ serialUploadTest,             1,  0],
         [ parallelOrigUploadTest,       2,  0],
