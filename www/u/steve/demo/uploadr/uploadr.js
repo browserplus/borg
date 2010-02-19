@@ -25,8 +25,8 @@ YUI().use('node', function(Y) {
 	// smaller than 2MB default for demoing
 	var CHUNK_SIZE = 512*1024;
 	
-//	var UPLOAD_URL = "http://browserpl.us/misc/upload.php";
-	var UPLOAD_URL = "http://borg/misc/upload.php";
+	var UPLOAD_URL = "http://browserpl.us/misc/upload.php";
+//	var UPLOAD_URL = "http://borg/misc/upload.php";
 	// The current table row
 	var CURRENT_ROW = 1;
     var TIME_OFFSET = 0;
