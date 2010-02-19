@@ -332,61 +332,6 @@ YUI().use('node', function(Y) {
 		});
 	}
 
-    /*
-	function parallelChunkUploadTest() {
-		var fileIndex = 0, chunksComplete = 0, chunkFilesToUpload = [], 
-		    uploadObj = uploadStart("parallelChunkUploadTest");
-			
-		var runUpload = function(currentFile) {
-			var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-			fileUploadStart(uploadObj, fileObj);
-
-			BrowserPlus.Uploader.upload({
-				files: { "file": currentFile },
-				url:   UPLOAD_URL,
-				progressCallback: function(p) {
-					fileUploadProgress(uploadObj, fileObj, p);
-				}
-			}, function(r) {
-				fileUploadEnd(uploadObj, fileObj);
-				// are we all done!?
-				chunksComplete += 1;
-				if (chunksComplete == chunkFilesToUpload.length) {
-					uploadEnd(uploadObj);
-					serialLZMAUploadTest();												 
-				}
-			});
-		};
-
-		var runChunks = function() {
-			uploadSetNumFiles(uploadObj, chunkFilesToUpload.length);
-
-		    for (var i = 0; i < chunkFilesToUpload.length; i++) {
-			    runUpload(chunkFilesToUpload[i]);
-		    }
-		};
-
-		resizeImages(function(files) {
-			var k, filesComplete = 0;
-
-            var chunkCB = function(r) {
-			    var chunks = r.value;
-
-			    for (var i = 0; i < chunks.length; i++) {
-				    chunkFilesToUpload.push(chunks[i]);
-			    }
-
-			    if (++filesComplete == files.length) {
-				    runChunks();
-			    }
-            };
-
-			for (k = 0; k < files.length; k++) {
-			    BrowserPlus.FileAccess.chunk({file:files[k], chunkSize: CHUNK_SIZE}, chunkCB);
-		    }
-		});
-	}
-    */
 	function serialLZMAUploadTest () {
 		var k, fileStack = [], fileIndex = 0, uploadObj = uploadStart("serialLZMAUploadTest");
 		uploadSetNumFiles(uploadObj, filesToUpload.length);
