@@ -25,8 +25,8 @@ YUI().use('node', function(Y) {
 	// smaller than 2MB default for demoing
 	var CHUNK_SIZE = 512*1024;
 	
-	var UPLOAD_URL = "http://browserpl.us/misc/upload.php";
-	
+//	var UPLOAD_URL = "http://browserpl.us/misc/upload.php";
+	var UPLOAD_URL = "http://borg/misc/upload.php";
 	// The current table row
 	var CURRENT_ROW = 1;
     var TIME_OFFSET = 0;
@@ -521,6 +521,12 @@ YUI().use('node', function(Y) {
         var r, c;
         for (r = 0; r < NUM_TESTS; r++)
         */
+
+        // we're at end of a round of tests, clear previous file/size columns
+        if (test[2] > 0 && test[2] != TIME_OFFSET) {
+            Y.all(".c0").setContent("&nbsp;");
+            Y.all(".c1").setContent("&nbsp;");
+        }
 
         CURRENT_ROW = test[1];
         TIME_OFFSET = test[2];
