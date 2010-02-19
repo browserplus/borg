@@ -29,18 +29,8 @@ YUI().use('node', function(Y) {
 	
 	// The current table row
 	var CURRENT_ROW = 1;
-
-
-	function getTimeStamp() {
-		var d = new Date(),
-			h = d.getHours(),
-			m = d.getMinutes(),
-			s = d.getSeconds();
-		h = (h < 10 ? "0" + h : h);
-		m = (m < 10 ? "0" + m : m);
-		s = (s < 10 ? "0" + s : s);
-		return ("[" + h + ":" + m + ":" + s + "] ");
-	}
+    var TIME_OFFSET = 0;
+    var TIME_KEEPER= {};
 
 	function log(level, str) {
 		var r = Y.one("#result");
@@ -54,8 +44,7 @@ YUI().use('node', function(Y) {
 		r.set("scrollTop", r.get("scrollHeight"));
 	}
 
-	// Tests which files to compress with LZMA.	 
-	// Skips all images.
+	// Tests which files to compress with LZMA - skips all images	 
 	function isCompressable(file) {
 		var i, len, mime, mimeTypes = file.mimeType;
 		for (i = 0, len = mimeTypes.length; i < len; i++) {
@@ -66,7 +55,6 @@ YUI().use('node', function(Y) {
 		}
 		return true;
 	}
-
 
 	// Return a human presentable size string like "1.2GB"
 	function prettySize(size) {
@@ -81,6 +69,18 @@ YUI().use('node', function(Y) {
 		return ""+(Math.round(time/10)/100) + "s";
 	}
 
+	function getTimeStamp() {
+		var d = new Date(),
+			h = d.getHours(),
+			m = d.getMinutes(),
+			s = d.getSeconds();
+		h = (h < 10 ? "0" + h : h);
+		m = (m < 10 ? "0" + m : m);
+		s = (s < 10 ? "0" + s : s);
+		return ("[" + h + ":" + m + ":" + s + "] ");
+	}
+
+    // ----------- Timing + Status functions ----------
 	function uploadStart(title) {
 		log(METHOD, "==== " + title + " ==== ");
 		Y.all("#r"+CURRENT_ROW+" td").toggleClass("active");
@@ -157,13 +157,19 @@ YUI().use('node', function(Y) {
 	}
 	
 	function displayStats(uploadObj) {
-		var i, bytes = 0, nodes = Y.all("#r"+CURRENT_ROW+" td");
+		var endTime = new Date() - uploadObj.startTime, 
+		    i, bytes = 0, nodes = Y.all("#r"+CURRENT_ROW+" td");
+
 		for (i = 0; i < uploadObj.totalFiles; i++) {
 			bytes += uploadObj.bytesUploaded[i];
 		}
+
 		nodes.item(FILE_NODE).setContent(uploadObj.curFile + "/" + uploadObj.totalFiles);
 		nodes.item(SIZE_NODE).setContent(prettySize(bytes));
-		nodes.item(TIME_NODE).setContent(prettyTime(new Date() - uploadObj.startTime));
+		nodes.item(TIME_NODE+TIME_OFFSET).setContent(prettyTime(endTime));
+
+        // keep track of all times so we can mark the fastest
+		TIME_KEEPER["r"+CURRENT_ROW + "_" + (TIME_NODE+TIME_OFFSET)] = endTime;
 	}
 
 	// resize single file if it is an image
@@ -202,6 +208,7 @@ YUI().use('node', function(Y) {
 		}
 	}
 
+    // ---------- UPLOAD TESTS ----------
 	function serialUploadTest() {
 		var i, fileStack = [], fileIndex = 0, uploadObj = uploadStart("serialUploadTest");
 
@@ -231,7 +238,7 @@ YUI().use('node', function(Y) {
 			} else {
 				uploadEnd(uploadObj);
 				// we're done, call the next one
-				parallelOrigUploadTest();
+				startNextUploadTest();
 			}
 		};
 
@@ -239,51 +246,13 @@ YUI().use('node', function(Y) {
 	}
 
     function parallelOrigUploadTest() {
-        _parallelUploadTest(RESIZE_NO, serialChunkUploadTest);
+        _parallelUploadTest(RESIZE_NO);
     }
     
     function parallelResizeUploadTest() {
-        _parallelUploadTest(RESIZE_YES, serialLZMAUploadTest);
+        _parallelUploadTest(RESIZE_YES);
     }
     
-	function _parallelUploadTest(resize, nextTest) {
-		var fileIndex = 0, numComplete = 0, uploadObj = uploadStart("parallelUploadTest");
-		uploadSetNumFiles(uploadObj, filesToUpload.length);
-		
-		var runUpload = function(currentFile) {
-			var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
-			fileUploadStart(uploadObj, fileObj);
-
-			BrowserPlus.Uploader.upload({
-				files: { "file": currentFile },
-				url:   UPLOAD_URL,
-				progressCallback: function(p) {
-					fileUploadProgress(uploadObj, fileObj, p);
-				}
-			}, function(r) {
-				fileUploadEnd(uploadObj, fileObj);
-				// are we all done!?
-				numComplete += 1;
-				if (numComplete == filesToUpload.length) {
-					uploadEnd(uploadObj);
-					nextTest();
-				}
-			});
-		};
-
-        if (resize === RESIZE_YES) {
-		    resizeImages(function(files) {
-                for (var i = 0; i < files.length; i++) {
-			        runUpload(files[i]);
-		        }
-	        });
-        } else {
-            for (var i = 0; i < filesToUpload.length; i++) {
-                runUpload(filesToUpload[i]);
-            }
-        }
-	}
-	
 	function serialChunkUploadTest() {
 		var fileIndex = 0, chunksComplete = 0, chunkFilesToUpload = [];
 		    uploadObj = uploadStart("serialChunkUploadTest");
@@ -306,7 +275,7 @@ YUI().use('node', function(Y) {
 			    });
 		    } else {
 				uploadEnd(uploadObj);
-				parallelResizeUploadTest();												 
+				startNextUploadTest();												 
 			}
 		};
 
@@ -378,7 +347,7 @@ YUI().use('node', function(Y) {
 				}
 			} else {
 				uploadEnd(uploadObj);
-				parallelLZMAUploadTest();
+				startNextUploadTest();
 			}
 		};
 		
@@ -405,7 +374,7 @@ YUI().use('node', function(Y) {
 				numComplete += 1;
 				if (numComplete == filesToUpload.length) {
 					uploadEnd(uploadObj);
-					serialArchiveZipTest();
+					startNextUploadTest();
 				}
 			}); 
 		};
@@ -436,22 +405,57 @@ YUI().use('node', function(Y) {
 	}
 
 	function serialArchiveZipTest() {
-		_serialArchiveTest("zip", serialArchiveGZipTest);
+		_serialArchiveTest("zip");
 	}
 	
 	function serialArchiveGZipTest() {
-		_serialArchiveTest("tar-gzip", serialArchiveBZip2Test);
+		_serialArchiveTest("tar-gzip");
 	}
 
 	function serialArchiveBZip2Test() {
-		_serialArchiveTest("tar-bzip2", uploadTestComplete);
+		_serialArchiveTest("tar-bzip2");
 	}
 	
-	function uploadTestComplete() {
-		log(METHOD, "Test Complete.	 Reload the page to try again.");
-	}
+    // ---------- RESUABLE UPLOAD TESTS (called from above) ----------
+	function _parallelUploadTest(resize) {
+		var fileIndex = 0, numComplete = 0, uploadObj = uploadStart("parallelUploadTest");
+		uploadSetNumFiles(uploadObj, filesToUpload.length);
+		
+		var runUpload = function(currentFile) {
+			var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
+			fileUploadStart(uploadObj, fileObj);
 
-	function _serialArchiveTest(fmt, nextTestFunc) {
+			BrowserPlus.Uploader.upload({
+				files: { "file": currentFile },
+				url:   UPLOAD_URL,
+				progressCallback: function(p) {
+					fileUploadProgress(uploadObj, fileObj, p);
+				}
+			}, function(r) {
+				fileUploadEnd(uploadObj, fileObj);
+				// are we all done!?
+				numComplete += 1;
+				if (numComplete == filesToUpload.length) {
+					uploadEnd(uploadObj);
+					startNextUploadTest();
+				}
+			});
+		};
+
+        if (resize === RESIZE_YES) {
+		    resizeImages(function(files) {
+                for (var i = 0; i < files.length; i++) {
+			        runUpload(files[i]);
+		        }
+	        });
+        } else {
+            for (var i = 0; i < filesToUpload.length; i++) {
+                runUpload(filesToUpload[i]);
+            }
+        }
+	}
+	
+	function _serialArchiveTest(fmt) {
 		var uploadObj = uploadStart("SerialArchiveUploadTest(" + fmt + ")");
 
 		uploadSetNumFiles(uploadObj, 1);
@@ -490,7 +494,7 @@ YUI().use('node', function(Y) {
 				}, function(res) {
 					fileUploadEnd(uploadObj, fileObj);
 					uploadEnd(uploadObj);
-					nextTestFunc();
+					startNextUploadTest();
 				});
 			});
 		};
@@ -500,6 +504,36 @@ YUI().use('node', function(Y) {
 		});
 	}
 
+    function startNextUploadTest() {
+        var test = TEST_FUNCS.shift(), nextUploadTest = test[0];
+        /*
+		var i, nodes = Y.all("tbody td");
+        f
+		for (i = 0; i < uploadObj.totalFiles; i++) {
+			bytes += uploadObj.bytesUploaded[i];
+		}
+		nodes.item(FILE_NODE).setContent(uploadObj.curFile + "/" + uploadObj.totalFiles);
+		nodes.item(SIZE_NODE).setContent(prettySize(bytes));
+		nodes.item(TIME_NODE+TIME_OFFSET).setContent(prettyTime(new Date() - uploadObj.startTime));
+        */
+        /*
+        var min = Number.MAX_VALUE;
+        var r, c;
+        for (r = 0; r < NUM_TESTS; r++)
+        */
+
+        CURRENT_ROW = test[1];
+        TIME_OFFSET = test[2];
+        nextUploadTest();
+    }
+    
+
+    // ---------- WE ARE DONE ----------
+	function uploadTestComplete() {
+		log(METHOD, "Test Complete.	 Reload the page to try again.");
+	}
+
+    // ---------- BROWSERPLUS INIT + REQUIRE + DRAG AND DROP -----------
 	// a function that will be invoked when the user is hovering over the drop target.
 	function dragHover(hoverOn) {
 		if (hoverOn) {
@@ -519,7 +553,7 @@ YUI().use('node', function(Y) {
 		// now let's disable that pesky drop target.
 		log(START, "Now processing " + filesToUpload.length + " files...");
 		enableDropTarget(false);
-		serialUploadTest();
+		startNextUploadTest();
 	}  
 
 	function enableDropTarget(enable) {
@@ -540,6 +574,42 @@ YUI().use('node', function(Y) {
 	}
 
 	
+    // TEST_FUNCS is defined on the bottom so that the functions referenced
+    // are already defined.  Array is:
+    //    [TestFunction, TableRow, TimeColOffset]
+    var NUM_TESTS = 9;
+    var NUM_TIMES = 3;
+    var TEST_FUNCS = [
+        [ serialUploadTest,             1,  0],
+        [ parallelOrigUploadTest,       2,  0],
+        [ serialChunkUploadTest,        3,  0],
+        [ parallelResizeUploadTest,     4,  0],
+        [ serialLZMAUploadTest,         5,  0],
+        [ parallelLZMAUploadTest,       6,  0],
+        [ serialArchiveZipTest,         7,  0],
+        [ serialArchiveGZipTest,        8,  0],
+        [ serialArchiveBZip2Test,       9,  0],
+        [ serialUploadTest,             1,  1],
+        [ parallelOrigUploadTest,       2,  1],
+        [ serialChunkUploadTest,        3,  1],
+        [ parallelResizeUploadTest,     4,  1],
+        [ serialLZMAUploadTest,         5,  1],
+        [ parallelLZMAUploadTest,       6,  1],
+        [ serialArchiveZipTest,         7,  1],
+        [ serialArchiveGZipTest,        8,  1],
+        [ serialArchiveBZip2Test,       9,  1],
+        [ serialUploadTest,             1,  2],
+        [ parallelOrigUploadTest,       2,  2],
+        [ serialChunkUploadTest,        3,  2],
+        [ parallelResizeUploadTest,     4,  2],
+        [ serialLZMAUploadTest,         5,  2],
+        [ parallelLZMAUploadTest,       6,  2],
+        [ serialArchiveZipTest,         7,  2],
+        [ serialArchiveGZipTest,        8,  2],
+        [ serialArchiveBZip2Test,       9,  2],
+        [ uploadTestComplete,           -1,  -1]
+    ];
+
 	BrowserPlus.init(function(res) {
 		if (res.success) {
 			log(END, "BrowserPlus initialized, loading services...");

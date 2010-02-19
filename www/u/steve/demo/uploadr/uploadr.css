@@ -89,8 +89,8 @@ h3 {
 }
 
 .log_dbg {
-    background:#006;
-    color:white;
+    background:#ccc;
+    color:black;
 }
 
 .log_result {
@@ -115,4 +115,8 @@ h3 {
 
 .log_time {
     color:#787470;
+}
+
+.winner {
+    border:2px solid #090;
 }
