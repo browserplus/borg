@@ -1,5 +1,7 @@
 var ExParamValues = {
 
+	Archiver_archive_format: "tar-gzip",
+	
 	DragAndDrop_AddDropTarget_id: "result",
 	DragAndDrop_AttachCallbacks_id: "result",
 
@@ -21,6 +23,14 @@ var ExParamValues = {
 	Log_Debug_location: "MethodDebugTest",
 	Log_Debug_message: "Debug - Hello World!",
 	
+    Notify_show_title: "Hello World!",
+    Notify_show_message: "Pretty cool - native notifications driven by JavaScript.",
+    Notify_show_icon: "http://l.yimg.com/a/i/us/bp/s/1.106/tool/notify-icon3.png",
+    
+    PStore_get_key: "hello",
+    PStore_set_key: "hello",
+    PStore_set_value: "world",
+    
 	PublishSubscribe_postMessage_data: "Hello World!",
 	PublishSubscribe_postMessage_targetOrigin: "*",
 
@@ -28,9 +38,38 @@ var ExParamValues = {
 };
 
 var ExParamHelp = {
+	Archiver_archive_format: "use 'zip', 'zip-uncompressed', 'tar', 'tar-gzip' or 'tar-bzip2'",
+	Archiver_archive_followLinks: "If true, symbolic links will be followed. Default is false.",
+
+	Directory_list_followLinks: "If true, symbolic links will be followed. Default is true.", 
+	Directory_list_mimetypes: 'Optional list of mimetype filters to apply (e.g.["image/jpeg"]',
+	Directory_list_limit: "Maximum number of items to examine. Default is 1000.",
+	Directory_list_callback: "Optional callback with will be invoked with each path",
+	
+	Directory_recursiveList_followLinks: "If true, symbolic links will be followed. Default is true.", 
+	Directory_recursiveList_mimetypes: 'Optional list of mimetype filters to apply (e.g.["image/jpeg"]',
+	Directory_recursiveList_limit: "Maximum number of items to examine. Default is 1000.",
+	Directory_recursiveList_callback: "Optional callback with will be invoked with each path",
+
+	Directory_recursiveListWithStructure_followLinks: "If true, symbolic links will be followed. Default is true.", 
+	Directory_recursiveListWithStructure_mimetypes: 'Optional list of mimetype filters to apply (e.g.["image/jpeg"]',
+	Directory_recursiveListWithStructure_limit: "Maximum number of items to examine. Default is 1000.",
+	Directory_recursiveListWithStructure_callback: "Optional callback with will be invoked with each path",
+
+	Downloader_get_url: "The url to the content to download",
+	Downloader_get_callback: "Download progress",
+	
 	DragAndDrop_AddDropTarget_id: 'use "result" to drag+drop files to "Console" below, then run AttachCallbacks()',
 	DragAndDrop_AddDropTarget_mimeTypes: 'Ex/ ["image/gif", "image/jpeg"]',
 	DragAndDrop_AttachCallbacks_id: 'use "result" to drag+drop files to "Console" box below',
+
+	FileAccess_read_offset: "The beginning byte offset.",
+	FileAccess_read_size: "The amount of data.",
+
+	FileAccess_slice_offset: "The beginning byte offset.",
+	FileAccess_slice_size: "The amount of data.",
+	
+	FileAccess_chunk_chunkSize: "The desired chunk size, not to exceed 2MB. Default is 2MB.",
 	
 	FileBrowse_OpenBrowseDialog_mimeTypes: 'Ex/ ["image/png", "image/jpeg", "image/gif"]',
 	
@@ -46,13 +85,13 @@ var ExParamHelp = {
 
 var ExParamHints = {
 	Uploader_upload_files: "filemap",
-	Zipper_createZip_files: "filelist",  // version < 2
+	Zipper_createZip_files: "filelist",	 // version < 2
 	Zipper_create_files: "filelist",  // version < 2
-	Zipper_zip_files: "filelist",     // version >= 2
-	Tar_create_files: "filelist",     // version < 2
-    Tar_tar_files: "filelist",         // version >= 2
-    Directory_list_files: "filelist",
-    Directory_recursiveList_files: "filelist",
-    Directory_recursiveListWithStructure_files: "filelist",
-    Archiver_archive_files: "filelist"
+	Zipper_zip_files: "filelist",	  // version >= 2
+	Tar_create_files: "filelist",	  // version < 2
+	Tar_tar_files: "filelist",		   // version >= 2
+	Directory_list_files: "filelist",
+	Directory_recursiveList_files: "filelist",
+	Directory_recursiveListWithStructure_files: "filelist",
+	Archiver_archive_files: "filelist"
 };
