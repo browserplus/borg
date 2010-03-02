@@ -35,7 +35,7 @@ function get_links_widget() {
         
         array(
             "link" => "http://www.plupload.com/",
-            "title" => "File uploader using HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms."
+            "title" => "Plupload - advanced upload widget"
         )
     );
     
