@@ -567,6 +567,10 @@ YUI().use('node', function(Y) {
 
 	// a function invoked when the user drops content on the target
 	function dragDropped(arg) {
+		if (Y.Lang.isArray(arg.value)) {
+			arg = arg.value;
+		}
+
 		for (var i = 0; i < arg.length; i++) {
 			if (arg[i].mimeType[0] == "application/x-folder") { continue; }// skip folders
 			filesToUpload.push(arg[i]);

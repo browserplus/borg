@@ -1,0 +1,45 @@
+body {
+    font-size: 72.5%;
+    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    color: #333;
+}
+
+#mazeDiv {
+	margin:30px;
+	position:relative;
+	width: 600;
+    height: 400;
+}
+
+.displayDiv {
+	width: 600;
+    height: 400;
+    background: #D2C397;
+    border: 1px solid #666666;
+	padding: 20px;
+	text-align: left;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#mazeDiv .desc {
+	padding:10px;
+}
+
+#selectDiv {
+	visibility: hidden;
+}
+
+.title {
+	font-size: 200%;
+}
+
+#pageTitle {
+	font-size: 250%;
+	position: absolute;
+	left: 12px;
+	top: 55px;
+	font-weight: bold;
+}
+

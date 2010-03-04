@@ -1,0 +1,22 @@
+html {background:#cdb;}
+
+#hd {padding:10px 10px 6px 20px;border:20px solid #b9cf95;background:white;}
+#bd {padding:10px;border-left:20px solid #b9cf95;border-right:20px solid #b9cf95;background:white;}
+#ft {padding:20px 10px 10px 10px; border-left:20px solid #b9cf95;border-right:20px solid #b9cf95;border-bottom:20px solid #b9cf95;text-align:right;background:white;}
+
+h1 {font-size:182%;font-weight:bold;font-style:italic;color:#694;font-family:tahoma,sans-serif;}
+h2 {font-size:131%;font-weight:bold;color:#f60;margin-top:19px;font-family:"times";font-family:arial;}
+p {margin:10px 0;font-family:verdana;}
+em {font-style:italic;}
+.small {font-size:85%;margin-top:0;}
+#profile {text-align:center;padding:5px;border: 2px solid white;}
+input[type="button"] { font-size:116%;width:80px;margin-left:10px;}
+#actions {float:right;width:50px; height:340px;background:#ccc;padding:2px;background:#999; border:1px solid #666;}
+#actions img {border:1px outset #ddd;}
+
+#well {text-align:left;}
+
+.hoverYes {background:#9f6;}
+.hoverNo {background:#fff;}
+.high  {background:#ff6;font-weight:bold;}
+strong { background:#ff3;}

@@ -1,0 +1,490 @@
+*:first-child+html .clearfloat {height:1%;}
+
+/************** general purpose helpers ******************/
+.clearfloat:after {
+   content: '.';
+   display:block;
+   height:0;
+   clear:both;
+   visibility:hidden;
+}
+/* Hides from IE-mac \*/
+* html .clearfloat {height: 1%;}
+*:first-child+html .clearfloat {height:1%;}
+/* End hide from IE-mac */
+
+
+/************** uploadr styles ******************/
+#doc2 { margin:auto; margin-top:5px;}
+#controlArea {
+   background-color:#f7f7f7;
+   margin-top:3px;
+}
+
+#bp-status{
+	position:absolute;
+	top:30px;
+	right:10px;
+	color:#999;
+	font-size:85%;
+	padding-top:10px;
+}
+
+#signin {
+   width:400px;
+   overflow:hidden;
+}
+
+#buttonIcon {
+   float: left;
+}
+#signinText {
+   padding-left:10px;
+}
+#buddyWelcome {
+   font-size:140%;
+   font-weight:bold;
+}
+#signinAction {
+   font-size:85%;
+}
+
+#uploadarea {
+   text-align:right;
+   float:right;
+   margin:5px 0;
+}
+
+#batchControlLabel {
+   float:left;
+   background-color:#f7f7f7;
+   border-right:1px dotted #999;
+   width:70px;
+   font-weight:bold;
+   padding:5px 0 4px 5px;
+   margin-right:20px;
+}
+#uploadrTopBar{
+   border-top:1px dotted #999;
+   border-bottom:1px dotted #999;
+   padding:0;
+	background-color:#fff;
+}
+#batchcontrolarea{
+   margin-top:10px;
+}
+#batchtags {margin-right: 50px;width:300px;}
+
+.scaledownFootnote {font-size:85%;}
+
+#droparea {
+	padding-top:5px;
+	overflow: auto;
+	height: 490px;
+	border-right: 1px dotted #999;
+	background-color:#fff;
+}
+#droparea img {
+	margin:5px;
+	padding:1px;
+	border:2px solid #fff;
+}
+#droparea .imageContainer {
+   height:126px;
+   width:126px;
+   float:left;
+   text-align:center;
+   margin:5px;
+}
+#droparea .imageHolder {
+   margin:auto;
+   border:3px solid #ffffff;
+}
+.selected {
+	border:3px solid #ff007b;
+}
+
+#draghelp {
+   visibility:hidden;
+   display:none;
+   color:#aaa;
+   font-size:90%;
+   font-weight:bold;
+   padding:5px 10px;
+}
+
+#drophelp {
+	margin-top: 100px;
+	font-size: 250%;
+	font-weight:bold;
+	color:rgb(23, 130, 203);
+	text-align:center;
+}
+#drophelpsub {
+   font-size:50%;
+}
+#imagearea {
+	min-height: 100px;
+}
+
+#imagearea {
+	padding: 10px 10px 10px 0;
+	margin-left:-5px;
+}
+
+
+#actionmenu {
+	margin: 9px;
+}
+
+#actionmenu li {
+	list-style:none;
+	display:inline;
+	float:left;
+	margin-right:10px;
+	height:32px;
+	width:24px;
+}
+#actionmenu a {
+	display:inline;
+	float:left;
+	width: 30px;
+	height: 26px;
+	background-image: url(img/buttons.png);
+	background-repeat:no-repeat;
+}
+
+#uploadrBottomBar{
+   border-top:1px dotted #999;
+	background-color:#fff;
+}
+#uploadrBottomBar {
+   border-bottom: 1px dotted #999;
+}
+.ft:after {
+   content: '.';
+   display:block;
+   height:0;
+   clear:both;
+   visibility:hidden;
+}
+/* Hides from IE-mac \*/
+* html .ft {height: 1%;}
+/* End hide from IE-mac */
+
+
+/***************** submit button style *****************************/
+.yui-button button { outline: none; }
+.yui-button#uploadButton {
+   background: url(img/gloss_100.png) repeat-x left center;
+}
+.yui-button#uploadButton  {
+   background-color:rgb(11, 113, 192);
+}
+.yui-button-hover#uploadButton  {
+   background-color:rgb(23, 130, 203);
+}
+.yui-button-disabled#uploadButton  {
+   background-color:#999999;
+   color:#ccc;
+}
+#uploadButton button {
+   color:#fff;
+   font-weight:bold;
+   font-size:110%;
+}
+.yui-button-disabled#uploadButton button  {
+   color:#f9f9f9;
+}
+
+.ie6 { 
+   background-image: none; 
+   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/gloss_100.png', sizingMethod = 'scale'); 
+}
+
+/****************** image control buttons ************************/
+#a_ror { margin-left: 7px;}
+
+#a_add .disabled      { background-position:  0 0;}
+#a_add .enabled       { background-position: -30px 0;}
+#a_add .enabled:hover { background-position: -60px 0;}
+
+#a_del .disabled      { background-position:  -90px 0;}
+#a_del .enabled       { background-position: -120px 0;}
+#a_del .enabled:hover { background-position: -150px 0;}
+
+#a_rol .disabled      { background-position: -180px 0;}
+#a_rol .enabled       { background-position: -210px 0;}
+#a_rol .enabled:hover { background-position: -240px 0;}
+
+#a_ror .disabled      { background-position: -270px 0;}
+#a_ror .enabled       { background-position: -300px 0;}
+#a_ror .enabled:hover { background-position: -330px 0;}
+
+#a_prf .disabled      { background-position: -360px 0;}
+#a_prf .enabled       { background-position: -390px 0;}
+#a_prf .enabled:hover { background-position: -420px 0;}
+
+#a_cro .disabled      { background-position: -450px 0;}
+#a_cro .enabled       { background-position: -480px 0;}
+#a_cro .enabled:hover { background-position: -510px 0;}
+
+#a_clr .disabled      { background-position: -540px 0;}
+#a_clr .enabled       { background-position: -570px 0;}
+#a_clr .enabled:hover { background-position: -600px 0;}
+
+
+#statusBar {
+   margin:3px;
+	padding:2px;
+	height:20px;
+}
+#statusText {
+   font-size:90%;
+   color:#600;
+}
+.disclaimer {
+   font-size:85%;
+   text-align:center;
+   color:#565656;
+}
+.statusmsg {
+	padding: 5px;
+	background: #ddd;
+}
+
+.uploadrDialog p {
+	margin-bottom: 1em;
+}
+
+strong { font-weight: bold;}
+em { font-style: italic;}
+label { font-weight: normal;font-size:93%;font-weight:bold;color:#444;}
+
+#imagepreviewframe {
+   margin:auto;
+   border:4px solid #ccc;
+   height:128px;
+   width:128px;
+}
+#imagepreviewarea {
+   text-align:center;
+   height:120px;
+   width:120px;
+   background-color:#fff;
+   padding:4px;
+}
+#curimg { margin:auto;}
+
+#imagecontrolarea input[type="text"] { width: 220px;}
+#imagecontrolarea textarea { width: 220px; height:60px;font-size: 93%;}
+#imagecontrolarea .labels { padding-top: 10px;}
+
+#perms input[type="checkbox"] { margin: 4px 4px 4px 20px;}
+#perms input[type="radio"] { margin-top: 5px;margin-right:4px;}
+#perms label { font-weight: normal;}
+
+#hidden label { font-weight: normal;}
+#hidden input[type="checkbox"] { margin: 4px 4px 4px 5px;}
+
+#effectcontrolarea {
+	font-size: 85%;
+	font-family: verdana;
+	padding: 5px 0 0 50px;
+	float: left;
+}
+
+.effectlabel {
+    font-weight: normal;
+    padding-right: 14px;
+}
+
+.effectlabelenabled {
+	color: #333;
+}
+
+.effectlabeldisabled {
+	color: #999;
+}
+
+#effecttitle {
+	font-weight: bold;
+	padding-right: 10px;
+}
+
+
+/* not sure if these are useful */
+#imagebuttons img {
+	margin: 5px;
+}
+#setname {margin-right: 15px;}
+#cursize {margin-left: 20px; font-size:85%;font-weight:bold;}
+
+#progress {
+   background:#565656;
+   color:#ddd;
+   height: 150px;
+   border-right: 1px dotted #999;
+   padding-left: 20px;
+   display:none;
+}
+
+#progress_photo {
+  margin-top: 15px;
+  float: left;
+}
+#progress_spinner {
+   height:22px;
+   width:22px;
+   top:2px;
+   margin-left:10px;
+   position:relative;
+}
+
+#progress .contents {
+  margin-left: 140px;
+}
+
+.pbar_header {
+  font-size: 180%;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-top: 10px;
+}
+
+.pbar_border {
+  text-align: left;
+  height: 11px;
+  width: 400px;
+  border: 2px solid #787878;
+  margin-top:5px;
+  padding: 0;
+}
+
+.pbar_bar {
+  height: 11px;
+  margin: 0px;
+  padding: 0;
+  background: #ddd;
+}
+
+.pbar_label {
+	text-align: left;
+	font-size: 85%;
+	margin-top: 10px;
+}
+
+.pbar_label .title {
+	font-weight:bold;
+}
+
+#finish {
+	background:#565656;
+	color:#ddd;
+	height: 150px;
+	border-right: 1px dotted #999;
+    padding-left: 20px;
+    display:none;
+}
+
+#finish h1 {
+  font-size: 167%;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-top: 10px;
+}
+
+#finish p {
+  margin-bottom: 25px;
+}
+
+#require {
+	background:#565656;
+	color:#ddd;
+	height: 150px;
+	border-right: 1px dotted #999;
+    padding-left: 20px;
+    display:none;
+}
+
+#require_spinner {
+   height:22px;
+   width:22px;
+   top:2px;
+   margin-left:10px;
+   position:relative;
+}
+
+/*****************  button style *****************************/
+.yui-button button { outline: none; }
+.yui-button#finishViewButton {
+   background: url(img/gloss_100.png) repeat-x left center;
+}
+.yui-button#finishViewButton  {
+   background-color:rgb(252, 55, 147);
+}
+.yui-button-hover#finishViewButton  {
+   background-color:rgb(253, 82, 162);
+}
+#finishViewButton a {
+   color:#fff;
+   font-weight:bold;
+   font-size:120%;
+}
+
+/*****************  button style *****************************/
+.yui-button button { outline: none; }
+.yui-button#finishOkButton {
+   background: url(img/gloss_100.png) repeat-x left center;
+}
+.yui-button#finishOkButton  {
+  background-color:rgb(11, 113, 192);
+  margin-left:20px;
+}
+.yui-button-hover#finishOkButton  {
+  background-color:rgb(23, 130, 203);
+}
+#finishOkButton button {
+   color:#fff;
+   font-weight:bold;
+   font-size:120%;
+   width: 100px;
+}
+
+#ciinfo{
+  margin:auto;
+  height:50px;
+  width:50px;
+  background:#aaa;
+  position: relative;
+  margin-top: 10px;
+  border: 4px solid #ddd;
+}
+
+#ciwidth {
+  position:absolute;
+  top: -16px;
+  left: 10px;
+  color:#000;
+  font-size: 85%;
+  text-align:center;
+  width:30px;
+}
+
+#ciheight {
+  text-align:right;
+  width: 30px;
+  position:absolute;
+  top: 18px;
+  left: -36px;
+  color:#000;
+  font-size: 85%;
+}
+
+#cisize {
+  position:absolute;
+  top: 20px;
+  left:10px;
+  color:#fff;
+  font-size: 85%;
+}
