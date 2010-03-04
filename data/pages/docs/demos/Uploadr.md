@@ -1,4 +1,4 @@
-# Image Alter
+# Uploadr
 
 Upstream bandwidth bills burning through your cash faster than a laser beam through butter?
 If you don't want to pay for all those bits, then you're going to have to reduce the number 
