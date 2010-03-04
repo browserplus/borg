@@ -18,31 +18,31 @@ presently available is targeted at three different classes of
 developers, click through to the documentation that you're interested
 in:
 
-> **[Web Developers](/docs/web_dev/)**: You're interested in
+**[Web Developers](/docs/web_dev/)**: You're interested in
 using the new JavaScript APIs provided by BrowserPlus to build advanced
 features into your web applications.  Documentation and 
 [example code](/docs/web_dev/example_code/) included.
 
-> **[Service Authors](/docs/service_dev/)**: You want to build a plugin
+**[Service Authors](/docs/service_dev/)**: You want to build a plugin
 for the web that's scriptable from Javascript and works almost
 everywhere, in either native code or a high level language.
 
-> **[Browser Technologists](/docs/platform/)**: You're
+**[Browser Technologists](/docs/platform/)**: You're
 curious about how the BrowserPlus platform works to extend it, build
 on top of it, or build native support for BrowserPlus plugins into an
 existing application (like, say, a web browser).
 
 ## Adventures for All
 
-> **[Available Services](/docs/services/)**: BrowserPlus doesn't ship with
+**[Available Services](/docs/services/)**: BrowserPlus doesn't ship with
 pre-installed services. Instead services are downloaded, installed and
 updated on the fly. No need to wait for the next big release for new
 functionality or fixes.  Check out this list for the services currently
 available.
 
 
-> **[Demos](/docs/demos/)**: From image processing to advanced uploading,
+**[Demos](/docs/demos/)**: From image processing to advanced uploading,
 motion sensing to cross-domain JSON requests, Demos showscases more
 complete examples of BrowserPlus in action.
 
-> **[FAQ](/docs/FAQ/)**: Answers to frequently asked questions.
+**[FAQ](/docs/FAQ/)**: Answers to frequently asked questions.

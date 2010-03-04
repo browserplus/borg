@@ -56,7 +56,7 @@ function get_blog_widget($max) {
 
     foreach($xml->entry as $item) {
         if ($max-- == 0) { break; }
-        $link = (string)$item->link;
+        $link = (string)$item->link['href'];
         $title = (string)$item->title;
         $s .= "<li><a href=\"$link\">$title</a></li>";
     }
