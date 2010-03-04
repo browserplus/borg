@@ -192,7 +192,7 @@ class Dok implements iFileScanner
     // replace @{action data} vars
     // actions: 
     //     include - include example source code
-    //     service - link to explorewr
+    //     service - link to service doc
     private function at_actions($matches) {
         $action = $matches[1];
         if ($action == "include") {
@@ -210,9 +210,9 @@ class Dok implements iFileScanner
             } else {
                 $str = "<pre style=\"color:#900\">ERROR - could not find\n$path</pre>";
             }
-        } else if ($action == "service") {
+        } else if ($action == "service" || $action == "s" || $action == "svc" || $action == "sv") {
             $s = $matches[2];
-            $str = "<a href=\"/explore/index.html?s=$s\">$s</a>";
+            $str = "<a href=\"/docs/services/{$s}.html\">$s</a>";
         }
         return $str;
     }

@@ -6,7 +6,7 @@ in C++.
 
 ## Architecture Recap
 
-<div style="float: right; margin 30px;"><img src="/i/server_arch.png"></div>
+<div style="float:right; margin-left:30px;margin-bottom:10px"><img src="/i/server_arch.png"></div>
 
 BrowserPlus Services allow new capabilities to be provided to the
 web.  

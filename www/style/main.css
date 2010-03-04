@@ -4,9 +4,15 @@ body {
 }
 
 .main {
-    font-size: 116%;
+    font-size: 108%;
     line-height:1.5em;
     margin-bottom:20px;
+}
+
+.main img {
+    text-align:center;
+    margin:10px auto;
+    display:block;
 }
 
 em { font-style:italic; }
