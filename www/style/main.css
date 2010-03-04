@@ -17,10 +17,10 @@ body {
 
 em { font-style:italic; }
 
-.main ol li { list-style: decimal outside; }
-.main ul li { list-style: disc outside; }
+.main ol li { list-style: decimal outside;}
+.main ul li { list-style: disc outside;}
 
-.main ol, .main ul, .main dl { margin-left: 1em; margin-bottom:1em;}
+.main ol, .main ul, .main dl { margin-left: 2em; margin-bottom:1em;padding-left:1em;}
 
 .main dd {margin-left:2em; margin-bottom:0.5em; }
 
