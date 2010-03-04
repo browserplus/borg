@@ -75,22 +75,19 @@ class Dok implements iFileScanner
     }
 
     private function getPage($uri) {
+
         if ($this->endswith($uri, ".html")) {
-            $dir = dirname($uri);
+            $dir = dirname($uri) . "/";
             $htmlfile = basename($uri);
         } else {
-	        $dir = ($this->endswith($uri, '/') ? $uri : "$uri/");
+	        $dir = $uri;
             $htmlfile = "";
         }
 
-        // correct "/" around dir
-        $dir = ($dir == "." ? "/" : ($this->endswith($dir, "/") ? $dir : "$dir/"));
-        $dir = ($dir[0] != "/" ? "/$dir" : $dir);
-
+		$dir = ($dir[0] == "." ? "/" : "/${dir}");
         $datadir = $this->conf['pages'] . $dir;
 
-
-        $dbg = false;
+		$dbg =false;
         if ($dbg) echo "<pre>findFile('$datadir', '$htmlfile')\n";
         list($htmlfile, $srcfile, $files) = $this->scanner->findFile($datadir, $htmlfile);
 
@@ -372,6 +369,13 @@ class Dok implements iFileScanner
 
 function dok($conf, $uri)
 {
+	// uri doesn't end with either "/" or file extension
+	if ($uri && !preg_match('/\.[a-z0-9]+|\/$/', $uri)) {
+		// so it must be a directory without trailing slash, redirect with slash
+		header("Location: http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL'] . '/');
+		exit;
+	}
+
     $d = new Dok($conf);
     $d->render($uri);
 }
