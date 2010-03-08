@@ -8,7 +8,7 @@
 <body>
   <p>
     <div id="dropNotes"> loading ... </div>
-    <div id="dropArea"> <img id="droppedThumbnail"> </div>
+    <div id="dropArea"> <img id="droppedThumbnail" src="/i/ffffff.gif"> </div>
     File Name: <span id="lastDropInfo"> ... </span> <br>
     Client MD5: <span id="clientMD5"> ... </span> <br>
     Server MD5: <span id="serverMD5"> ... </span>
