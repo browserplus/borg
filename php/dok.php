@@ -1,5 +1,6 @@
 <?php
 require("markdown.php");
+require("vars.php");
 
 function dok_file_sort($a, $b) {
     return strcasecmp($a, $b);

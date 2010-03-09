@@ -11,9 +11,11 @@ $TitleMap = array(
 
 // replace @{varname} with below
 $VarMap = array(
-    "bpver" => "2.4.21",
-    "rubyver" => "4.2.6",
-    "installver" => "1.0.11"
+    "bpver"      => BROWSERPLUS_JS_VERSION,
+    "rubyver"    => RUBY_SERVICE_VERSION,
+    "installver" => INSTALL_WIDGET_VERSION,
+    "notifyver"  => NOTIFY_WIDGET_VERSION,
+    "uploadver"  => UPLOAD_WIDGET_VERSION
 );
 
 function getFileScanner($uri) {

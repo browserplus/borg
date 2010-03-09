@@ -37,12 +37,16 @@ existing application (like, say, a web browser).
 **[Available Services](/docs/services/)**: BrowserPlus doesn't ship with
 pre-installed services. Instead services are downloaded, installed and
 updated on the fly. No need to wait for the next big release for new
-functionality or fixes.  Check out this list for the services currently
+functionality or fixes.  Check out the list of services currently
 available.
 
 
 **[Demos](/docs/demos/)**: From image processing to advanced uploading,
 motion sensing to cross-domain JSON requests, Demos showscases more
 complete examples of BrowserPlus in action.
+
+**[Widgets](/docs/widgets/)**: The widgets on these pages allow for easy 
+BrowserPlus integration on your website. Just include a script, set some 
+optional parameters and make your site more capable.
 
 **[FAQ](/docs/FAQ/)**: Answers to frequently asked questions.
