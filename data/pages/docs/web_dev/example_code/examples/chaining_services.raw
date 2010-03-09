@@ -77,6 +77,8 @@ function dropped(arg) {
 		  if (r.success) {
 			var md5 = document.getElementById("serverMD5");			
 			md5.innerHTML = r.value.body;
+		  } else {
+			alert("Upload Failed: " + r.error + (r.verboseError ? ", " + r.verboseError : ""));
 		  }
 		});
 
