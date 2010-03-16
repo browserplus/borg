@@ -1,5 +1,5 @@
 <html>
-  <head><title>Your first drop target</title>
+  <head><title>Your first drop target (v2)</title>
   <style type="text/css" media="screen">
     #myTarget { width: 200px; height:200px; border: 1px solid #999; }
   </style>
@@ -47,7 +47,7 @@ function dropped(arg) {
 BrowserPlus.init(function(res) {
   if (res.success) {
    BrowserPlus.require({
-      services: [{service: 'DragAndDrop', version: '1'}]},
+      services: [{service: 'DragAndDrop', version: '2'}]},
       function(res) {
         if (res.success) {
           var dnd = BrowserPlus.DragAndDrop;
