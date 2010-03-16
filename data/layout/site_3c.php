@@ -26,7 +26,7 @@ include "_header.php"
 		</div>
 		
 		<div id="content" class="main">
-			<?php echo $body;l ?>
+			<?php echo $body; ?>
 		</div>
 		
 		<div id="side-b">
