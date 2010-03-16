@@ -17,7 +17,7 @@ $listItemsToShow = 5; // for twitter, forum, blog, issues
 function get_links_widget() {
     $links = array(
 		array(
-			"link" => "http://github.com/browserplus/platform/raw/2.6.0/docs/ChangeLog.txt"
+			"link" => "http://github.com/browserplus/platform/raw/2.6.0/docs/ChangeLog.txt",
 			"title" => "BrowserPlus 2.6.0 Release Notes"
 		),
 
