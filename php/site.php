@@ -225,7 +225,7 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
         $who  = h($row[$who_key]);
         $what = render_line($row[$what_key]);
 
-        if ($cfg['show_long_dates']) {
+        if (isset($cfg['show_long_dates'])) {
             $when = date("m/d/y H:i", $time);
         } else {
             $when = date("H:i", $time);
@@ -240,7 +240,7 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
 
         $clz = ($cnt++ % 2 == 0 ? "even" : "odd");
         $str .= "<tr>";
-        if ($cfg['url_pat'] && $cfg['url_key']) {
+        if (isset($cfg['url_pat']) && isset($cfg['url_key'])) {
             $t = "<a href=\"" . sprintf($cfg['url_pat'], $row[$cfg['url_key']]) . "\">$when</a>";
         } else {
             $t = $when;
@@ -255,7 +255,7 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
 
 
     $str .= "</tbody></table>\n";
-    if ($cfg['bot_nav']) { $str .= "<div class=\"log-nav\">" . $cfg["bot_nav"] . "</div>\n"; }
+    if (isset($cfg['bot_nav'])) { $str .= "<div class=\"log-nav\">" . $cfg["bot_nav"] . "</div>\n"; }
     return "$str</div>\n";
 }
 

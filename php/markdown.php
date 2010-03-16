@@ -58,7 +58,7 @@ function Markdown($text) {
 	static $parser;
 	if (!isset($parser)) {
 		$parser_class = MARKDOWN_PARSER_CLASS;
-		$parser = new $parser_class;
+		$parser = new MarkdownExtra_Parser;//$parser_class;
 	}
 
 	# Transform text using parser.

@@ -16,6 +16,11 @@ $listItemsToShow = 5; // for twitter, forum, blog, issues
 
 function get_links_widget() {
     $links = array(
+		array(
+			"link" => "http://github.com/browserplus/platform/raw/2.6.0/docs/ChangeLog.txt"
+			"title" => "BrowserPlus 2.6.0 Release Notes"
+		),
+
         array(
             "link" => "http://browserplus.yahoo.com/install/",
             "title" => "Install BrowserPlus"
@@ -50,7 +55,12 @@ function get_links_widget() {
 }
 
 function get_blog_widget($max) {
-    $atom = file_get_contents("/var/www/blog/atom.xml");
+	$feed = "/var/www/blog/atom.xml";
+	if (!file_exists($feed)) {
+		return "";
+	}
+
+   	$atom = file_get_contents($feed);
     $xml = simplexml_load_string($atom);
     $s = "<ul>";
 

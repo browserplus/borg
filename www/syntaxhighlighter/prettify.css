@@ -10,6 +10,16 @@
 .atv{color:#080}
 .dec{color:#606}
 
+pre.prettyprint{
+    font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;
+    font-size:85%;
+    padding:4px;
+    border:1px solid #ccc;
+    background:#f8f8f8;
+    background:#e7e5dc;
+    background:#f1f0e7;
+}
+
 @media print{
   .str{color:#060}
   .kwd{color:#006;font-weight:bold}

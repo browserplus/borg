@@ -85,6 +85,7 @@ class Dok implements iFileScanner
             $htmlfile = "";
         }
 
+		if (empty($dir)) { $dir = ".";}
 		$dir = ($dir[0] == "." ? "/" : "/${dir}");
         $datadir = $this->conf['pages'] . $dir;
 
@@ -343,10 +344,10 @@ class Dok implements iFileScanner
         if (file_exists($datadir)) {
             $files = $this->getDirContents($datadir);
 
-            if ($files["files"][$htmlfile]) {
+            if (isset($files["files"][$htmlfile])) {
                 // 1. File is specfied in URI and found
                 $srcfile = $files["files"][$htmlfile];
-            } else if (!$htmlfile && $files["files"][self::$default_filename]) {
+            } else if (!$htmlfile && isset($files["files"][self::$default_filename])) {
                 // 2. No file specified, use index.html
                 $srcfile = $files["files"][self::$default_filename];                
                 $htmlfile = self::$default_filename;

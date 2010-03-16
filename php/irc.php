@@ -60,7 +60,7 @@ class IRC {
         $words = array();
         $cnt = 0;
         foreach ($lines as $line) {
-            $terms = split(',', $line);
+            $terms = preg_split('/,/', $line);
             $words[$terms[0]] = $terms[1];
             if (++$cnt > $howmany) {
                 break;

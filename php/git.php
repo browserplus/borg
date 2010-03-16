@@ -57,17 +57,17 @@ class GIT {
     }
 
 
-
     /*
      * Query irc table for range of values
      */
     function get_rows($num_rows=10) {
-        $starting_id = max(0, $max_id - $num_rows);
+        $starting_id = $num_rows;//max(0, $max_id - $num_rows);
         $sql = "SELECT * FROM " . self::$commit_table . " ORDER BY tcommit DESC LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($starting_id));
     }
 
     function get_projects_flattened() {
+        $gitbase = "http://github.com/";
         $all = get_projects();
         $ret = array();
         foreach($all as $label=>$projects) {

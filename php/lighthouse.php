@@ -17,7 +17,7 @@ class Lighthouse
     var $projectNameMap = array();
     
 	function __construct() {
-	    $this->token = get_secret("lighthouse");
+	    self::$token = get_secret("lighthouse");
     }
 
 
@@ -46,7 +46,7 @@ class Lighthouse
         // store data for render functions
         apc_store(self::$ticketsKey, json_encode($bugs));
         
-        if ($json) {
+        if (isset($json)) {
             $bugs = json_decode($json, 1);
         }
 
@@ -57,7 +57,7 @@ class Lighthouse
     private function get_bugs($project_id) {
         $bugs = array();
 
-        $url = sprintf(self::$ticketsUrl, $project_id, $this->token);
+        $url = sprintf(self::$ticketsUrl, $project_id, self::$token);
         $xml = fetch($url);
 
         if ($xml) {
@@ -83,7 +83,7 @@ class Lighthouse
     private function get_project_ids() {
         $ids = array();
         
-        $url = sprintf(self::$projectsUrl, $this->token);
+        $url = sprintf(self::$projectsUrl, self::$token);
         $xml = fetch($url);
 
         if ($xml) {

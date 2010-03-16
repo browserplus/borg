@@ -1,8 +1,6 @@
 <?php
 include "../../php/dok.php";
 
-$request = isset($_GET['__route__']) ? "/" . $_GET['__route__'] : "/";
-
 $conf = array(
     "baseurl" => "/docs",      // site url
     "basename" => "Docs",
@@ -10,5 +8,6 @@ $conf = array(
     "vars"    => array("active" => "Docs")
 );
 
-dok($conf, $_GET["__route__"]);
+$request = isset($_GET['__route__']) ? $_GET['__route__'] : "";
+dok($conf, $request);
 ?>
