@@ -9,8 +9,8 @@ YUI().use('node', function(Y) {
 	var UploadFlag = true;
 	
 	
-	function getUploadUrl(uuid, md5, name) {
-		return UploadUrl + "?uuid="+uuid+"&md5="+md5+"&name=" + name;
+	function getUploadUrl(md5, name) {
+		return UploadUrl + "?md5="+md5+"&name=" + name;
 	}
 
 	// Return a human presentable size string like "1.2GB"
@@ -43,16 +43,14 @@ YUI().use('node', function(Y) {
 	function getChunkSize(fileSize) {
 		var kb = 1024, mb = kb*kb;
 
-		if (fileSize < mb) {
-			return 32*kb;
+		if (fileSize < 512*kb) {
+			return 16*kb;
 		} else if (fileSize < 2*mb) {
-			return 64*kb;
+			return 32*kb;
 		} else if (fileSize < 4*mb) {
-			return 128*kb;
-		} else if (fileSize < 5*mb) {
-			return 256*kb;
+			return 64*kb;
 		} else {
-			return mb;
+			return 128*kb;
 		}
 	}
 
@@ -103,13 +101,11 @@ YUI().use('node', function(Y) {
 		var uploadIt = function(chunk) {
 			var url, offset = chunk * chunkSize; // chunkSize comes from outer context
 			
-			url = getUploadUrl(RobustoUUID, FileMD5, FileHandle.name);
+			url = getUploadUrl(FileMD5, FileHandle.name);
 
-			log("Upload chunk: " + chunk + ", offset=" + offset + ", size=" + chunkSize);
+			log("Uploading chunk# " + chunk);
 			BrowserPlus.FileAccess.slice({file:file, offset:offset, size:chunkSize}, function(r1) {
 
-
-				// TODO - pass md5/uuid params
 				var vars = {
 					chunk:  ""+chunk,
 					chunks: ""+numChunks
@@ -120,34 +116,41 @@ YUI().use('node', function(Y) {
 					if (r2.success) {
 						results = JSON.parse(r2.value.body);
 						
-						log("success on chunk: " + chunk + ", status: " + results.status);
-						FileChunksUploaded.push(chunk);
-						highlightChunks([chunk]);
+						if (results.status == "partial") {
+							log("Uploaded chunk#" + chunk);
+							FileChunksUploaded.push(chunk);
+							highlightChunks([chunk]);
+						} else if (results.status == "complete") {
+							log('File uploaded!  <a href="' + results.value + '">Download it</a>.');
+							FileChunksUploaded.push(chunk);
+							highlightChunks([chunk]);
+						} else {
+							log("Upload error: " + results.value);
+						}
+
 					} else {
 						error("upload", r2);
 						return;
 					}
-					doNextUpload();
+					doNextUpload(chunk);
 				});			
 			});
 		};
 
-		var doNextUpload = function() {
+		var doNextUpload = function(chunk) {
 			if (UploadFlag && chunksNotUploaded.length > 0) {
 				uploadIt(chunksNotUploaded.shift());
 			} else {
-//				log("DONE!");
 				Y.one("#b_stop").set("disabled", true);
-				Y.one("#b_start").set("disabled", true);
+				Y.one("#b_start").set("disabled", !chunk || chunk == chunksNotUploaded.length);
 				Y.one("#b_file").set("disabled", false);
-
 			}
 		};
 		
 		doNextUpload();
 	}
 
-	function startResumableUpload() {
+	function startResumableUpload(numChunks) {
 		var file = FileHandle;
 
 		log("Computing MD5 Checksum of file...");
@@ -159,7 +162,7 @@ YUI().use('node', function(Y) {
 				// save ref to MD5 for use in actual upload
 				FileMD5 = checksum.value;
 
-				url = getUploadUrl(RobustoUUID, FileMD5, file.name);
+				url = getUploadUrl(FileMD5, file.name);
 
 				log("Querying server for previously uploaded chunk...");
 				BrowserPlus.JSONRequest.get({url:url}, function(req){
@@ -171,12 +174,14 @@ YUI().use('node', function(Y) {
 						if (v.status === "partial") {
 							log("Press " + c_hi("Start") + " to resume the upload.");
 							FileChunksUploaded = v.value.split(",");
+							drawChunks(numChunks);
 							highlightChunks(FileChunksUploaded);
 						} else if (v.status === "new") {
 							log("Press " + c_hi("Start") + " to upload the file.");
+							drawChunks(numChunks);
 							FileChunksUploaded = [];
 						} else if (v.status === "complete") {
-							log("File already uploaded: " + v.value);
+							log('File already uploaded.  <a href="' + v.value + '">Download it</a>.');
 						} else {
 							log("Error: " + v.value);
 						}
@@ -235,8 +240,7 @@ YUI().use('node', function(Y) {
 				Y.one("#b_file").set("disabled", true);
 				UploadFlag = true;
 
-				drawChunks(numChunks);
-				startResumableUpload();
+				startResumableUpload(numChunks);
 			}
 		});
 	}
@@ -256,6 +260,7 @@ YUI().use('node', function(Y) {
 			startActualUpload();
 		} else if (id === "b_stop") {
 			UploadFlag = false;
+			log("Upload paused");
 			Y.one("#b_stop").set("disabled", true);
 			Y.one("#b_start").set("disabled", false);
 			Y.one("#b_file").set("disabled", false);

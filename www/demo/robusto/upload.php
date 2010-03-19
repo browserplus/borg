@@ -1,8 +1,15 @@
 <?php
 
-// inputs:
+// 
+// basic inputs (GET - can check for existence of file with these):
 //   md5  - hash of file contents
-//   uuid - unique user id
+//   name - name of file
+//
+// file upload inputs (POST - to upload chunks)
+//   file   - file chunk
+//   chunk  - chunk number
+//   chunks - total number of chunks
+//
 // output:
 //   status - new|partial|complete|error
 //   value  - string, value of which depends on 'status'
@@ -17,7 +24,7 @@
 define("DBG_ME", true);
 define("DEMO_MODE", true); // in demo mode, just save empty files
 define("UPLOAD_BASE" , "/tmp/robusto"); // base dir where files are written
-define("UPLOADED_URL", "/demo/robusto/just_a_demo/%s/%s/%s");
+define("UPLOADED_URL", "/demo/robusto/just_a_demo/%s/%s");
 
 // optionally write to debug file
 function dbg($str) {
@@ -53,8 +60,8 @@ function result($status, $value) {
 	exit;
 }
 
-function resultComplete($uuid, $md5, $filename) {
-	$url = sprintf(UPLOADED_URL, $uuid, $md5, $filename);
+function resultComplete($md5, $filename) {
+	$url = sprintf(UPLOADED_URL, $md5, $filename);
 	result("complete", $url);
 }
 
@@ -84,15 +91,13 @@ header('Content-type: text/plain; charset=UTF-8');
 
 // Get Params - all apis need to check if file previously uploaded
 $md5  = isset($_GET["md5"])  ? $_GET["md5"]  : "";
-$uuid = isset($_GET["uuid"]) ? $_GET["uuid"] : "";
 $filename = isset($_GET["name"]) ? preg_replace('/[^\w\._-]+/', '', $_GET['name']) : "";
 
 // if the basics are specified, don't go on
 if (!preg_match("/^[a-f0-9]{32}$/i", $md5)  || // md5 is hex and 16 bytes
-	!preg_match("/^[a-f0-9]{32}$/i", $uuid) || // uuid is hex and 16 bytes
 	empty($filename)) 
 {
-	resultError("Invalid parameters, expecting md5, uuid and name"); // EXITs
+	resultError("Invalid parameters, expecting md5 and name"); // EXITs
 }
 
 
@@ -102,7 +107,7 @@ if (!isset($_FILES['file'])) {
 	// Not Uploading - query to see what chunks are uploaded
 	// ---------------------------------------------------------------
 
-	$dir = UPLOAD_BASE . "/${uuid}/${md5}";
+	$dir = UPLOAD_BASE . "/${md5}";
 
 	$fod = getFilesOnDisk($dir);
 	$chunks = $fod["chunks"];
@@ -113,7 +118,7 @@ if (!isset($_FILES['file'])) {
 		$name = $files[0];
 		if (DEMO_MODE || md5("${dir}/${name}") == $md5) {
 			// md5 sig matches - great
-			resultComplete($md5, $uuid, $name); // EXITs
+			resultComplete($md5, $name); // EXITs
 		}
 	} else if (count($chunks) > 0) {
 		resultPartial($chunks);  // EXITs
@@ -143,7 +148,7 @@ if (!isset($_FILES['file'])) {
 		$chunk < $chunks)                         // chunk num is reasonable
 	{
 		// there's a dir to work with
-		$dir = UPLOAD_BASE . "/${uuid}/${md5}";
+		$dir = UPLOAD_BASE . "/${md5}";
 		if ((is_dir($dir) && is_writable($dir)) || mkdir($dir, 0777, true)) {
 
 			// name of chunk file is "chunk_000x_000y.bin"
@@ -172,7 +177,7 @@ if (!isset($_FILES['file'])) {
 					for ($i = 0, $cnt = count($files); $i < $cnt; $i++) {
 						if ($filename == $files[$i]) {
 							// file is there, we're done!
-							resultComplete($uuid, $md5, $filename);	 // EXITs
+							resultComplete($md5, $filename);	 // EXITs
 						}
 					}
 				}
@@ -208,7 +213,7 @@ if (!isset($_FILES['file'])) {
 
 					if (DEMO_MODE || md5($dpath) == $md5) {
 						// we're done
-						resultComplete($uuid, $md5, $filename); // EXITs
+						resultComplete($md5, $filename); // EXITs
 					} else {
 						resultError("MD5 signature does not match between client and server"); // EXITs
 					}

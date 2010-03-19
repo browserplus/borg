@@ -21,7 +21,7 @@ div#chunks span {
 
 div#chunks span.complete { background:#bfa; border-color:#3a0;color:#131;}
 
-fieldset {
+#ctrlpanel {
     width:90%;
     margin:0 auto;
     border:1px solid #9ac;
@@ -31,16 +31,19 @@ fieldset {
     -webkit-border-radius: 5px 10px;
 }
 
-legend {
+#actions {
     background:#edf4f9;
     border:1px solid #9ac;
-    padding:1px 15px;
+    padding:5px 0;
+    margin:0 50px;
     font-style:italic;
     text-align:center;
+    -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
 .button_container {
     text-align:center;
+    padding-top:10px;
 }
 
 .detail_container {
