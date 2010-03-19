@@ -21,7 +21,7 @@
 //
 // chunk file pattern: chunk_0000_0000.bin
 
-define("DBG_ME", true);
+define("DBG_ME", false);
 define("DEMO_MODE", true); // in demo mode, just save empty files
 define("UPLOAD_BASE" , "/tmp/robusto"); // base dir where files are written
 define("UPLOADED_URL", "/demo/robusto/just_a_demo/%s/%s");
