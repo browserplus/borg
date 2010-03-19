@@ -43,7 +43,11 @@ or compressed before uploading to save users with slow links.
 While the demo does MD5 checksumming on the entire contents of the file, each individual chunk 
 could be finger printed with the client and then checked upon arrival at the server.
 
-Happy hacking.
+Happy hacking.  
+
+**Note:** Source for entire demo will *soon* (week of March 22-26) 
+be [up on github](http://github.com/browserplus/borg/tree/master/www/demo/)... *Steve is a github `n00b`
+and can't fathom multiple remote repos*.
 
 
 
