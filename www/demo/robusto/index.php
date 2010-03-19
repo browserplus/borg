@@ -16,33 +16,32 @@ function svc($s) {
 <body>
 <h1>Mr. Robusto: Resumable Uploads</h1>
 
-	<p><em>
+<p><em>
 
- 		Parallel uploads, archiving, chunking, compression, md5 - so many options
-        to for files and uploading with BrowserPlus... And now for those with
-        slow, unreliable connections, <strong>resumable uploads</strong>.
+Parallel uploads, archiving, chunking, compression, md5 - so many options to for
+files and uploading with BrowserPlus... And now for those with slow, unreliable
+connections, <strong>resumable uploads</strong>.
 
-	</em></p>
+</em></p>
 	
-	<p>
+<p>
 
-		For those with unreliable connections, uploading is a frustrating, all or
-        nothing process. By breaking a file into multiple, smaller chunks and
-        adding a little server-side logic, you can easily add resumable uploads to
-        your website The key services for resumable uploads are <?php
-        svc("FileChecksum") ?> MD5 (fingerprint of file contents) <?php
-        svc("FileAccess")?> <em>chunks</em> (breaks large file into small pieces)
-        and <?php svc("Uploader")?>.
+To start your resumable upload, select a large file and press <em>Start</em>. Hit
+<em>Stop</em> or navigate away at anytime to simulate an unreliable connection. When
+you come back to the page, reselect the same file. The "chunks" already uploaded
+appear green and won't be re-uploaded.  Once all chunks reach the server, the original
+file is recreated.
 
-	</p>
-	<p>
+</p>
 
-		Select a large file and press <em>Start</em> to begin. Press <em>Stop</em>
-        or navigate away at anytime (if you navigate away you'll have to reselect
-        the same file). The table below indicates the upload status of each of the
-        various chunks.
+<p>
+	
+For more details, visit the <a href="/docs/demos/resumble_uploads.html">resumable uploads</a>
+demo page.
 
-	</p>
+</p>
+
+<p>&nbsp;</p>
 
 	<div id="ctrlpanel">
 		<form id="frm">
@@ -80,14 +79,6 @@ function svc($s) {
 	</div>
 	
 	
-	<h2>Details</h2>
-
-	<p>
-		
-		The normal server-side upload script has been modified to...
-	
-	</p>
-
 	<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
 	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 	<script src="/js/json2.js"></script>

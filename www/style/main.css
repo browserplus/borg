@@ -152,6 +152,10 @@ td pre { margin:0;}
 .runex {font-size:85%;font-family:Arial,sans-serif;}
 .linenumbers { background:#f0eee9;}
 
+table { margin: 10px 0; border: 1px solid #ccd;font-size:85%;border-collapse:collapse;border-spacing:0}
+th {padding: 4px 8px; font-weight: bold; background: #e0e7f0; text-align:center;color:#333;border-bottom:1px solid #ccd;}
+td {padding: 4px 5px;background:#f6f9fb;color:#000; border: 1px solid #e3e6e9;} 
+
 
 /* log (git and irc tables) */
 .log {font-family:verdana;}

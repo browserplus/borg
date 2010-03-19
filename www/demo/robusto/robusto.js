@@ -181,6 +181,7 @@ YUI().use('node', function(Y) {
 							drawChunks(numChunks);
 							FileChunksUploaded = [];
 						} else if (v.status === "complete") {
+							Y.one("#chunks").setContent("&nbsp;");
 							log('File already uploaded.  <a href="' + v.value + '">Download it</a>.');
 						} else {
 							log("Error: " + v.value);
@@ -260,7 +261,7 @@ YUI().use('node', function(Y) {
 			startActualUpload();
 		} else if (id === "b_stop") {
 			UploadFlag = false;
-			log("Upload paused");
+			log("");
 			Y.one("#b_stop").set("disabled", true);
 			Y.one("#b_start").set("disabled", false);
 			Y.one("#b_file").set("disabled", false);
@@ -269,6 +270,9 @@ YUI().use('node', function(Y) {
 	
 	function error(what, result) {
 		log("Error in " + what + ": " + result.error + (result.verboseError ? ", " + result.verboseError : ""));
+		Y.one("#b_stop").set("disabled", true);
+		Y.one("#b_start").set("disabled", false);
+		Y.one("#b_file").set("disabled", false);
 	}
 
 	BrowserPlus.init(function(init) {
