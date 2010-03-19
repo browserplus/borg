@@ -1,0 +1,78 @@
+body{margin:10px;}
+
+p, h1, h2 { margin:0.75em auto; width: 90%;}
+
+p { font: normal 10pt verdana,sans-serif; line-height:1.4em;}
+
+h1 { margin-top:0em;font: bold 16pt  'Courier New', Courier, monospace !important;}
+h2 { margin-top:1.5em;font: bold 14pt  'Courier New', Courier, monospace !important;}
+
+div#chunks span { 
+    background:#ccc; 
+    border:2px solid #aaa;color:#888;
+    font: normal 10pt Consolas, 'Courier New', Courier, monospace !important;
+    display:block;
+    float:left;
+    width:30px;
+    margin:1px;
+    padding:4px 0;
+    text-align:center;
+}
+
+div#chunks span.complete { background:#bfa; border-color:#3a0;color:#131;}
+
+fieldset {
+    width:90%;
+    margin:0 auto;
+    border:1px solid #9ac;
+    background:#f0f0f0;
+    background:#e0f0ff;
+    padding:15px 0;
+    -webkit-border-radius: 5px 10px;
+}
+
+legend {
+    background:#edf4f9;
+    border:1px solid #9ac;
+    padding:1px 15px;
+    font-style:italic;
+    text-align:center;
+}
+
+.button_container {
+    text-align:center;
+}
+
+.detail_container {
+    padding-left:10px;
+    margin-top:10px;
+}
+
+.err {
+    color:#c00;
+    font-weight:bold;
+}
+
+.hi {
+    color:#060;
+    font-weight:bold;
+}
+
+th {
+    font: bold 10pt Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;
+    text-align:right;
+    vertical-align:text-top;
+}
+
+td {
+    font: normal 10pt Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;
+}
+
+button { 
+    width:100px; margin:5px;
+}
+
+#d_status {
+    color:#000;
+    background:#bce;
+}
