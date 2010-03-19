@@ -2,7 +2,7 @@
 
 Serving a market with less than reliable connections?  Why let faulty connections frustrate
 your users when with a little dose of BrowserPlus and  a sprinkle of server side logic
-you can offer resumable, fault-tolerant uploads.
+you can offer [resumable, fault-tolerant uploads](/demo/robusto/).
 
 For resumable uploads, a file is sliced into chunks with @{s FileAccess}.  The file's 
 contents are finger printed with @{s MD5} so we can know once the file is reassembled
