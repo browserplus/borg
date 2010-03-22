@@ -16,6 +16,12 @@ $listItemsToShow = 5; // for twitter, forum, blog, issues
 
 function get_links_widget() {
     $links = array(
+	
+        array(
+            "link" => "/docs/demos/Resumble_uploads.html",
+            "title" => "Resumable Uploads Demo"
+        ),
+
 		array(
 			"link" => "http://github.com/browserplus/platform/raw/2.6.0/docs/ChangeLog.txt",
 			"title" => "BrowserPlus 2.6.0 Release Notes"
@@ -23,24 +29,12 @@ function get_links_widget() {
 
         array(
             "link" => "http://browserplus.yahoo.com/install/",
-            "title" => "Install BrowserPlus"
+            "title" => "Install BrowserPlus 2.6.0"
         ),
 
         array(
-            "link" => "http://github.com/browserplus/",
-            "title" => "BrowserPlus on Github"
-        ),
-        
-        /*
-        array(
-            "link" => "http://www.creativeprogramming.it/blogs/wp/index.php/2009/12/10/yahoo-browserplus-desktop-interaction-for-your-webapplication/",
-            "title" => "Yahoo! BrowserPlus– Amazing desktop interaction for your webapplication!"
-        ),
-        */
-        
-        array(
-            "link" => "http://www.plupload.com/",
-            "title" => "Plupload - advanced upload widget"
+            "link" => "/docs/demos/Uploadr.html",
+            "title" => "8 Ways to Speed Your Uploads"
         )
     );
     
@@ -51,7 +45,7 @@ function get_links_widget() {
 
     $str .= "</ul>";
     
-    return render_widget("links", "Links Around the Web", $str);
+    return render_widget("links", "* What's New *", $str);
 }
 
 function get_blog_widget($max) {

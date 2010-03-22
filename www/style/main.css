@@ -112,6 +112,7 @@ h4 {font-size: 116%;}
 .widget-irc-tags a { font-size:93%; }
 .widget-git-projects a { font-size:85%; }
 
+.widget-links h1 { color:#d00; font-style:italic;}
 .widget-links li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
 .widget-blog li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
 .widget-issues li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}

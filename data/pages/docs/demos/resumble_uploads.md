@@ -45,10 +45,4 @@ could be finger printed with the client and then checked upon arrival at the ser
 
 Happy hacking.  
 
-**Note:** Source for entire demo will *soon* (week of March 22-26) 
-be [up on github](http://github.com/browserplus/borg/tree/master/www/demo/)... *Steve is a github `n00b`
-and can't fathom multiple remote repos*.
-
-
-
-
+**Note:** [Source on GitHub](http://github.com/browserplus/borg/tree/master/www/demo/robusto).
