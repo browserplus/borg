@@ -23,12 +23,12 @@ class IRC {
     */
     function get_rows($max_id, $num_rows=10) {
         $starting_id = max(0, $max_id - $num_rows);
-        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE who NOT LIKE 'CIA-%' AND id > ? ORDER BY chat.stamp LIMIT $num_rows";
+        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($starting_id));
     }
 
     function get_rows_at($id, $num_rows) {
-        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE who NOT LIKE 'CIA-%' AND id > ? ORDER BY chat.stamp LIMIT $num_rows";
+        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE id > ? ORDER BY chat.stamp LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($id));
     }
 
@@ -36,7 +36,7 @@ class IRC {
     * Search irc table
     */
     function find_rows($search, $num_rows) {
-        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE who NOT LIKE 'CIA-%' AND MATCH(utterance) AGAINST (?)  ORDER BY stamp DESC LIMIT $num_rows";
+        $sql = "SELECT " . self::$tblcols . " FROM " . self::$table . " WHERE MATCH(utterance) AGAINST (?)  ORDER BY stamp DESC LIMIT $num_rows";
         return $this->db->fetch_all($sql, array($search));
     }
 
