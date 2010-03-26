@@ -22,7 +22,7 @@
 // chunk file pattern: chunk_0000_0000.bin
 
 define("DBG_ME", false);
-define("DEMO_MODE", true); // in demo mode, just save empty files
+define("DEMO_MODE", false); // in demo mode, just save empty files
 define("UPLOAD_BASE" , "/tmp/robusto"); // base dir where files are written
 define("UPLOADED_URL", "/demo/robusto/just_a_demo/%s/%s");
 
@@ -211,7 +211,7 @@ if (!isset($_FILES['file'])) {
 						@unlink($path); 
 					}
 
-					if (DEMO_MODE || md5($dpath) == $md5) {
+					if (DEMO_MODE || md5_file($dpath) == $md5) {
 						// we're done
 						resultComplete($md5, $filename); // EXITs
 					} else {
