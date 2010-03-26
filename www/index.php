@@ -9,7 +9,7 @@ include("../php/irc.php");
 include("../php/git.php");
 include("../php/twitter.php");
 include("../php/forum.php");
-include("../php/lighthouse.php");
+include("../php/bugzilla.php");
 
 $tableRowsToShow = 15;
 $listItemsToShow = 5; // for twitter, forum, blog, issues
@@ -90,9 +90,9 @@ $gittable = render_table($results, "tcommit", "project", "msg",
 
 $gitwidgets = $git->render_project_widget();
 
-// lighthouse issues
-$lighthouse = new Lighthouse();
-$issuewidget = $lighthouse->render_widget($listItemsToShow);
+// bugzilla issues
+$bugzilla = new Bugzilla();
+$issuewidget = $bugzilla->render_widget($listItemsToShow);
 
 // Links Widget
 $linkswidget = get_links_widget();
