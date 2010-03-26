@@ -18,7 +18,7 @@ function get_links_widget() {
     $links = array(
 	
         array(
-            "link" => "/docs/demos/Resumble_uploads.html",
+            "link" => "/docs/demos/resumble_uploads.html",
             "title" => "Resumable Uploads Demo"
         ),
 
