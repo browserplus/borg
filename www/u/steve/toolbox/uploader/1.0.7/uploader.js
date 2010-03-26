@@ -241,7 +241,7 @@ BPTool.Uploader = typeof BPTool.Uploader != "undefined" && BPTool.Uploader ? BPT
             ];
 
             if (ConfigParams.zipFiles) {
-                ServiceList.push({service: "Zipper", version: "2"});
+                ServiceList.push({service: "Archiver", version: "1", minversion:"1.0.5"});
             }
 
             return function() {
@@ -468,9 +468,9 @@ BPTool.Uploader = typeof BPTool.Uploader != "undefined" && BPTool.Uploader ? BPT
                         document.getElementById(dropZoneId + "_progbar").style.background = ConfigParams.progressBarColor;
 
                         if (ConfigParams.zipFiles) {
-                           BrowserPlus.Zipper.zip({files: droppedFiles}, function (res) {
+                           BrowserPlus.Archiver.archive({files: droppedFiles, format:"zip"}, function (res) {
                                 if (res.success) {
-                                    droppedFiles = [res.value.zipFile];
+                                    droppedFiles = [res.value.archiveFile];
                                 }
                                 // even if we failed to create zip, still try to upload the files
                                 startUpload();
