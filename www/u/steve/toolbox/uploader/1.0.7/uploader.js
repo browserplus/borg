@@ -468,7 +468,7 @@ BPTool.Uploader = typeof BPTool.Uploader != "undefined" && BPTool.Uploader ? BPT
                         document.getElementById(dropZoneId + "_progbar").style.background = ConfigParams.progressBarColor;
 
                         if (ConfigParams.zipFiles) {
-                           BrowserPlus.Zipper.createZip({files: droppedFiles}, function (res) {
+                           BrowserPlus.Zipper.zip({files: droppedFiles}, function (res) {
                                 if (res.success) {
                                     droppedFiles = [res.value.zipFile];
                                 }
