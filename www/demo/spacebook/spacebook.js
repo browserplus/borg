@@ -255,7 +255,7 @@
             {service: 'DragAndDrop'},
             {service: "FileAccess", version: "1"},
             {service: "ImageAlter", version: "2"},
-            {service: 'Uploader', version: "3", minversion: "3.1.7" }
+            {service: 'Uploader', version: "3", minversion: "3.2.10" }
         ];
 
         // require BrowserPlus services

@@ -285,7 +285,7 @@ YUI().use('node', function(Y) {
 					{service: 'FileBrowse',   version: "2"},
 					{service: 'FileChecksum', version: "1"},
 					{service: 'JSONRequest',  version: "1"},
-					{service: 'Uploader',     version: "3", minversion: "3.1.5" }
+					{service: 'Uploader',     version: "3", minversion: "3.2.10" }
 			]},
 			function(require) {
 				if (require.success) {

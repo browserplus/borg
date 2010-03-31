@@ -639,10 +639,10 @@ YUI().use('node', function(Y) {
 			BrowserPlus.require({
 				services: [
 				{service: 'DragAndDrop', version: "1"},
-				{service: 'Uploader', version: "3", minversion: "3.1.5" },
-				{service: 'LZMA', version: "1", minversion: "1.0.1" },
+				{service: 'Uploader', version: "3", minversion: "3.2.10" },
+				{service: 'LZMA', version: "1", minversion: "1.0.2" },
 				{service: 'FileAccess', version: "2", minversion: "2.0.1" },
-				{service: 'Archiver', version: "1"},
+				{service: 'Archiver', version: "1", minversion:'1.0.10'},
 				{service: 'ImageAlter', version: "4"}
 			]},
 			function(res) {
