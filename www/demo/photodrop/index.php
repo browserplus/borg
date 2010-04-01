@@ -251,7 +251,6 @@ require("../../../php/vars.php");
 
 
 <script src="http://yui.yahooapis.com/combo?2.7.0/build/yahoo-dom-event/yahoo-dom-event.js&2.7.0/build/element/element-min.js&2.7.0/build/button/button-min.js&2.7.0/build/dragdrop/dragdrop-min.js&2.7.0/build/container/container-min.js&2.7.0/build/resize/resize-min.js&2.7.0/build/imagecropper/imagecropper-min.js"></script> 
-<script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
 <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
 <script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script> 
 <script src="photodrop.js"></script>
