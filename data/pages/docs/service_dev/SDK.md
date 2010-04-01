@@ -12,7 +12,10 @@ The sdk will unpack into a directory called bpsdk/ , see the top level
 [README](http://github.com/browserplus/platform/blob/master/src/libs/installer/misc/README.txt) for instructions on how to
 get started.
 
-## SDK Download (version @{bpver})
+## SDK Download
 
-[OSX i386 10.4 or greater](http://browserplus.yahoo.com/developer/service/sdk/dist/bpsdk_2.4.21-Darwin-i386.tgz)  
-[Windows i386 xp or greater](http://browserplus.yahoo.com/developer/service/sdk/dist/bpsdk_2.4.21-Win32-i386.zip)
+The latest SDKs are available from [GitHub downloads](http://github.com/browserplus/platform/downloads).  SDKs
+are backwards compatible.  Grab the latest here:
+
+* [OSX i386 10.4 or greater](http://github.com/downloads/browserplus/platform/bpsdk_2.7.0-Darwin-i386.tgz)  
+* [Windows i386 xp or greater](http://github.com/downloads/browserplus/platform/bpsdk_@{bpver}-Win32-i386.zip)
