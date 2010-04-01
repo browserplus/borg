@@ -2,10 +2,10 @@
     var BP = BrowserPlus;
     var Busy = false;
     var Services = [
-        {service: 'LZMA', version: '1'},
+        {service: 'LZMA', version: '1', minversion: '1.0.2'},
         {service: 'DragAndDrop', version: '1'},
-        {service: 'Tar', version: '1'},
-        {service: 'FileAccess', version: '1', minversion: '1.0.9'}
+        {service: 'Archiver', version: '1', minversion: '1.1.0'},
+        {service: 'FileAccess', version: '2', minversion: '2.0.1'}
     ];
 
 
@@ -125,14 +125,15 @@
 
         // TAR if one folder or more than one file is selected
         if (files.length > 1 || (files.length === 1 && files[0].mimeType == "application/x-folder")) {
-            BP.Tar.tar(
+            BP.Archiver.archive(
                 {
                     files: files, 
+					format: "tar",
                     progressCallback: function(x) { CombineText.innerHTML = "Combining Files (" + x.percent.toFixed() + "%)"; }
                 }, 
                 function(tar) {
                     if (tar.success) {
-                        compressFile(tar.value.tarFile, "Files");
+                        compressFile(tar.value.archiveFile, "Files");
                     } else {
                         error("Error creating tar file", tar);
                     }
@@ -168,7 +169,7 @@
         CompressText.innerHTML = "File Compressed (" + humanSize(file.size) + ")";
         
         DownloadItem.className = "active";
-        BP.FileAccess.GetURL({file: file }, function (geturl) {
+        BP.FileAccess.getURL({file: file }, function (geturl) {
             if (geturl.success) {
                 ResetText.style.display = "inline";
                 DownloadText.innerHTML = '<a href="' + geturl.value + '/' + Filename + '">' + DownloadString + '</a>';
