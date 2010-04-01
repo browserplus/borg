@@ -2,7 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<title>BrowserPlus File Upload, ZIP Files</title>
+<title>Compress Uploaded Files</title>
 <meta name="description" content="File uploading tool that utilizes BrowserPlus to support native drag and drop, file browsing with filters, multiple file upload, file zipping and progress tracking.">
 
 <style type="text/css" media="screen">
@@ -16,12 +16,13 @@ em {font-weight:bold;}
 
 </head>
 <body>
-<h3>Uploader: Customized Look and Feel</h3>
+<h3>Uploader: Archive and Compress Files</h3>
 <p>
 
-Like the Unix command line, BrowserPlus allows you to chain tools together.  By setting <strong>zipFiles</strong> to <em>true</em>, 
-the <a href="/developer/explore/?s=Zipper">Zipper</a> service is used to <em>compress</em> all files into a single *.zip archive.
-For certain file types (text based), this can greatly decrease the size and speed up your uploads.
+Like the Unix command line, BrowserPlus allows you to chain tools together. By setting <strong>archiveFormat</strong> to <em>zip</em>
+(or 'zip-uncompressed', 'tar', 'tar-gzip' or 'tar-bzip2'), the <a href="/developer/explore/?s=Archiver">Archiver</a> service is used
+to <em>compress</em> all files into a single archive file. For certain file types (text based), this can greatly decrease the size of
+the file and increase the upload speed.
 
 </p>
 <div id="uploader"></div>
@@ -68,7 +69,7 @@ BPTool.Uploader.create("uploader", {
     uploadUrl: "/misc/upload.php", 
     fileCB: my.fileCB,
     uploadCB: my.uploadCompleteCB,
-    zipFiles: true
+    archiveFormat: "zip"
 }).render();
 
 </script>

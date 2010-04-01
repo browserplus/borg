@@ -1,10 +1,10 @@
 # Uploader
 
-The BrowserPlus Uploader tool allows you to easily create an advanced uploader widget that supports native
-drag+drop from the desktop, multiple file selection from the file browse dialog, multiple simultaneous uploads (3
-files at a time), and Zip file compression. Skinning is also possible with plenty of parameters that may be
-overridden to specify colors, fonts, labels and borders. All of this is packaged into two Javascript files
-(browserplus-min.js and uploader-min.js) that weigh in at a combined 20KB of minimized Javascript.
+The BrowserPlus Uploader tool allows you to easily create an advanced uploader widget that supports native drag+drop from the
+desktop, multiple file selection from the file browse dialog, multiple simultaneous uploads (3 files at a time), and file compression
+(zip, bzip2, gzip). Skinning is also possible with plenty of parameters that may be overridden to specify colors, fonts, labels and
+borders. All of this is packaged into two Javascript files (browserplus-min.js and uploader-min.js) that weigh in at a combined 20KB
+of minimized Javascript.
 
 ![BrowserPlus Uploader Widget](/i/w/uploader.jpg)
 
@@ -43,7 +43,7 @@ var customUploader = BPTool.Uploader.create("anotherDiv", {
   
     uploadUrl: null,        // where files are uploaded  
     fileVarName: "file",    // name of file upload variable  
-    zipFiles: false,        // compress all files into 1 .zip file  
+    archiveFormat: "zip",   // ('zip', 'zip-uncompressed', 'tar', 'tar-gzip', 'tar-bzip2')
   
     // Optional Callbacks, Details below in Step 5  
     fileCB: null,           // called for every file action  
@@ -110,14 +110,10 @@ var customUploader = BPTool.Uploader.create("anotherDiv", {
 
 ## 5. Optionally Compress Files
 
-Optionally choose to have all files compressed and archived into a *.zip file before upload. Depending on the
-files being uploaded, this can save a lot of bandwidth.
+Optionally choose to have all files compressed and archived before upload. Allowable values
+are: 'zip', 'zip-uncompressed', 'tar', 'tar-gzip' or 'tar-bzip2'.
 
-**NOTE**: Directory structure is not preserved when zipping files in the Uploader tool. The path information is
-stripped and the files are all stored on the top level. If you need directory structure in a zipped file, check
-out the [zipper code example](/docs/web_dev/example_code/file_zipper.html).
-
-    var uploader = BPTool.Uploader.create("myUploader", {  zipFiles:   true });  
+    var uploader = BPTool.Uploader.create("myUploader", {  archiveFormat: 'zip' });  
     uploader.render();  
 
 ## Optionally Register for Callbacks
@@ -183,8 +179,6 @@ function uploadCB = function(resul) {
 
 ### Constraint Callback
 
-constraintCB
-
 You are notified of constraint violations when you register the constraintCB. You may wish to show an error
 message if any of the constraints are violated.
 
@@ -206,7 +200,7 @@ function constraintCB = function(res) {
 * With just 2 javascript includes and 2 lines of code, the [simple demo](/widgets/uploader/standalone) builds a
   complicated uploader widget that allows for drag+drop from the desktop, multiple file section, and simultaneous
   uploads.
-* The [ZIP demo](/widgets/uploader/zipper) uses the Zipper service to ZIP files so that the resulting upload is a
+* The [Archive demo](/widgets/uploader/zipper) uses the Archive service to ZIP files so that the resulting upload is a
   single, compressed archive file.
 * The [colors and constraints demo](/widgets/uploader/colors) changes the default colors of the uploader tool and
   constrains the number, type, and size of files that can be uploaded.
