@@ -11,7 +11,7 @@ We hope you'll be up and running in about 5 minutes. Here's how:
 2. Visit our [code samples](/docs/web_dev/example_code/) to see standalone 
    working examples that use BrowserPlus. You may copy the source of any of these examples to your disk, 
    and start playing with it.
-3. Check out our [toolbox](http://browserplus.yahoo.com/developer/web/toolbox/installer/), which contains 
+3. Check out our [widgets](/docs/widgets/), which contains 
    some higher level javascript libraries that make some interesting applications of BrowserPlus possible 
    in just a couple lines of code.
 4. Leverage our [full documentation](/docs/web_dev/JavaScript_API_Overview.html) 
