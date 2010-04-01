@@ -1,3 +1,6 @@
+<?php 
+require("../../../php/vars.php");
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -6,9 +9,9 @@
 
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
 <link rel="stylesheet" type="text/css" href="imagealter.css">
-<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-<script src="http://bp.yahooapis.com/toolbox/installer/1.0.11/install-min.js"></script> 
+<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script> 
 </head>
 
 <body class=" yui-skin-sam">
