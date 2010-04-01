@@ -1,3 +1,6 @@
+<?php 
+require("../../../php/vars.php");
+?>
 <html>
   <head>
     <title> The BrowserPlus Marble Maze </title>
@@ -46,14 +49,11 @@
 	</div>
 	<div id="status"> Loading... </div>
 	</center>
-    <script language="javascript" type="text/javascript"
-			src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-    <script language="javascript" type="text/javascript"
-			src="http://yui.yahooapis.com/3.0.0pr1/build/yui/yui-min.js">
-	</script>
+    <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+    <script src="http://yui.yahooapis.com/3.0.0pr1/build/yui/yui-min.js"></script>
 	<!-- sample data -->
-    <script language="javascript" type="text/javascript" src="data.js"></script>
-    <script language="javascript" type="text/javascript" src="mazeRender.js"></script>
-    <script language="javascript" type="text/javascript" src="setupLogic.js"></script>
+    <scriptsrc="data.js"></script>
+    <scriptsrc="mazeRender.js"></script>
+    <scriptsrc="setupLogic.js"></script>
   </body>
 </html>

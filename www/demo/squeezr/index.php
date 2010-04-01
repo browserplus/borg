@@ -1,3 +1,6 @@
+<?php 
+require("../../../php/vars.php");
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -53,8 +56,8 @@
             </p>
         </div>
     </div>
-    <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-    <script src="http://bp.yahooapis.com/toolbox/installer/1.0.11/install-min.js"></script> 
-    <script type="text/javascript" src="bitsqueezr.js"></script>
+<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script> 
+<script type="text/javascript" src="bitsqueezr.js"></script>
 </body>
 </html>

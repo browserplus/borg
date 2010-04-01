@@ -1,4 +1,6 @@
-
+<?php 
+require("../../../php/vars.php");
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
@@ -92,10 +94,11 @@
 		<a href="http://browserplus.org/docs/services/ImageAlter.html">ImageAlter</a> will resize
 		the image to a maximum width or height of 800px.
 	</p>
-	<script src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-	<script type="text/javascript" src="/explore/json2.js"></script>
-	<script type="text/javascript" src="uploadr.js"></script>
+
+<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+<script type="text/javascript" src="/explore/json2.js"></script>
+<script type="text/javascript" src="uploadr.js"></script>
 
 <script type="text/javascript">
 var _gaq = _gaq || [];

@@ -1,3 +1,6 @@
+<?php 
+require("../../../php/vars.php");
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -32,9 +35,9 @@ body { text-align: left; color:#333;}
 
     <div id="bpinstall" style="display:none"></div>
 
-    <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-    <script type="text/javascript" src="bpDpSyntaxHighlighter.js"></script>
-    <script type="text/javascript" src="json2-min.js"></script>
-    <script type="text/javascript" src="jsonrequest.js"></script>
+	<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+    <script src="bpDpSyntaxHighlighter.js"></script>
+    <script src="json2-min.js"></script>
+    <script src="jsonrequest.js"></script>
 </body>
 </html>
