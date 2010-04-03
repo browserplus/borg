@@ -19,7 +19,7 @@ BrowserPlus.ImageAlter.transform({
     file: <path>, 
     format: "png", 
     quality: 100, 
-    actions:[{"scale": [0.2, 0.2, 0.8, 0.8]}, "enhance", "grayscale", {"contrast": 2}]
+    actions:[{"crop": [0.2, 0.2, 0.8, 0.8]}, "enhance", "grayscale", {"contrast": 2}]
   }, 
   function(result){});
 ~~~~
