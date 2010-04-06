@@ -41,7 +41,7 @@ functionality or fixes.  Check out the list of services currently
 available.
 
 
-**[Demos](/docs/demos/)**: From image processing to advanced uploading,
+**[Demos](/demos/)**: From image processing to advanced uploading,
 motion sensing to cross-domain JSON requests, Demos showscases more
 complete examples of BrowserPlus in action.
 

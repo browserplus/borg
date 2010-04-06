@@ -1,0 +1,235 @@
+body {
+    color:#333;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* header */
+.wrapper {width: 950px; margin: 0 auto; text-align: left;}
+#header {
+	background: #262f35 url(/images/site-bg.png) top left repeat-x;
+	height:76px;
+}	
+#logo {
+    float:left;
+	margin-top: 24px;
+}
+#logo span, #logo a {
+	display: block;
+	width: 188px;
+	height: 31px;
+	border: none;
+	background: url(/images/site-logo.png) no-repeat;
+}
+
+#logo img  {display: block; width: 0; border: none;}
+
+/* menu */
+#topnav { 
+    /*background:#b5e4ff;*/
+    background:#c8e8ff;
+    padding:4px 0 4px 0; 
+    margin-bottom:10px;
+    border-bottom:1px solid #9bd; 
+    /*border-top:1px solid #f8fcff;*/
+}
+
+#topnav .active a { font-weight:bold;}
+#topnav ul { margin: 0;}
+#topnav ul li { display: inline; padding:0 10px; border-left:1px solid #8bd;}
+#topnav ul li:first-child { border-left:0;}
+#topnav ul li a {
+    text-decoration:none;
+    font-family:'Trebuchet MS', Trebuchet, Arial, sans-serif;
+    color:#007cef;/*maincolor*/
+    font-size:146.5%;letter-spacing:0.10em;
+    color:#369;
+}
+
+
+.main {
+    font-size: 116%;
+    line-height:1.5em;
+    margin-bottom:20px;
+}
+
+.main img {
+    text-align:center;
+    margin:10px auto;
+    display:block;
+}
+
+em { font-style:italic; }
+
+.main ol li { list-style: decimal outside;}
+.main ul li { list-style: disc outside;}
+
+.main ol, .main ul, .main dl { margin-left: 2em; margin-bottom:1em;padding-left:1em;}
+
+.main dd {margin-left:2em; margin-bottom:0.5em; }
+
+blockquote {margin:1em 2em;}
+a { color:#33c; }
+p { margin-bottom: 1em;}
+strong,dt {font-weight:bold;}
+tt,code { padding:1px; }
+
+pre,tt,code {
+    font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;
+}
+
+tt,code {
+    color:#222221;
+    background:#e7e5dc;
+}
+
+pre {
+    padding:3px;
+    margin:1em 0;
+    overflow:auto;
+    font-size:85%;
+    border:1px solid #e5e1dc;
+    background:#f6f4f0;
+    line-height:1.2em;
+}
+
+hr  {
+    margin-top:40px;
+    border:1px solid #36c;
+    width:550px;
+}
+
+h1,h2,h3,h4 {
+    font-family: verdana,"trebuchet ms",helvetica,arial,sans-serif;
+	margin: 1em 0 0.5em 0;
+    color:#323f46;
+    color:#444;
+}
+
+h1 {margin-top:5px;font-size: 153.5%; color:#369;}
+h2 {font-size: 138.5%;margin-top:1.5em;}
+h3 {font-size: 123.1%;}
+h4 {font-size: 116%;}
+
+
+
+#ft { 
+    border-top:1px dotted #ddd; 
+    padding-top:5px; 
+    text-align:center;
+    clear:both;
+    font-size:85%;
+    color:#666;
+}
+
+
+/* widgets */
+#widgets_left { margin-right:20px;}
+#widgets_right { margin-left:20px;}
+#widgets { margin-left:20px;}
+
+.widget a { color:#33c;}
+
+.widget h1, .widget h3 {
+    color:#555;
+    border-bottom:1px dotted #ccc;
+    margin-bottom:5px;
+    font-size:116%;
+    letter-spacing:0.1em;
+}
+
+.widget-content { margin-bottom:2em;font-family:arial,sans-serif;}
+.widget-search input {font-size:85%;}
+.widget-irc-tags a { font-size:93%; }
+.widget-git-projects a { font-size:85%; }
+
+.widget-links h1 { color:#d00; font-style:italic;}
+.widget-links li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
+.widget-blog li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
+.widget-issues li { font-size:85%; list-style:circle outside; margin-left:15px; color:#666;}
+.widget-tweet li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
+.tweet-when {color:#666;}
+
+.lighthouse-state {color:#910;}
+.lighthouse-when {color:#666;}
+
+.widget-forum li { font-size:85%; list-style:circle inside;  color:#333; margin-bottom:5px;}
+.forum-when {color:#666;}
+
+
+/*
+.widget-pages {margin:5px 0; background:#f7f5f2; border:1px solid #d9d7d2;}
+.widget-pages h1 {margin:0; padding:5px; background:#eae5e1; border-top:1px solid #f9f5f1; border-bottom:1px solid #d7d4d0;}
+*/
+.widget-pages {margin:5px 0; background:#f5f5f5; border:1px solid #ccc;}
+.widget-pages h1 {margin:0; padding:5px; background:#e5e5e5; border-top:1px solid #f5f5f5; border-bottom:1px solid #ccc;}
+
+.widget-pages li {margin-left:10px;font-size:93%;padding:2px 0;font-family:verdana,arial,sans-serif;}
+.widget-pages li.active {font-style:italic;}
+
+
+/* blog */
+h2.entry-title  {background:#eee; padding:3px;border:1px solid #ddd;}
+.entry-title a { color:#007cef; text-decoration:none; }
+.asset-meta {font-size:85%;text-align:right;margin-top:5px;}
+.vcard {font-weight:bold;}
+.content-nav {text-align:center;margin-top:20px;margin-bottom:10px;}
+
+.home-logs {font-size:85%;}
+.home-irc-log { margin-bottom:20px;}
+.irc-logs {font-size:93%;}
+
+/* for code examples with line numbers, remove margin */
+td pre { margin:0;}
+.runex {font-size:85%;font-family:Arial,sans-serif;}
+.linenumbers { background:#f0eee9;}
+
+table { margin: 10px 0; border: 1px solid #ccd;font-size:85%;border-collapse:collapse;border-spacing:0}
+th {padding: 4px 8px; font-weight: bold; background: #e0e7f0; text-align:center;color:#333;border-bottom:1px solid #ccd;}
+td {padding: 4px 5px;background:#f6f9fb;color:#000; border: 1px solid #e3e6e9;} 
+
+
+/* log (git and irc tables) */
+.log {font-family:verdana;}
+.log-nav {font-size:85%; margin:1px auto; text-align:center;}
+.log table { margin: 1px; font-size:85%; border-collapse:collapse;border-spacing:0;}
+.log-hdr  { background:#c5d1e2;font-weight:bold;text-align:center;font-size:93%;}
+.log-when  { background:#f2f2f2;}
+.log-when a {color:#666;}
+.log-who {font-weight:bold;color:#369;}
+.log-what {}
+.odd {background:#f0f5ff;}
+.even {background:transparent;}
+
+
+dt em {  color:#070; }
+
+.api h2 {
+    font-family:consolas, monaco, "courier new", courier, monospace;
+    /*font-weight:bold;*/
+
+    font-size:123.1%;
+    color:#000; 
+    background:#ddd;
+    margin-top:3em;
+    padding:2px 0 2px 5px;
+    border:1px solid #bbb; 
+}
+
+.api h3 {
+    font-size: 116%; 
+    font-weight:bold;
+    font-family:arial,sans-serif;
+    color:#900;
+    background:transparent;
+}
+
+.api p, .api dl, .api li {
+    font-size:93%;
+}
+
+
+/* http://www.neuroticweb.com/recursos/3-columns-layout/index.php */
+#wrapper {width:974px; text-align:left; margin:0px auto; padding:0px; border:0;}
+#side-a  {width:235px; float:left;}
+#side-b  {width:235px; float:right;}
+#content {width:51%;   float:left;}
