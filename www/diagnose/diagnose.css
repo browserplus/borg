@@ -1,0 +1,49 @@
+body {
+  color: rgb(85,85,85);
+  font-family: georgia, times, serif;
+}
+
+#overview {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.step {
+  margin-bottom:20px;
+  font-size: 1.2em;
+}
+
+#steps {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.number {
+  font-size: 2em;
+}
+
+.button {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+#step4 {
+  display: none
+}
+
+#step5 {
+  display: none
+}
+
+#diagOutput {
+  width:90%;
+  height:300px;
+  margin:20px;
+  padding: 10px;
+  font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;
+  font-size: .8em;
+  border: 1px dashed grey;
+  background-color: rgb(240, 245, 255);
+}

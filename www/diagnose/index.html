@@ -1,0 +1,79 @@
+<html>
+<head>
+  <title>BrowserPlus Diagnostic page</title>
+  <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/3.1.0/build/cssfonts/fonts-min.css" />
+  <script type="text/javascript" src="http://yui.yahooapis.com/3.1.0/build/yui/yui-min.js"></script>
+  <link rel="stylesheet" type="text/css" href="diagnose.css" media="screen"/>
+</head>
+<p>
+
+<div id="overview">
+Having trouble with attachments in Yahoo! Mail?  This page can help us figure out what's wrong!
+Just follow the steps below...
+</div>
+
+<div id="steps">
+<div class="step">
+<span class="number">1.</span>
+<a href="http://mail.yahoo.com" target="_newtab">Click here</a> to visit Yahoo! Mail in another tab or window
+and try to attach a file as you normally do.
+</div>
+
+<div class="step">
+<span class="number">2.</span>
+Did you experience a problem?  Let's get to the botton of this.  Click the button to start
+a quick diagnostic test.
+<div class="button"><input id="startDiagnostics" type="button" value="Start Diagnostics" /></div>
+</div>
+
+<div class="step">
+<span class="number">3.</span>
+<span id="step3content">
+Waiting for results of test....
+</span>
+</div>
+
+<div class="step" id="step4">
+<span class="number">4.</span>
+Please click the button below to submit an <b> anonymous </b> problem report!
+<div class="button"><input id="anonProblemReport" type="button" value="Submit Anonymous Problem Report" /></div>
+</div>
+
+<div class="step" id="step5">
+<span class="number">5.</span>
+Here's the full output of our tests, if you want you can get this to us directly!  Either by emailing <a href="mailto:browserplus-feedback@yahoo-inc.com">browserplus-feedback@yahoo-inc.com</a>, or by giving it to a customer care agent that's helping you, or by posting it in <a href="http://developer.yahoo.net/forum/index.php?showforum=83">our public forums</a>.
+<textarea id="diagOutput" readonly="readonly"></textarea>
+</div>
+
+</div>
+
+
+<script src="http://bp.yahooapis.com/2.6.0/browserplus-min.js"></script>
+<script src="diagnose.js"></script>
+<script class="javascript">
+YUI().use("node", function(Y) {
+  var messages = {
+    notSupported: [ "yellow", "It looks like the \"flash\" or \"fallback\" uploaders are giving you grief (BrowserPlus doesn't support your hardware), please go to step 4" ],
+    browserplusError: [ "red", "Oh wow, something looks very wrong here, please submit a report in step 4" ],
+    notInstalled: [ "yellow", "It looks like the \"flash\" or \"fallback\" uploaders are giving you greif, please go to step 4" ],
+    requireServicesError: [ "red", "Yikes, something looks very wrong here, please submit a report in step 4" ],
+    logFetchError: [ "red", "Oopsie, something went wrong in collecting diagnostic data, please submit a report in step 4" ],
+    completeWithErrors: [ "red", "Oh, there's some errors in your logfile!  This could help us fix your problem going on, please submit in step #4" ],
+    completeNoErrors: [ "green", "It looks like you're using BrowserPlus and your installation looks just fine!  This is useful information, please go to step 4..." ]
+  };
+
+  Y.on("click", function() {
+    runDiagnostics(function(result, logs) {
+      Y.one("#startDiagnostics").setStyle("display", "none");
+      Y.one("#step3content").setContent(messages[result][1]);
+      Y.one("#step3content").setStyle("color", messages[result][0]);
+      Y.one("#step4").setStyle("display", "block");
+      Y.one("#step5").setStyle("display", "block");
+      Y.one("#diagOutput").setContent(logs);
+    });
+  }, "#startDiagnostics");
+});
+ 
+</script>
+</body>
+</html>
