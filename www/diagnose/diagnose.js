@@ -41,7 +41,6 @@ function runDiagnostics(cb)
                     if (logfiles[i].handle.size > readAmt) {
                         offset = logfiles[i].handle.size - readAmt;
                     }
-                    alert("reading log file " + i);
                     BrowserPlus.FileAccess.read(
                         {
                             file: logfiles[i].handle,
@@ -51,7 +50,6 @@ function runDiagnostics(cb)
                         (function() {
                             var logFileNum = i;
                             return function(r) {
-                                alert("read log file " + logFileNum + ": " + r.success);
                                 if (!r.success) {
                                     appendMsg("error fetching logs: " + r.error + ": " + r.verboseError);
                                     allDone("logReadError");
@@ -69,7 +67,6 @@ function runDiagnostics(cb)
                                     } else {
                                         appendMsg("no errors in " + logfiles[logFileNum].handle.name);
                                     }
-                                    alert("I'm here");
                                     logfiles[logFileNum].contents = r.value;
                                     logfiles[logFileNum].errors = errs;
                                     processLogs();
