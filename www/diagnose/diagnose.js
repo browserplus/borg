@@ -12,7 +12,11 @@ function runDiagnostics(cb)
         var numErrs = 0;
         for (var i=0; i < logfiles.length; i++) {
             numErrs += logfiles[i].errors.length;
+            // append the entire logfiles
+            txt += "\n\nContents of " + logfiles[i].handle.name + ":\n\n";
+            txt += logfiles[i].contents;
         }
+
         allDone(numErrs ? "completeWithErrors" : "completeNoErrors");
     }
 
