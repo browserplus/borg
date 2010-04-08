@@ -371,6 +371,11 @@ class Dok implements iFileScanner
 
 function dok($conf, $uri)
 {
+	if (substr($uri, 0, 6) == "demos/") {
+		header("Location: /demos/");
+		exit;
+	}
+
 	// uri doesn't end with either "/" or file extension
 	if ($uri && !preg_match('/\.[a-z0-9]+|\/$/', $uri)) {
 		// so it must be a directory without trailing slash, redirect with slash
