@@ -94,10 +94,6 @@ function runDiagnostics(cb)
 			} else {
 				var msg = "";
 
-				// LLOYD REMOVE THIS LINE AFTER REMOVING "FileBrowse" Service
-				l.value = l.value.files;
-				// END
-
 				for (var i=0; i < l.value.length; i++) {
 					var logFile = l.value[i];
 					msg += logFile.name + " " + (logFile.size / 1024.0).toFixed(2) + "k";
@@ -118,11 +114,7 @@ function runDiagnostics(cb)
 				appendMsg("Log Access present: ");
 				appendServices(r.value);
 
-				//BrowserPlus.LogAccess.get({}, gotLogs);
-				// LLOYD REMOVE THIS LINE AFTER REMOVING "FileBrowse" Service
-				BrowserPlus.FileBrowse.OpenBrowseDialog({},gotLogs);
-				// END
-
+				BrowserPlus.LogAccess.get({}, gotLogs);
 			} else {
 				appendMsg("\n\nCouldn't install LogAccess: " + r.error + ": " + r.verboseError);
 				allDone("requireServicesError");
@@ -137,9 +129,6 @@ function runDiagnostics(cb)
 				appendServices(as.value);
 				BrowserPlus.require({services: [
 					{ service: "LogAccess", version: "1" },
-					// LLOYD REMOVE THIS LINE AFTER REMOVING "FileBrowse" Service
-					{ service: "FileBrowse", version: "2" },
-					// END
 					{ service: "FileAccess", version: "2" } ]}, gotLogAccess);
 			});
 		} else if (r.error == "bp.notInstalled") {
