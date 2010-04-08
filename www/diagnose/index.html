@@ -100,7 +100,9 @@ YUI().use("node", "io", "querystring-stringify-simple", function(Y) {
             Y.one("#step3content").setStyle("color", messages[result][0]);
             Y.one("#step4").setStyle("display", "block");
             Y.one("#step5").setStyle("display", "block");
-            Y.one("#diagOutput").setContent(logs);
+            var node = Y.Node.getDOMNode(Y.one("#diagOutput"));
+            if (node.outerHTML) node.outerHTML = '<textarea id="diagOutput" readonly="readonly">'+logs+'</textarea>';
+            else Y.one("#diagOutput").setContent(logs);
 
             // enable submit button
             Y.on("click", function() { post(logs); }, "#anonProblemReport");
