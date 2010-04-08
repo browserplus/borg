@@ -89,7 +89,7 @@ function runDiagnostics(cb)
 
 		function gotLogs(l) {
 			if (!l.success) {
-				appendMsg("error fetching logs: " + r.error + ": " + r.verboseError);
+				appendMsg("error fetching logs: " + l.error + ": " + l.verboseError);
 				allDone("logFetchError");
 			} else {
 				var msg = "";
