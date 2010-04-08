@@ -39,9 +39,9 @@ function runDiagnostics(cb)
 			// iterate through all log files to find the first one with no content
 			for (var i=0; i < logfiles.length; i++) {
 				if (logfiles[i].contents === "") {
-					// cap max read amt to 64k
+					// cap max read amt to 128k
 					var offset = 0;
-					var readAmt = 64 * 1024;
+					var readAmt = 128 * 1024;
 					if (logfiles[i].handle.size > readAmt) {
 						offset = logfiles[i].handle.size - readAmt;
 					}

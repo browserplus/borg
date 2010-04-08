@@ -1,6 +1,6 @@
 <?php
 
-define("MAX", 256*1024);
+define("MAX", 512*1024);
 
 $dir = "/tmp/diagnose";
 $logs = (isset($_POST["logs"]) ? $_POST["logs"] : null);
