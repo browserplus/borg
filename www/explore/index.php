@@ -390,7 +390,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 			if (Y.Lang.isArray(files) && len > 0) {
 				for (i = 0; i < len; i++) {
 					handles.push(files[i]);
-					fnames.push(files[i].BrowserPlusHandleName);
+					fnames.push(files[i].name);
 				}
 
 				name = node.get("id").substring(2);

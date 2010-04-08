@@ -26,7 +26,7 @@ function dropped(arg) {
   var textArea = document.getElementById("lastDropContents");
 
   var title = document.createElement("b");
-  title.innerHTML = "Last drop Contents (" + arg[0].BrowserPlusHandleName + " - " + 
+  title.innerHTML = "Last drop Contents (" + arg[0].name + " - " + 
     arg[0].size + " bytes - " + arg[0].mimeType + ")<p>";
  
   // set summary text

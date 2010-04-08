@@ -33,8 +33,7 @@ function dropped(arg) {
 
   var title = document.createElement("b");
   title.innerHTML = "Last drop Contents (" +
-	arg[0].BrowserPlusHandleName + " - " + arg[0].size + " bytes - "
-                                 + arg[0].mimeType + ")<p>";
+	arg[0].name + " - " + arg[0].size + " bytes - " + arg[0].mimeType + ")<p>";
  
   // set summary text
   lds = document.getElementById("lastDropSummary");

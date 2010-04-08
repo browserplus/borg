@@ -37,7 +37,7 @@ function dropped(arg) {
 
   for (var i = 0; i < arg.length; i++) {
     var item = document.createElement("li");
-    var e = document.createTextNode(arg[i].BrowserPlusHandleName);
+    var e = document.createTextNode(arg[i].name);
     item.appendChild(e);
     lst.appendChild(item);
   }

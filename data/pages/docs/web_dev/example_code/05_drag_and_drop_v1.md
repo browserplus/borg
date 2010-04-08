@@ -10,5 +10,5 @@ native drops of files. The general usage of DragAndDrop is thus:
 
 DragAndDrop gives javascript a means of attaining opaque FileHandles, which can then be passed to other services, such as
 @{service ImageAlter}. A "FileHandle" is simply a javascript object which contains an opaque numeric
-identifier of the selected file, and a "display name" in the `BrowserPlusHandleName` property. The latter is simply the
+identifier of the selected file, and a "display name" in the `name` property. The latter is simply the
 filename with path information removed, which makes it meaningful for display to the end user.

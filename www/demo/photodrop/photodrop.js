@@ -421,7 +421,7 @@ function flickrUploadrDemo() {
 				imageContainer.className = 'imageContainer';
 				imageContainer.id = 'imageContainer-' + id;
 				ImageStore[id] = createImageData(
-					id, imgFile, imgFile.BrowserPlusHandleName, 
+					id, imgFile, imgFile.name, 
 					src.orig_width, src.orig_height,
 					src.url, src.width, src.height
 				);
@@ -647,11 +647,11 @@ function flickrUploadrDemo() {
 		for (var i = 0; i < args.length; i++) {
 			var regexp = /(\.jpe?g$)|(\.gif$)|(\.png$)/i;
 			
-			if (!regexp.test(args[i].BrowserPlusHandleName)) { 
-				notify("Only JPEG, PNG and GIF Images supported at this time: " + args[i].BrowserPlusHandleName);
+			if (!regexp.test(args[i].name)) { 
+				notify("Only JPEG, PNG and GIF Images supported at this time: " + args[i].name);
 			} else {
 				addImage(args[i]);
-				fnames.push(args[i].BrowserPlusHandleName);
+				fnames.push(args[i].name);
 				dropCount++;
 				notify("");
 			}

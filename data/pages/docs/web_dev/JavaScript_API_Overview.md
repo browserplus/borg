@@ -293,7 +293,6 @@ A JavaScript file handle representation contains the following elements:
 {
     "BrowserPlusType": "BPTPath",
     "BrowserPlusHandleID": 16807,
-    "BrowserPlusHandleName": "bizplan.xls",
     "name": "bizplan.xls",
     "size": 118784,
     "mimeType": [
