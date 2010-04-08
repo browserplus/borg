@@ -65,7 +65,11 @@ YUI().use("node", "io", "querystring-stringify-simple", function(Y) {
 		completeNoErrors: [ "#070", "It looks like you're using BrowserPlus and your installation looks just fine!	This is useful information, please go to step 4..." ]
   	};
 
-	var postFailure = function(id, o) { /* bummer, but what can we do...msg the user?? */};
+	var postFailure = function(id, o) {
+      /* bummer, but what can we do...msg the user?? */
+		// SUCCESS, data was saved
+		Y.one("#submitButton").setContent('<div id="thankyou">Oops, there was a problem uploading your report!  Please proceed to step 5.</div>');
+    };
 	var postSuccess = function(id, o) { 
 		// SUCCESS, data was saved
 		Y.one("#submitButton").setContent('<div id="thankyou">Thank you!  Your report was sent.</div>');
