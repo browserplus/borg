@@ -21,7 +21,7 @@ We will automatically grab the correct interpreter service for you...
 
 ## Step 3: Download and unpack BrowserPlus SDK
 
-Download and unpack the latest SDK appropriate for your platform: <http://browserplus.yahoo.com/developer/service/sdk/>.
+Download and unpack the latest SDK appropriate for your platform: <http://github.com/browserplus/platform/downloads/>.
 
 Once downloaded, you should unzip (or untar) the sdk, and a directory will be created called `bpsdk`.
 
