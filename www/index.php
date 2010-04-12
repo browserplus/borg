@@ -11,7 +11,7 @@ include("../php/twitter.php");
 include("../php/forum.php");
 include("../php/bugzilla.php");
 
-$tableRowsToShow = 15;
+$tableRowsToShow = 10;
 $listItemsToShow = 5; // for twitter, forum, blog, issues
 
 function get_links_widget() {
