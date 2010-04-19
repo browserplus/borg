@@ -2,12 +2,13 @@
 
 1. [How do I get help with BrowserPlus?](#support)
 2. [How do I diagnose installer problems?](#diagnoseInstallerProblem)
-3. [How do I use BrowserPlus only my site only if it's already installed?](#initProgressively)
-4. [How do I find BrowserPlus logs?](#findLogfiles)
-5. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
-6. [How do I send a bug report?](#bugReport)
-7. [How do I get BrowserPlus to display an installation dialog if not already installed?](#installDialog)
-8. [How do I call a specific version of a service if more than one is loaded?](#specificVersion)
+3. [How do I uninstall BrowserPlus?](#uninstall)
+4. [How do I use BrowserPlus only my site only if it's already installed?](#initProgressively)
+5. [How do I find BrowserPlus logs?](#findLogfiles)
+6. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
+7. [How do I send a bug report?](#bugReport)
+8. [How do I get BrowserPlus to display an installation dialog if not already installed?](#installDialog)
+9. [How do I call a specific version of a service if more than one is loaded?](#specificVersion)
 
 
 
@@ -41,6 +42,20 @@ Finally on Windows Vista and Windows 7, the logfile can be found here:
 If you're so inclined, take a look at the log. You may be able to diagnose the problem yourself. In any case, we'd love to see that
 logfile so that we can fix the problem. Please attach it to an email to <browserplus-feedback@yahoo-inc.com>. Please use a descriptive
 Subject line (like "YIKES, Installer failure!").
+
+
+
+<a name="uninstall"></a>
+## How do I uninstall BrowserPlus?
+
+The BrowserPlus unininstaller can be reached via the Windows Control Panel ("Add/Remove Programs" or "Programs and Features", depending on your version of WIndows). 
+
+On OSX, the uninstaller can be reached via a preference pane in "System Preferences". 
+
+If for some reason the uninstall doesn't work for you, just manually remove the following directory:
+\Users\<yourname>\AppData\Local\Yahoo!\BrowserPlus (Vista, W7)
+\Documents and Settings\<yourname>\Local Settings\Application Data\Yahoo!\BrowserPlus (XP)
+/Users/<yourname>/Library/Application Support/Yahoo!/BrowserPlus (OSX)
 
 
 
