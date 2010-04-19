@@ -53,9 +53,9 @@ The BrowserPlus unininstaller can be reached via the Windows Control Panel ("Add
 On OSX, the uninstaller can be reached via a preference pane in "System Preferences". 
 
 If for some reason the uninstall doesn't work for you, just manually remove the following directory:
-\Users\<yourname>\AppData\Local\Yahoo!\BrowserPlus (Vista, W7)
-\Documents and Settings\<yourname>\Local Settings\Application Data\Yahoo!\BrowserPlus (XP)
-/Users/<yourname>/Library/Application Support/Yahoo!/BrowserPlus (OSX)
+    \Users\<yourname>\AppData\Local\Yahoo!\BrowserPlus (Vista, W7)
+    \Documents and Settings\<yourname>\Local Settings\Application Data\Yahoo!\BrowserPlus (XP)
+    /Users/<yourname>/Library/Application Support/Yahoo!/BrowserPlus (OSX)
 
 
 
