@@ -4,17 +4,23 @@ BrowserPlus is an open source project created and sponsored by [Yahoo!](http://w
 
 ## What is BrowserPlus
 
-BrowserPlus is a browser technology that allows developers to create rich web applications with desktop
-capabilities. Downloads, demonstrations and the bulk of the documentation can currently can found on
-<http://browserplus.yahoo.com>. BrowserPlus is in production on [Yahoo! Mail](http://mail.yahoo.com).
+BrowserPlus is a browser technology that allows web developers to create rich web applications with desktop
+capabilities. What type of capabilities?  Drag and drop from the desktop, display native notifications
+(with Growl), compress and archive files (with ZIP, TAR, GZIP, BZIP2 and LZMA), image manipulation and 
+[much, much more](/docs/sevices/).  Check out all the [services](/docs/services), 
+ [demos](/demos/) and [docs](/docs/).
+
+Backed by multiple servers in multiple COLOs around the world, BrowserPlus is in production and is ready
+for your website too.  BrowserPlus is run millions of times a day by millions of users.  The biggest
+email site in the world, [Yahoo! Mail](http://mail.yahoo.com), uses BrowserPlus to handle email attachments.
 
 BrowserPlus can be installed and updated without a Browser or OS restart. Services are **not built** into the
 core, but installed on demand. What this means is that features (services) can be added without modifying or
 redistributing the core platform.  Once the platform is installed, your users are just 80KB away from 
 [zipping](http://browserplus.yahoo.com/developer/explore/?s=Zipper) their uploads.
 
-Plus, BrowserPlus runs on the client. Want to offer the next photo or video processing site? Save big on servers,
-cause the processing all happens on the client.  Your servers do not change.
+Want to offer the next photo or video processing site? Save big on servers and bandwidth,
+cause BrowserPlus does all the processing on the client.  
 
 Once installed, BrowserPlus stays up-to-date via a RESTful JSON 
 [web services api](http://browserplus.yahoo.com/api/v3/corelets/win32).
@@ -31,12 +37,12 @@ in C++ or Ruby. Web pages communicate with services via JavaScript.
 
 ## Who is BrowserPlus.org
 
-BrowserPlus is Dave, Gordon, Lloyd and Steve. We're all full time Yahoo! employees and we all work from home
-*(nice gig if you can get it)*. Since we are geographically diverse, we stay in touch via IRC. If you have a
-question, drop on in at `irc.freenode.net #browserplus`.
+BrowserPlus is Dave, Eileen, Gary, Gordon, Lloyd and Steve. We're all full time Yahoo! employees and we all work 
+from home.  *(Nice gig if you can get it)*. Since we are geographically diverse, we stay in touch via IRC. 
+If you have a question, drop on in for a chat at `irc.freenode.net #browserplus`.
 
 ## What, No Linux!!!
 
-Well, open sourcing a previously closed source project is not most productive endeavor, coding wise. We've talked
+Well, open sourcing a previously closed source project is not the most productive endeavor, coding wise. We've talked
 to the lawyers, sat in on the conference calls, commented the code and cleansed the curses. Now with a little bit
 of time and maybe a little bit of open source magic, we can focus on moving the platform forward.
