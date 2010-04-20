@@ -1,0 +1,19 @@
+{
+    "name": "FileBrowse",
+    "versionString": "2.0.0",
+    "version" : {
+        "major": 2,
+        "minor": 0,
+        "micro": 0
+    },
+    "documentation": "Present the user with a file browse dialog.  To recurse through directories and filter by file type, pass the results to Directory.",
+    "functions": [
+        {
+            "name": "OpenBrowseDialog",
+            "documentation": "Present the user with a native browse dialog. On OSX and Windows XP, multiple files and folders may be selected. On Windows Vista, multiple files or a single folder may be selected.",
+            "parameters": []
+        }
+    ],
+    "CoreletType": "built-in", 
+    "CoreletAPIVersion":4
+}

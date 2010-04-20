@@ -68,8 +68,12 @@ class BPServices
 
             $builtins = <<< EOS
 [
+    {"name":"DragAndDrop","versionString":"2.0.0","os":"osx","documentation":"$dnd","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
+    {"name":"DragAndDrop","versionString":"2.0.0","os":"win32","documentation":"$dnd","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
     {"name":"DragAndDrop","versionString":"1.0.1","os":"osx","documentation":"$dnd","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
     {"name":"DragAndDrop","versionString":"1.0.1","os":"win32","documentation":"$dnd","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
+    {"name":"FileBrowse","versionString":"2.0.0","os":"osx","documentation":"$fb","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
+    {"name":"FileBrowse","versionString":"2.0.0","os":"win32","documentation":"$fb","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
     {"name":"FileBrowse","versionString":"1.0.1","os":"osx","documentation":"$fb","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
     {"name":"FileBrowse","versionString":"1.0.1","os":"win32","documentation":"$fb","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
     {"name":"InactiveServices","versionString":"1.0.1","os":"osx","documentation":"$inact","CoreletType":"built-in", "CoreletAPIVersion":3,"size":0},
