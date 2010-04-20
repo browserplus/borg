@@ -143,6 +143,7 @@ h4 {font-size: 116%;}
 .widget-pages li {margin-left:10px; font-size:93%; padding:2px 0; font-family:verdana,arial,sans-serif;}
 .widget-pages li.active {font-style:italic;}
 
+.widget-pages h1 a {color: #fff;}
 
 .widget-content { margin-bottom:2em;font-family:arial,sans-serif;}
 .widget-search input {font-size:85%;}
@@ -180,10 +181,15 @@ td pre { margin:0;}
 .runex {font-size:85%;font-family:Arial,sans-serif;}
 .linenumbers { background:#f0eee9;}
 
+
+table.datetable { margin: 10px 0; border: 1px solid #ccd;font-size:85%;border-collapse:collapse;border-spacing:0}
+.datetable td {padding: 2px 5px;border: 1px solid #e3e6e9;line-height:1.8em;}
+.datetable img {border:5px; display:inline;margin:0; padding:0 5px; text-align:none;}
+/* careful, don't mess up code formatting with line numbers
 table { margin: 10px 0; border: 1px solid #ccd;font-size:85%;border-collapse:collapse;border-spacing:0}
 th {padding: 4px 8px; font-weight: bold; background: #e0e7f0; text-align:center;color:#333;border-bottom:1px solid #ccd;}
 td {padding: 4px 5px;background:#f6f9fb;color:#000; border: 1px solid #e3e6e9;} 
-
+*/
 
 /* log (git and irc tables) */
 .log {font-family:verdana;}

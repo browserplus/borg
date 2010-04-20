@@ -209,7 +209,7 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
     // table with alternating colors.
     $str = "<div class=\"log\">";
     if ($cfg['top_nav']) { $str .= "<div class=\"log-nav\">" . $cfg["top_nav"] . "</div>\n"; }
-    $str .= "<table><tbody>\n";
+    $str .= "<table class=\"datetable\"><tbody>\n";
 
     $cnt = 0; // even or odd
     $curday = null;
