@@ -12,6 +12,9 @@ var ExParamValues = {
 	InactiveServices_Describe_platform: "osx",
 	Motion_Coords_method: "motion", 
 	Uploader_upload_url: "/misc/upload.php",
+	Uploader_simpleUpload_url: "/misc/upload.php",
+	FileTransfer_upload_url: "/misc/upload.php",
+	FileTransfer_simpleUpload_url: "/misc/upload.php",
 	Log_Fatal_location: "FatalMethodTest",
 	Log_Fatal_message: "Fatal - Hello World!",
 	Log_Error_location: "ErrorMethodTest",
@@ -85,6 +88,7 @@ var ExParamHelp = {
 
 var ExParamHints = {
 	Uploader_upload_files: "filemap",
+	FileTransfer_upload_files: "filemap",
 	Zipper_createZip_files: "filelist",	 // version < 2
 	Zipper_create_files: "filelist",  // version < 2
 	Zipper_zip_files: "filelist",	  // version >= 2
