@@ -36,7 +36,7 @@ file is recreated.
 
 <p>
 	
-For more details, visit the <a href="/docs/demos/resumble_uploads.html">resumable uploads</a>
+For more details, visit the <a href="/demos/resumble_uploads.html">resumable uploads</a>
 demo page.
 
 </p>

@@ -14,8 +14,8 @@
 	If this was a real application on a really big server farm with huge arrays of
 	disks, we would have actually saved your file. But this is just a demo so you don't
 	actually get to see the uploaded results. If you want to try this on your own
-	servers, all the source code is (or shortly will be) available on
-	<a href="http://github.com/browserplus/borg/tree/master/www/demo/">GitHub</a>.
+	servers, all the source code is on
+	<a href="http://github.com/browserplus/borg/tree/master/www/demo/robusto/">GitHub</a>.
 
 </p>
 
