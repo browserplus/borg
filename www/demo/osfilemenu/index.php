@@ -11,7 +11,7 @@ require("../../../php/vars.php");
 <body>
 	<div id="tabs">
 		<ul>
-			<li><b>What&apos;s New</b></li>
+			<li><b>What's New</b></li>
 			<li><b>Inbox</b> 648 emails</li>
 			<li id="selected">New Message</li>
 		</ul>
