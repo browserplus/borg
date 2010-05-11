@@ -25,7 +25,7 @@ this page (on your local computer).</p>
 <br>
 <p><strong>Messages Received</strong> (new messages on top):</p>
 <pre id="result"></pre>
-<p><a target="another" href="run.html">Open a second window</a> to get a 
+<p><a target="another" href="publish_subscribe.html">Open a second window</a> to get a 
 better idea of what this can do.  If you are<br> really daring, you'll 
 <a href="publish_subscribe.html">copy this url</a> and open it in a different browser.</p>
     
