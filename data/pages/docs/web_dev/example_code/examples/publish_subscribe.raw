@@ -27,7 +27,7 @@ this page (on your local computer).</p>
 <pre id="result"></pre>
 <p><a target="another" href="run.html">Open a second window</a> to get a 
 better idea of what this can do.  If you are<br> really daring, you'll 
-<a href="run.html">copy this url</a> and open it in a different browser.</p>
+<a href="publish_subscribe.html">copy this url</a> and open it in a different browser.</p>
     
 <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
 <script src="http://yui.yahooapis.com/combo?2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
