@@ -203,7 +203,7 @@ EOS;
             $str = "# {$name}, v{$version}\n\n";
             $str .= "Doc coming soon...\n";
         } else {
-            $str = "<a href=\"/explore/index.html?s={$name}&v={$version}\"><img src=\"/images/explore_button.png\" border=\"0\" align=\"right\"></a>\n\n";
+            $str = "<a href=\"/explore/index.php?s={$name}&v={$version}\"><img src=\"/images/explore_button.png\" border=\"0\" align=\"right\"></a>\n\n";
             $str .= "# {$name}, v{$version}\n\n";
 
             // assume services are same for all platforms and fetch the "win32" version
