@@ -247,7 +247,7 @@ EOS;
                         $str .= "<a name=\"{$f['name']}\"></a>\n";
                         $str .= "## BrowserPlus.{$name}.{$f['name']}({params}, function{}())\n\n";
                         $str .= h($f['documentation']) . "\n\n";
-
+						$str .= "Test: <a href=\"/explore/?s={$name}&f={$f['name']}&v=$version\">{$f['name']}()</a>\n\n";
                         $str .= "### Parameters\n\n";
                         
                         if (count($f['parameters']) > 0) {
