@@ -50,38 +50,27 @@ Subject line (like "YIKES, Installer failure!").
 <a name="installationLocation"></a>
 ## Where are the Files Installed?
 
-During installation, a number of files are written to your computer.  The location depends upon the version of your operating system:
+BrowserPlus follows the *Principle of Least Privilege*, meaning it never has to ask for administrative privileges.
+And that motivates the installation locations.  The location depends upon your operating system:
 
-On OS X, files are installed to:
+On **OS X**, files are installed to:
 
     ~/Library/Application Support/Yahoo!/BrowserPlus/
     ~/Library/Internet Plug-Ins/BrowserPlus_<version>.plugin
     ~/Library/PreferencePanes/BrowserPlusPrefs.prefPane
 
-For Windows 7, the "user directory" is C:\Users\<user name>. For all other windows OS's, the user directory is C:\"Documents &
-Settings\<username>"
+On **Windows 7** and **Vista**, files are installed to:
 
-Given the user directory, BrowserPlus files are stored here:
+    C:\Users\<username>\AppData\Local\Yahoo!\BrowserPlus
+    C:\Users\<username>\AppData\LocalLow\Yahoo!\BrowserPlus
 
-    <user directory>\App Data\Local\Yahoo!\BrowserPlus
+And on **Windows XP**, files are installed to:
 
-On Vista and 7, log files are stored in:
+	C:\Documents and Settings\<username>\Local Settings\Application Data\Yahoo!\BrowserPlus
 
-    <user directory>\App Data\LocalLow\Yahoo!\BrowserPlus
+Note that all Windows installations write to the Registry as well.
 
-Note that numerous entries are written to the Registry as well on Windows.
-
-During installation and uninstallation, log files are written which record every operation. The log files are located at:
-
-    <user directory>\App Data\Local\Temp\
-
-For precise and complete details on windows, you view the actual source code here:
-
-<http://github.com/browserplus/platform/blob/master/src/libs/installer/lib/Uninstaller_Windows.cpp>
-
-and here:
-
-<http://github.com/browserplus/platform/blob/master/src/libs/installer/lib/Utils_Windows.cpp>
+For precise details, the source code is [open and online](http://github.com/browserplus/platform/tree/master/src/libs/installer/lib).
 
 
 
