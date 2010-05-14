@@ -1,14 +1,15 @@
 # Frequently Asked Questions
 
 1. [How do I get help with BrowserPlus?](#support)
-2. [How do I diagnose installer problems?](#diagnoseInstallerProblem)
-3. [How do I uninstall BrowserPlus?](#uninstall)
-4. [How do I use BrowserPlus only my site only if it's already installed?](#initProgressively)
-5. [How do I find BrowserPlus logs?](#findLogfiles)
-6. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
-7. [How do I send a bug report?](#bugReport)
-8. [How do I get BrowserPlus to display an installation dialog if not already installed?](#installDialog)
-9. [How do I call a specific version of a service if more than one is loaded?](#specificVersion)
+1. [How do I diagnose installer problems?](#diagnoseInstallerProblem)
+1. [Where are the files installed?](#installationLocation)
+1. [How do I uninstall BrowserPlus?](#uninstall)
+1. [How do I use BrowserPlus only my site only if it's already installed?](#initProgressively)
+1. [How do I find BrowserPlus logs?](#findLogfiles)
+1. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
+1. [How do I send a bug report?](#bugReport)
+1. [How do I get BrowserPlus to display an installation dialog if not already installed?](#installDialog)
+1. [How do I call a specific version of a service if more than one is loaded?](#specificVersion)
 
 
 
@@ -45,6 +46,46 @@ Subject line (like "YIKES, Installer failure!").
 
 
 
+
+<a name="installationLocation"></a>
+## Where are the Files Installed?
+
+During installation, a number of files are written to your computer.  The location depends upon the version of your operating system:
+
+On OS X, files are installed to:
+
+    ~/Library/Application Support/Yahoo!/BrowserPlus/
+    ~/Library/Internet Plug-Ins/BrowserPlus_<version>.plugin
+    ~/Library/PreferencePanes/BrowserPlusPrefs.prefPane
+
+For Windows 7, the "user directory" is C:\Users\<user name>. For all other windows OS's, the user directory is C:\"Documents &
+Settings\<username>"
+
+Given the user directory, BrowserPlus files are stored here:
+
+    <user directory>\App Data\Local\Yahoo!\BrowserPlus
+
+On Vista and 7, log files are stored in:
+
+    <user directory>\App Data\LocalLow\Yahoo!\BrowserPlus
+
+Note that numerous entries are written to the Registry as well on Windows.
+
+During installation and uninstallation, log files are written which record every operation. The log files are located at:
+
+    <user directory>\App Data\Local\Temp\
+
+For precise and complete details on windows, you view the actual source code here:
+
+<http://github.com/browserplus/platform/blob/master/src/libs/installer/lib/Uninstaller_Windows.cpp>
+
+and here:
+
+<http://github.com/browserplus/platform/blob/master/src/libs/installer/lib/Utils_Windows.cpp>
+
+
+
+
 <a name="uninstall"></a>
 ## How do I uninstall BrowserPlus?
 
@@ -53,9 +94,11 @@ The BrowserPlus unininstaller can be reached via the Windows Control Panel ("Add
 On OSX, the uninstaller can be reached via a preference pane in "System Preferences". 
 
 If for some reason the uninstall doesn't work for you, just manually remove the following directory:
+
     \Users\<yourname>\AppData\Local\Yahoo!\BrowserPlus (Vista, W7)
     \Documents and Settings\<yourname>\Local Settings\Application Data\Yahoo!\BrowserPlus (XP)
     /Users/<yourname>/Library/Application Support/Yahoo!/BrowserPlus (OSX)
+
 
 
 
