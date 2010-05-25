@@ -17,19 +17,24 @@ $listItemsToShow = 5; // for twitter, forum, blog, issues
 function get_links_widget() {
     $links = array(
 	
-        array(
-            "link" => "/demos/resumable_uploads.html",
-            "title" => "Resumable Uploads Demo"
-        ),
-
 		array(
-			"link" => "http://github.com/browserplus/platform/raw/2.6.0/docs/ChangeLog.txt",
-			"title" => "BrowserPlus 2.6.0 Release Notes"
+			"link" => "http://browserplus.org/docs/services/FileTransfer.html",
+			"title" => "HTTPS upload support"
+		),
+		
+		array(
+			"link" => "http://github.com/browserplus/platform/raw/2.8.1/docs/ChangeLog.txt",
+			"title" => "BrowserPlus 2.8.1 Release Notes"
 		),
 
         array(
             "link" => "http://browserplus.yahoo.com/install/",
-            "title" => "Install BrowserPlus 2.6.0"
+            "title" => "Install BrowserPlus 2.8.1"
+        ),
+
+        array(
+            "link" => "/demos/resumable_uploads.html",
+            "title" => "Resumable Uploads Demo"
         ),
 
         array(
