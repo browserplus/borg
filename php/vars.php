@@ -1,5 +1,5 @@
 <?php
-define('BROWSERPLUS_JS_VERSION', '2.6.0');
+define('BROWSERPLUS_JS_VERSION', '2.8.1');
 define('RUBY_SERVICE_VERSION',   '4.2.6');
 define('INSTALL_WIDGET_VERSION', '1.0.11');
 define('UPLOAD_WIDGET_VERSION',  '1.1.2');
