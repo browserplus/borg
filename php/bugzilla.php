@@ -9,8 +9,7 @@ class Bugzilla
 {
 	// APC key
 	private static $bugsKey  = "bugzilla.tickets.all";
-	private static $bugsFeed = "http://bugs.browserplus.org/buglist.cgi?bug_status=NEW&bug_status=REOPENED&bug_status=RESOLVED&query_format=advanced&title=Bug%20List&ctype=atom&limit=20&&order=Last%20Changed%20DESC";
-
+	private static $bugsFeed = "http://bugs.browserplus.org/buglist.cgi?bug_status=NEW&bug_status=REOPENED&bug_status=RESOLVED&query_format=advanced&title=Bug%20List&ctype=atom&limit=20&&order=bug_id%20DESC";
     // return the "cachekey", which prevents others from hitting our cache files
     function get_cache_secret() {
         return get_secret("cachekey");
