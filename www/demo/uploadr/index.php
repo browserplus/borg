@@ -85,7 +85,7 @@ require("../../../php/vars.php");
 		* This demo is built on the
 		<a href="http://browserplus.org/docs/services/DragAndDrop.html">DragAndDrop</a>
 		and 
-		<a href="http://browserplus.org/docs/services/Uploader.html">Uploader</a> services.
+		<a href="http://browserplus.org/docs/services/FileTransfer.html">FileTransfer</a> services.
 		For archiving, compression and chunking, these additional services are used: 
 		<a href="http://browserplus.org/docs/services/Archiver.html">Archiver</a>, 
 		<a href="http://browserplus.org/docs/services/LZMA.html">LZMA</a> and 

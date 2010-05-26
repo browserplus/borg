@@ -9,7 +9,7 @@ best-of-breed, easy-to-use, profile creation tool
 
 ## Discussion
 
-Use @{s DragAndDrop}, @{s FileAccess}, @{s ImageAlter} and @{s Uploader} to create a easy to use
+Use @{s DragAndDrop}, @{s FileAccess}, @{s ImageAlter} and @{s FileTransfer} to create a easy to use
 profile tool. Users drag and drop photos from the desktop and manipulate the image on their own
 CPU so your servers won't be busy twiddling image bits. Uploads are faster too as images are
 scaled before the upload, saving your user's time and your VC's dimes on your storage and bandwidth

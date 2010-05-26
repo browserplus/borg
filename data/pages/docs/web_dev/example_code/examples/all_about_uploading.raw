@@ -47,7 +47,7 @@ function dropped(arg) {
 	if (arg[i].mimeType == "application/x-folder") continue;
 	filesToUpload["file" + id++] = arg[i];
   }
-  BrowserPlus.Uploader.upload(
+  BrowserPlus.FileTransfer.upload(
 	{
 	  files: filesToUpload,
 	  url:   "/misc/upload.php",
@@ -67,7 +67,7 @@ BrowserPlus.init(function(res) {
    BrowserPlus.require({
       services: [
 		{service: 'DragAndDrop', version: "1"},
-		{service: 'Uploader', version: "3", minversion: "3.2.10" },
+		{service: 'FileTransfer', version: "1"},
 		{service: 'FileChecksum', version: "1" }
 	  ]},
       function(res) {

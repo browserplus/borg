@@ -225,7 +225,7 @@ YUI().use('node', function(Y) {
 				var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
 				fileUploadStart(uploadObj, fileObj);
 
-				BrowserPlus.Uploader.upload({
+				BrowserPlus.FileTransfer.upload({
 					files: { "file": currentFile },
 					url:   UPLOAD_URL,
 					progressCallback: function(p) {
@@ -263,7 +263,7 @@ YUI().use('node', function(Y) {
 			    var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
 			    fileUploadStart(uploadObj, fileObj);
 
-			    BrowserPlus.Uploader.upload({
+			    BrowserPlus.FileTransfer.upload({
 				    files: { "file": currentFile },
 				    url:   UPLOAD_URL,
 				    progressCallback: function(p) {
@@ -312,7 +312,7 @@ YUI().use('node', function(Y) {
 		var uploadIt = function(fileObj) {
 			fileUploadStart(uploadObj, fileObj);
 
-			BrowserPlus.Uploader.upload({
+			BrowserPlus.FileTransfer.upload({
 				files: { "file": fileObj.file },
 				url:   UPLOAD_URL,
 				progressCallback: function(p) {
@@ -362,7 +362,7 @@ YUI().use('node', function(Y) {
 		var uploadIt = function(fileObj) {
 			fileUploadStart(uploadObj, fileObj);
 					
-			BrowserPlus.Uploader.upload({
+			BrowserPlus.FileTransfer.upload({
 				files: { "file": fileObj.file },
 				url:   UPLOAD_URL,
 				progressCallback: function(p) {
@@ -425,7 +425,7 @@ YUI().use('node', function(Y) {
 			var fileObj = fileStart(uploadObj, currentFile, fileIndex++);
 			fileUploadStart(uploadObj, fileObj);
 
-			BrowserPlus.Uploader.upload({
+			BrowserPlus.FileTransfer.upload({
 				files: { "file": currentFile },
 				url:   UPLOAD_URL,
 				progressCallback: function(p) {
@@ -485,7 +485,7 @@ YUI().use('node', function(Y) {
 
 				fileUploadStart(uploadObj, fileObj);			
 
-				BrowserPlus.Uploader.upload({
+				BrowserPlus.FileTransfer.upload({
 					files: { "file": fileObj.file },
 					url:   UPLOAD_URL,
 					progressCallback: function(p) {
@@ -643,7 +643,7 @@ YUI().use('node', function(Y) {
 			BrowserPlus.require({
 				services: [
 				{service: 'DragAndDrop', version: "1"},
-				{service: 'Uploader', version: "3", minversion: "3.2.10" },
+				{service: 'FileTransfer', version: "1"},
 				{service: 'LZMA', version: "1", minversion: "1.0.2" },
 				{service: 'FileAccess', version: "2", minversion: "2.0.1" },
 				{service: 'Archiver', version:'1', minversion: "1.1.0"},

@@ -1,13 +1,13 @@
 # Chaining Services
 
-This code sample demonstrates a couple key ideas. First, we show how @{service ImageAlter} and @{service Uploader} may be
+This code sample demonstrates a couple key ideas. First, we show how @{service ImageAlter} and @{service FileTransfer} may be
 combined in a chain to allow you to upload client modified images. The bigger idea demonstrated here is how the "file" type
 in BrowserPlus allows services to be combined in different ways.
 
 @{include examples/chaining_services.raw}
 
 ImageAlter version 2.0.0 and above returns a temporary session scoped "file". This file can then be passed into FileAccess to
-generate a in-page preview, it can be passed into Uploader to upload the contents, and it can be passed into FileChecksum to
+generate a in-page preview, it can be passed into FileTransfer to upload the contents, and it can be passed into FileChecksum to
 calculate an MD5 of the contents on the client.
 
 A final element of this demonstration is the server code to receive the upload. Given the expressiveness of PHP, it's

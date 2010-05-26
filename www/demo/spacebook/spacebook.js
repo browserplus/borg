@@ -46,7 +46,7 @@
                 if (uploadFile === DoUploadFile) {
                     YD.get("progress").style.visibility = "visible";
                     repaint();
-                    BrowserPlus.Uploader.upload({
+                    BrowserPlus.FileTransfer.upload({
                         url: UploadURL,
                         files: {file: res.value.file}
                     }, function(upload) {
@@ -255,7 +255,7 @@
             {service: 'DragAndDrop'},
             {service: "FileAccess", version: "1"},
             {service: "ImageAlter", version: "2"},
-            {service: 'Uploader', version: "3", minversion: "3.2.10" }
+            {service: 'FileTransfer', version: "1"}
         ];
 
         // require BrowserPlus services

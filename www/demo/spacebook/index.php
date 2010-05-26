@@ -52,9 +52,9 @@ require("../../../php/vars.php");
                         tools.  Users may choose to crop their image or apply filters like grayscale,
                         sepia and more.
                     </p>
-                    <h2>Uploader</h2>
+                    <h2>FileTransfer</h2>
                     <p>
-                        <a href="/developer/explore/?s=Uploader">Uploader</a> allows one or more
+                        <a href="/developer/explore/?s=FileTransfer">FileTransfer</a> allows one or more
                         files to be uploaded simultaneously.  Here, the image is uploaded automatically
                         when the user first drops a new image, and when the photo is manipulated with 
                         ImageAlter.

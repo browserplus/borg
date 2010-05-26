@@ -1,6 +1,6 @@
 # All About Uploading
 
-This demonstration showcases more features of the Uploader service:
+This demonstration showcases more features of the FileTransfer service:
 
 * It is possible to upload multiple files in a single HTTP transaction using multipart post.
 * You may specify post variables dynamically from javascript

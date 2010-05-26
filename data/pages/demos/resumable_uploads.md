@@ -6,7 +6,7 @@ you can offer [resumable, fault-tolerant uploads](/demo/robusto/).
 
 For resumable uploads, a file is sliced into chunks with @{s FileAccess}.  The file's 
 contents are finger printed with @{s MD5} so we can know once the file is reassembled
-on the server, that every bit made the journey.  And to send those bits,  @{s Uploader}
+on the server, that every bit made the journey.  And to send those bits,  @{s FileTransfer}
 is pressed into service yet again.
 
 [![Resumable Uploads Screenshot](/i/d/robusto.jpg)](/demo/robusto/)

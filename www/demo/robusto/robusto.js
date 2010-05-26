@@ -111,7 +111,7 @@ YUI().use('node', function(Y) {
 					chunks: ""+numChunks
 				};
 				
-				BrowserPlus.Uploader.upload({ files: { "file": r1.value }, url: url, postvars: vars}, function(r2) {
+				BrowserPlus.FileTransfer.upload({ files: { "file": r1.value }, url: url, postvars: vars}, function(r2) {
 					var results;
 					if (r2.success) {
 						results = JSON.parse(r2.value.body);
@@ -285,7 +285,7 @@ YUI().use('node', function(Y) {
 					{service: 'FileBrowse',   version: "2"},
 					{service: 'FileChecksum', version: "1"},
 					{service: 'JSONRequest',  version: "1"},
-					{service: 'Uploader',     version: "3", minversion: "3.2.10" }
+					{service: 'FileTransfer', version: "1"}
 			]},
 			function(require) {
 				if (require.success) {
