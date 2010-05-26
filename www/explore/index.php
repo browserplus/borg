@@ -581,7 +581,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 					// 2. Add builtin and "developer" services (service installed thru sdk)
 					BrowserPlus.listActiveServices(function(r) {
-						var services = [], slist=Y.one("#servicelist"), name, version, selected = -1;
+						var sorted = [], services = [], slist=Y.one("#servicelist"), name, version, selected = -1;
 						if (r.success) {
 							for (i = 0, len = r.value.length; i < len; i++) {  
 								name = r.value[i].name;
@@ -595,17 +595,27 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 						}
 
 						// create a select list [option] for each service
-						i = 1;
 						for (s in ServiceVersions) {
 							if (ServiceVersions.hasOwnProperty(s)) {
-								if (QueryServiceParam === s) { selected = i; }
 								services.push(opt(s));
-								i++
+								sorted.push(s); // a list of service names only, used to preselect an item
 							}
 						}
 
+
 						// and sort services
 						services.sort();
+						sorted.sort();
+
+						// There may be an "s=" parameter in the URL which means preselect a service.
+						// Look for index in sorted list.
+						for (i = 0; i < sorted.length; i++) {
+							if (QueryServiceParam === sorted[i]) { 
+								selected = i; 
+								break;
+							}
+						}
+
 						slist.setContent(services.join(""));
 						Y.on('change', serviceListChangedEvent, "#servicelist");
 						Y.on('change', versionListChangedEvent, "#versionlist");
