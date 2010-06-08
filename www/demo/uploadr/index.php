@@ -97,7 +97,7 @@ require("../../../php/vars.php");
 
 <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
 <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-<script type="text/javascript" src="/explore/json2.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="uploadr.js"></script>
 
 <script type="text/javascript">

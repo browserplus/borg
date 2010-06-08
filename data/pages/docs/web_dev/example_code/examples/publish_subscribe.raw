@@ -31,7 +31,7 @@ better idea of what this can do.  If you are<br> really daring, you'll
     
 <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
 <script src="http://yui.yahooapis.com/combo?2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script src="/misc/json2.js"></script><!-- for pretty output -->
+<script src="/js/json2.js"></script><!-- for pretty output -->
 <script type="text/javascript">  
 (function() {
     var YD = YAHOO.util.Dom, YE = YAHOO.util.Event, msg = YD.get("msg");

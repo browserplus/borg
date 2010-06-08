@@ -15,7 +15,7 @@
 </div>
 
 <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript" src="/misc/json2.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript">
 var requiredServices = [
   { 
