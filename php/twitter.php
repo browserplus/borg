@@ -60,7 +60,8 @@ class Twitter
 
         $tweets = json_decode($json);
         $str = "<ul>";
-        if ($tweets) {
+
+        if (is_array($tweets)) {
             foreach($tweets as $t) {
                 if ($rows-- == 0) { break; }
                 $time = prettyDate(strtotime($t->created_at));
