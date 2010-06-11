@@ -40,7 +40,7 @@ require("../../php/vars.php");
 </div>
 <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
-<script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script> 
+<script src="/installer/install-min.js"></script> 
 <script src="/js/json2.js"></script>
 <script src="parameters.js"></script>
 <script type="text/javascript">
@@ -541,8 +541,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	}
 
 	// Action happens once BrowserPlus is initialized
-	BPTool.Installer.show({}, function(initres){
-
+	BPInstallerUI.start({pathToJar: "../installer"}, function(initres) {
 		var services = [
 			{service: "FileBrowse", version:"1"},
 			{service: "InactiveServices", version:"1"}

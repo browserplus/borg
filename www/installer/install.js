@@ -460,18 +460,19 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 
 		// in-line style attributes ... so there's no external CSS requirements
 		s_overlay:        'background:#000; opacity: 0.33; filter:alpha(opacity=33); position: fixed; top:0; left:0; height:100%; width:100%; z-index:500;',
-		s_dialog:         'background:{dialogbg}; color:{fontcolor}; position:fixed; top:100px; left:200px; width: 500px; border:2px solid {titlebg}; border-top:1px solid {titlebg1};font:{fontsize} {font}; z-index:501;line-height:1.3em;',
+		s_dialog:         'text-align:left;background:{dialogbg}; color:{fontcolor}; position:fixed; top:100px; left:200px; width: 500px; border:2px solid {titlebg}; border-top:1px solid {titlebg1};font:{fontsize} {font}; z-index:501;line-height:1.3em;',
 		s_image:          'width:{icon_w}px;height:{icon_h}px; background: transparent url({icon}) no-repeat 0 0; margin:0 auto; padding:0 5px;',
-		s_titlebar:       'background:{titlebg}; color:{titlefg}; padding: 4px 5px; font: bold 108% {font};',
+		s_titlebar:       'text-align:left;background:{titlebg}; color:{titlefg}; padding: 4px 5px; font: bold 108% {font};',
 		s_bd:             'padding:10px 10px 5px 10px; text-align:left; border-top:1px solid {titlebg2};',
-		s_dialog_head:    'font:bold 108% {font};',
+		s_dialog_head:    'font:bold 108% {font};color:{fontcolor};margin-bottom:1em;',
 		s_buttons:        'border-top: 1px solid #e7ecee; padding-top:5px;',
 		s_tos_not:        'color:green;',
 		s_progress_outer: 'text-align:center;',
-		s_progress:       'position:relative; border:1px solid #69c; width:300px; height:18px; margin:0 auto;',
+		s_progress:       'position:relative; border:1px solid #69c; width:300px; height:18px; margin:10px auto;',
 		s_progress_bar:   'position:absolute; top:0px; left:0px; background:#cdf; width:0; height:18px;',
 		s_progress_text:  'position:absolute; top:0px; left:0px; text-align:center; width:100%; font:bold 14px/18px {font}; z-index:511;',
-		
+		s_input:          "padding:2px 6px 3px; margin:2px 5px;font-size: 93%; font-family:'lucida grande',arial,sans-serif;",
+		s_td:             'padding-right:10px;',
 		// so the last entry is comma-less
 		noop: ''
 	},
@@ -487,7 +488,7 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 		'<table border=0 width="100%" height="auto">' +
 			'<tbody><tr>' +
 				'<td valign=top><div style="{s_image}"></div></td>' +
-				'<td valign=top><h2 style="{s_dialog_head}">{fallback_head}</h2>{fallback_text}</td>' +
+				'<td valign=top style="{s_td}"><h2 style="{s_dialog_head}">{fallback_head}</h2>{fallback_text}<br></td>' +
 			'</tr></tbody>' +
 		'</table>',
 
@@ -507,11 +508,11 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 		'<table border=0 width="100%" height="auto">' +
 			'<tbody><tr>' +
 				'<td valign=top><div style="{s_image}"></div></td>' +
-				'<td valign=top><h2 style="{s_dialog_head}">{done_head}</h2>{done_text}</td>' +
+				'<td valign=top style="{s_td}"><h2 style="{s_dialog_head}">{done_head}</h2>{done_text}<br><br></td>' +
 			'</tr></tbody>' +
 			'<tfoot><tr>' +
 				'<td align=right colspan=2 style="{s_buttons}">' +
-					'<button id="{id}_bt3">{done_button}</button>' +
+					'<button id="{id}_bt3" style="{s_input}">{done_button}</button>' +
 				'</td>' +
 			'</tr></tfoot>' +
 		'</table>',
@@ -530,14 +531,15 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 						'</tr>' +
 						'<tr>' +
 							'<td align="center" colspan=2>' +
-								'<div><input id="{id}_cb" type="checkbox"><label for="{id}_cb">{bd_tos}</label></div>' +
-								'<p id="{id}_tos_not" style="display:none; {s_tos_not}">{bd_tosnotchecked}</p>' +
+								'<div><input id="{id}_cb" type="checkbox" style="{s_input}"><label for="{id}_cb">{bd_tos}</label></div>' +
+								'<div id="{id}_tos_not" style="display:none; {s_tos_not}"><br>{bd_tosnotchecked}</div><br>' +
 							'</td>' +								
 						'</tr>' +
 					'</tbody>' +
 					'<tfoot><tr>'+
 						'<td align=right colspan=2 style="{s_buttons}">' +
-							'<button id="{id}_bt1">{bd_continue}</button> <button id="{id}_bt2">{bd_notnow}</button>' +
+							'<button id="{id}_bt1" style="{s_input}">{bd_continue}</button>' +
+							'<button id="{id}_bt2" style="{s_input}">{bd_notnow}</button>' +
 						'</td>' +
 					'</tr></tfoot>' +
 				'</table>' +
