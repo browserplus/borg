@@ -472,7 +472,8 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 		s_progress_bar:   'position:absolute; top:0px; left:0px; background:#cdf; width:0; height:18px;',
 		s_progress_text:  'position:absolute; top:0px; left:0px; text-align:center; width:100%; font:bold 14px/18px {font}; z-index:511;',
 		s_input:          "padding:2px 6px 3px; margin:2px 5px;font-size: 93%; font-family:'lucida grande',arial,sans-serif;",
-		s_td:             'padding-right:10px;',
+		s_td1:            'padding-right:10px;',
+		s_td:             'padding:0; border:0px;',
 		// so the last entry is comma-less
 		noop: ''
 	},
@@ -487,8 +488,8 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 	fallbackTmpl = 
 		'<table border=0 width="100%" height="auto">' +
 			'<tbody><tr>' +
-				'<td valign=top><div style="{s_image}"></div></td>' +
-				'<td valign=top style="{s_td}"><h2 style="{s_dialog_head}">{fallback_head}</h2>{fallback_text}<br></td>' +
+				'<td style="{s_td}" valign="top"><div style="{s_image}"></div></td>' +
+				'<td style="{s_td} {s_td1}" valign="top"><h2 style="{s_dialog_head}">{fallback_head}</h2>{fallback_text}<br></td>' +
 			'</tr></tbody>' +
 		'</table>',
 
@@ -507,11 +508,11 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 	doneTmpl =
 		'<table border=0 width="100%" height="auto">' +
 			'<tbody><tr>' +
-				'<td valign=top><div style="{s_image}"></div></td>' +
-				'<td valign=top style="{s_td}"><h2 style="{s_dialog_head}">{done_head}</h2>{done_text}<br><br></td>' +
+				'<td style="{s_td}" valign="top"><div style="{s_image}"></div></td>' +
+				'<td style="{s_td}" valign="top"><h2 style="{s_dialog_head}">{done_head}</h2>{done_text}<br><br></td>' +
 			'</tr></tbody>' +
 			'<tfoot><tr>' +
-				'<td align=right colspan=2 style="{s_buttons}">' +
+				'<td align=right colspan=2 style="{s_td} {s_buttons}">' +
 					'<button id="{id}_bt3" style="{s_input}">{done_button}</button>' +
 				'</td>' +
 			'</tr></tfoot>' +
@@ -526,18 +527,18 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 				'<table border=0 width="100%" height="auto">' +
 					'<tbody>' + 
 						'<tr>' +
-							'<td valign=top><div style="{s_image}"></div></td>' +
-							'<td>{bd_text}</td>' +
+							'<td style="{s_td}" valign="top"><div style="{s_image}"></div></td>' +
+							'<td style="{s_td}">{bd_text}</td>' +
 						'</tr>' +
 						'<tr>' +
-							'<td align="center" colspan=2>' +
+							'<td align="center" colspan="2" style="{s_td}">' +
 								'<div><input id="{id}_cb" type="checkbox" style="{s_input}"><label for="{id}_cb">{bd_tos}</label></div>' +
 								'<div id="{id}_tos_not" style="display:none; {s_tos_not}"><br>{bd_tosnotchecked}</div><br>' +
 							'</td>' +								
 						'</tr>' +
 					'</tbody>' +
 					'<tfoot><tr>'+
-						'<td align=right colspan=2 style="{s_buttons}">' +
+						'<td align=right colspan=2 style="{s_td} {s_buttons}">' +
 							'<button id="{id}_bt1" style="{s_input}">{bd_continue}</button>' +
 							'<button id="{id}_bt2" style="{s_input}">{bd_notnow}</button>' +
 						'</td>' +
@@ -853,5 +854,5 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 			installer.start({}, myStartCallback);
 		}
 	};
-	
+
 }();
