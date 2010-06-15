@@ -1445,7 +1445,7 @@ function flickrUploadrDemo() {
 	finishOkButton.addListener("click", hideUploadFinishedDialog);
 
 	YE.addListener(window, "load", function() {
-		BPTool.Installer.show({}, initCB);
+		BPInstallerUI.start({pathToJar: "/installer"}, initCB);
 	});
 }
 

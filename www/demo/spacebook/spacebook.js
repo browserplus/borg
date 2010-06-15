@@ -269,7 +269,7 @@
 
     }
 
-    BPTool.Installer.show({}, function(res) {
+	BPInstallerUI.start({pathToJar: "/installer"}, function(res) {
         if (res.success) {
             initBrowserPlus();
         } else {

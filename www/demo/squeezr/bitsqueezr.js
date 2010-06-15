@@ -183,7 +183,7 @@
     reset();
 
     // Initialize BrowserPlus
-    BPTool.Installer.show({}, function(init) {
+	BPInstallerUI.start({pathToJar: "/installer"}, function(init) {
         dragHover(false);
         addListener(ResetLink, "click", resetClicked);
         

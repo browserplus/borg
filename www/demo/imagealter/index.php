@@ -11,7 +11,7 @@ require("../../../php/vars.php");
 <link rel="stylesheet" type="text/css" href="imagealter.css">
 <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
-<script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script> 
+<script src="/installer/install-min.js"></script> 
 </head>
 
 <body class=" yui-skin-sam">
@@ -221,7 +221,7 @@ YUI({combine: true, timeout: 10000}).use('anim', function(Y) {
 
 
     // Initialize BrowserPlus
-    BPTool.Installer.show({}, function(init) {
+	BPInstallerUI.start({pathToJar: "/installer"}, function(int) {
         if (init.success) {
             BP.require({services: Services}, function(require) {
                 if (require.success) {

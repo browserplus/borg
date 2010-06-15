@@ -57,7 +57,7 @@ require("../../../php/vars.php");
         </div>
     </div>
 <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
-<script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script> 
+<script src="/installer/install-min.js"></script> 
 <script type="text/javascript" src="bitsqueezr.js"></script>
 </body>
 </html>
