@@ -54,13 +54,15 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	var QueryServiceParam = null;
 	var QueryVersionParam = null;
 	var QueryFunctionParam = null;
-
+	var HasWritablePaths = false;
+	var WritableVersion = "3.0.0";
+	
 	// for log(LEVEL, str)
-	var FUNC = "func";
+	var FUNC   = "func";
 	var RETVAL = "retval";
-	var ERROR = "error";
-	var INFO = "info";
-	var TIME = "time";
+	var ERROR  = "error";
+	var INFO   = "info";
+	var TIME   = "time";
 	
 	var Tmpl = {
 		EmptyTitle: 'Select the Service, Version and Function Above</h3>',
@@ -138,7 +140,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	function versionNum(versionString) {
 		var arr = versionString.match(/(\d+)/g);
 		// (v added so a string is returned instead of an int)
-		return "v" + (parseInt(arr[0],10)*1000000 + parseInt(arr[1]*1000,10) + parseInt(arr[2],10));
+		return "v"+(parseInt(arr[0],10)*1000000 + parseInt(arr[1]*1000,10) + parseInt(arr[2],10));
 	}
 
 	// Called in response to AJAX request (for builtin functions not described by InactiveServices)
@@ -280,7 +282,6 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 				value = QueryParams[p.name] || ExParamValues[key] || "";
 				hint  = ExParamHints[key] || "";
 
-
 				if (p.type === "callback") {
 					enabled = "disabled";
 					style = 'style="background:#ffc"';
@@ -288,6 +289,10 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 				} else if (p.type === "path") {
 					enabled = "disabled";
 					help = "<input id=\"h_" + p.name + "\" class=\"fileAction\" type=\"button\" value=\"Select File\">";
+					style = 'style="background:#def"';
+				} else if (p.type === "writablePath" && HasWritablePaths) {
+					enabled = "disabled";
+					help = "<input id=\"h_" + p.name + "\" class=\"saveAsAction\" type=\"button\" value=\"Select File\">";
 					style = 'style="background:#def"';
 				} else if (hint === "filemap" || hint === "filelist") {
 					enabled = "disabled";
@@ -313,6 +318,11 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 	function log(level, str, fmt) {
 
+		if (str === undefined) {
+			str = level;
+			level = INFO;
+		}
+
 		var cnt, r = Y.one("#result");
 		if (r) {
 			str = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -330,16 +340,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 			r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
 				'<span class="log_' + level + '">' + str + "</span></div>");
-			//r.append("<br>");
-			//prettyPrint();
 			r.set("scrollTop", r.get("scrollHeight"));
-			/*
-			if(r.outerHTML) {
-				r.outerHTML = '<pre id="result">'+str+'</pre>';
-				} else {
-				r.innerHTML = str;
-				}
-				*/
 		}
 	}
 
@@ -353,9 +354,14 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 			runAction();
 		} else if (node.hasClass("fileAction") || node.hasClass("filesAction")) {
 			e.preventDefault();
-			log(INFO, "==== Open File Browser ====");
+			log(INFO, "==== Open Select File Dialog ====");
 			selectFilesAction(node);
+		} else if (node.hasClass("saveAsAction")) {
+			e.preventDefault();
+			log(INFO, "==== Open Save As Dialog ====");
+			saveAsAction(node);
 		}
+
 	}
 
 	function testInvokeFunc(name) {
@@ -415,6 +421,37 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 				document.fparams["f_" + name].value = fnames.join(", ");
 			}
 		});
+	}
+	
+	function displaySaveAs(node) {
+		BrowserPlus.FileBrowse[WritableVersion].saveAs({}, function(res) {
+			var i, name, file;
+
+			if (res.success) {
+				file = res.value;
+				log(RETVAL, JSON.stringify(file, null, " "), true);
+				name = node.get("id").substring(2);
+				FileHandles[name] = [file];
+				document.fparams["f_" + name].value = file.name;
+			} else {
+				log(INFO, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
+			}
+
+		});
+	}
+
+	function saveAsAction(node) {
+		if (HasWritablePaths && BrowserPlus.FileBrowse[WritableVersion] === undefined) {
+			BrowserPlus.require({ services: [{service:"FileBrowse", version: WritableVersion}]}, function(res) {
+				if (res.success) {
+					displaySaveAs(node);
+				} else {
+					log(INFO, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
+				}
+			});
+		} else {
+			displaySaveAs(node);
+		}
 	}
 
 	function runAction() {
@@ -505,6 +542,10 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 					obj[name] = FileHandles[name][0];
 					prettyObj[name] = "<file>";
 					break;
+				case "writablePath":
+					obj[name] = FileHandles[name][0];
+					prettyObj[name] = "<fileW>";
+					break;
 				case "callback":
 					obj[name] = testCallbackFunc(name);
 					prettyObj[name] = "function(r){}";
@@ -519,7 +560,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 				error = true;
 			}
 		}
-		
+
 		if (error) {
 			log(ERROR, "Error - Please set all required values.");
 		} else if (BrowserPlus[sname] && BrowserPlus[sname][version]) {
@@ -588,6 +629,9 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 								// service may already have been added thru step 1 
 								if (!allServices[name+version]) {
+									if (name === "FileBrowse" && versionNum(version).substr(1) >= 3000000) {
+										HasWritablePaths = true;
+									}
 									addVersion(name, version);
 								}
 							}

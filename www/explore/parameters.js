@@ -5,8 +5,9 @@ var ExParamValues = {
 	DragAndDrop_AddDropTarget_id: "result",
 	DragAndDrop_AttachCallbacks_id: "result",
 
-	InactiveServices_All_platform: "win32",
+	FileTransfer_download_url: "http://browserplus.org/images/site-logo.png",
 
+	InactiveServices_All_platform: "win32",
 	InactiveServices_Describe_service: "Uploader",
 	InactiveServices_Describe_version: "3.2.5",
 	InactiveServices_Describe_platform: "osx",
@@ -75,7 +76,8 @@ var ExParamHelp = {
 	FileAccess_chunk_chunkSize: "The desired chunk size, not to exceed 2MB. Default is 2MB.",
 	
 	FileBrowse_OpenBrowseDialog_mimeTypes: 'Ex/ ["image/png", "image/jpeg", "image/gif"]',
-	
+	FileBrowse_saveAs_name: 'The default filename',
+
 	ImageAlter_Alter_crop: "Ex/ {x1: 0.25, y1: 0.25, x2: 0.75, y2: 0.75}",
 	ImageAlter_Alter_quality: 'high | medium | low',
 	ImageAlter_Alter_effects: 'Ex/ ["sepia", "swirl"]', 
@@ -89,6 +91,7 @@ var ExParamHelp = {
 var ExParamHints = {
 	Uploader_upload_files: "filemap",
 	FileTransfer_upload_files: "filemap",
+	FileTransfer_download_file: "writablefile",
 	Zipper_createZip_files: "filelist",	 // version < 2
 	Zipper_create_files: "filelist",  // version < 2
 	Zipper_zip_files: "filelist",	  // version >= 2
