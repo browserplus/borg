@@ -4,7 +4,7 @@
 1. [How do I diagnose installer problems?](#diagnoseInstallerProblem)
 1. [Where are the files installed?](#installationLocation)
 1. [How do I uninstall BrowserPlus?](#uninstall)
-1. [How do I use BrowserPlus only my site only if it's already installed?](#initProgressively)
+1. [How do I use BrowserPlus on my site only if it's already installed?](#initProgressively)
 1. [How do I find BrowserPlus logs?](#findLogfiles)
 1. [How do I require a specific BrowserPlus platform version?](#specificPlatform)
 1. [How do I send a bug report?](#bugReport)
@@ -78,7 +78,7 @@ For precise details, the source code is [open and online](http://github.com/brow
 <a name="uninstall"></a>
 ## How do I uninstall BrowserPlus?
 
-The BrowserPlus unininstaller can be reached via the Windows Control Panel ("Add/Remove Programs" or "Programs and Features", depending on your version of WIndows). 
+The BrowserPlus unininstaller can be reached via the Windows Control Panel ("Add/Remove Programs" or "Programs and Features", depending on your version of Windows). 
 
 On OSX, the uninstaller can be reached via a preference pane in "System Preferences". 
 
@@ -92,7 +92,7 @@ If for some reason the uninstall doesn't work for you, just manually remove the 
 
 
 <a name="initProgressively"></a>
-## How do I use BrowserPlus only my site only if it's already installed?
+## How do I use BrowserPlus on my site only if it's already installed?
 
 You can progressively enhance a web page to only use BrowserPlus if it is installed with the built-in init method.
 
