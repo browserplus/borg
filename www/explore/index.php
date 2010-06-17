@@ -288,15 +288,15 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 					value = 'callback provided';
 				} else if (p.type === "path") {
 					enabled = "disabled";
-					help = "<input id=\"h_" + p.name + "\" class=\"fileAction\" type=\"button\" value=\"Select File\">";
+					help = "<input id=\"h_" + p.name + "\" class=\"fileAction\" type=\"button\" value=\"Select File\"> " + help;
 					style = 'style="background:#def"';
 				} else if (p.type === "writablePath" && HasWritablePaths) {
 					enabled = "disabled";
-					help = "<input id=\"h_" + p.name + "\" class=\"saveAsAction\" type=\"button\" value=\"Select File\">";
+					help = "<input id=\"h_" + p.name + "\" class=\"saveAsAction\" type=\"button\" value=\"Select File\"> " + help;
 					style = 'style="background:#def"';
 				} else if (hint === "filemap" || hint === "filelist") {
 					enabled = "disabled";
-					help = "<input id=\"h_" + p.name + "\" class=\"filesAction\" type=\"button\" value=\"Select Files\">";
+					help = "<input id=\"h_" + p.name + "\" class=\"filesAction\" type=\"button\" value=\"Select Files\"> " + help;
 					style = 'style="background:#def"';
 				}
 

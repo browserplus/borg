@@ -6,7 +6,7 @@ var ExParamValues = {
 	DragAndDrop_AttachCallbacks_id: "result",
 
 	FileTransfer_download_url: "http://browserplus.org/images/site-logo.png",
-
+	FileTransfer_download_file: "browserplus.png",
 	InactiveServices_All_platform: "win32",
 	InactiveServices_Describe_service: "Uploader",
 	InactiveServices_Describe_version: "3.2.5",
@@ -77,6 +77,9 @@ var ExParamHelp = {
 	
 	FileBrowse_OpenBrowseDialog_mimeTypes: 'Ex/ ["image/png", "image/jpeg", "image/gif"]',
 	FileBrowse_saveAs_name: 'The default filename',
+
+	FileTransfer_download_url: "The URL of the file to download",
+	FileTransfer_download_file: "The default name of the saved file",
 
 	ImageAlter_Alter_crop: "Ex/ {x1: 0.25, y1: 0.25, x2: 0.75, y2: 0.75}",
 	ImageAlter_Alter_quality: 'high | medium | low',
