@@ -439,7 +439,7 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 
 		done_head: 'You have successfully installed Yahoo BrowserPlus.',
 		done_text: 'Yahoo! BrowserPlus updates will automatically be downloaded to provide you with the ' + 
-			'latest features and security improvements. To change this, see <{ahref}="{autoupdate_link}">http://browserplus.yahoo.com/autoupdate</a>.',
+			'latest features and security improvements.',
 		done_button: 'Close',
 
 		// browserplus logo
