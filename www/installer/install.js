@@ -414,30 +414,32 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 		// ID prefix for all elements with an ID= attribute
 		id: "ybp_wi",
 		
+		ahref: 'a target="blank" style="color:{linkcolor}" href',
+		
 		// first title that shows in dialog
 		title: 'Yahoo! BrowserPlus',
 		java_title: 'Installing Yahoo! BrowserPlus...',
 		fallback_title: 'Installing Yahoo! BrowserPlus...',
-		done_title: 'Yahoo! BrowserPlus Setup - Complete',
+		done_title: 'Setup Complete',
 
-		bd_text: 'To continue using all of the features of this website, you need to update your system ' + 
-				'with the BrowserPlus plug-in.<br><br>' +
-				'The installation will take less than a minute and you won\'t even need to restart your browser.<br><br>',
-		bd_tos: 'I agree to the <a href="#" style="color:{linkcolor}" >terms of service</a> and automatic <a href="#" style="color:{linkcolor}" >feature updates</a>.',
+		autoupdate_link: "http://browserplus.org/autoupdate",
+		eula_link: "http://info.yahoo.com/legal/us/yahoo/browserplus/",
+
+		bd_text: 'To use all the features of this website, you need the latest version of the Yahoo! BrowserPlus plug-in.<br><br>' +
+			'Installing BrowserPlus takes less than a minute, and you won\'t even need to restart your browser.<br><br>' ,
+		bd_eula: 'I agree to the <{ahref}="{eula_link}">end user license agreement</a> and <{ahref}="{autoupdate_link}">automatic feature updates</a>.',
 		bd_continue: 'Continue',
 		bd_notnow: 'Not Now',
-		bd_tosnotchecked: 'In order to continue, you need to accept the terms and conditions.',
+		bd_eulanotchecked: 'In order to continue, you need to accept the end user license agreement.',
 
 		fallback_head: 'Installing is Easy!',
 		fallback_text_win: 'During installation, click Run or Allow if prompted by dialog boxes.',
 		fallback_text_mac: 'To install Yahoo! BrowserPlus, double-click the setup file in your Downloads folder.',
 		fallback_text: '',
 
-		done_head: 'You have successfully installed Yahoo BrowserPlus',
+		done_head: 'You have successfully installed Yahoo BrowserPlus.',
 		done_text: 'Yahoo! BrowserPlus updates will automatically be downloaded to provide you with the ' + 
-			'latest features and security improvements. To change this, see ' + 
-			'<a style="color:{linkcolor}" target="blank" href="http://browserplus.yahoo.com/autoupdate">'	 +
-			'http://browserplus.yahoo.com/autoupdate</a>.',
+			'latest features and security improvements. To change this, see <{ahref}="{autoupdate_link}">http://browserplus.yahoo.com/autoupdate</a>.',
 		done_button: 'Close',
 
 		// browserplus logo
@@ -466,7 +468,7 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 		s_bd:             'padding:10px 10px 5px 10px; text-align:left; border-top:1px solid {titlebg2};',
 		s_dialog_head:    'font:bold 108% {font};color:{fontcolor};margin-bottom:1em;',
 		s_buttons:        'border-top: 1px solid #e7ecee; padding-top:5px;',
-		s_tos_not:        'color:green;',
+		s_eula_not:       'color:green;',
 		s_progress_outer: 'text-align:center;',
 		s_progress:       'position:relative; border:1px solid #69c; width:300px; height:18px; margin:10px auto;',
 		s_progress_bar:   'position:absolute; top:0px; left:0px; background:#cdf; width:0; height:18px;',
@@ -532,8 +534,8 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 						'</tr>' +
 						'<tr>' +
 							'<td align="center" colspan="2" style="{s_td}">' +
-								'<div><input id="{id}_cb" type="checkbox" style="{s_input}"><label for="{id}_cb">{bd_tos}</label></div>' +
-								'<div id="{id}_tos_not" style="display:none; {s_tos_not}"><br>{bd_tosnotchecked}</div><br>' +
+								'<div><input id="{id}_cb" type="checkbox" style="{s_input}"><label for="{id}_cb">{bd_eula}</label></div>' +
+								'<div id="{id}_eula_not" style="display:none; {s_eula_not}"><br>{bd_eulanotchecked}</div><br>' +
 							'</td>' +								
 						'</tr>' +
 					'</tbody>' +
@@ -708,12 +710,12 @@ BPInstallerUI = typeof BPInstallerUI != "undefined" && BPInstallerUI ? BPInstall
 	}
 
 	function buttonCB(e) {
-		var tos = get(strings.id + "_cb");
-		if (tos.checked) {
+		var eula = get(strings.id + "_cb");
+		if (eula.checked) {
 			installer.resume();
 			// control back to myEventHandler
 		} else {
-			get(strings.id + "_tos_not").style.display="block";
+			get(strings.id + "_eula_not").style.display="block";
 		}
 	}
 
