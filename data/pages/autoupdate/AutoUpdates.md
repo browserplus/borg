@@ -16,16 +16,20 @@ Click [here](http://browserplus.yahoo.com/install/) for the installation page or
 
 ### Supported browsers and platforms
 
-Currently we support these operating systems:
+Currently we support these operating systems and browsers:
 
-   * Windows XP
-   * Windows Vista
-   * Windows 7
-   * Mac OS X 10.4, Tiger (Intel only)
-   * Mac OS X 10.5, Leopard (Intel only)
-   * On Mac we support Firefox 2 & 3 and Safari 3, 4, & 5
+   * Windows XP, Windows Vista and Windows 7
+      * Chrome
+      * Firefox 3+
+      * Internet Explorer 6, 7, 8
+      * Safari 4+
+   * Mac OS X 10.4, 10.5, 10.6 (Intel Only)
+      * Chrome
+      * Firefox 3+
+      * Safari 4+
+     
 
-**NOTE**: On Windows, we support Internet Explorer 6 & 7,and 8. Firefox 2 & 3. Safari 3, 4 & 5., and have experimental support for Google Chrome. We'll continue to get BrowserPlus working in more environments - stay tuned!
+**NOTE**: We'll continue to get BrowserPlus working in more environments - stay tuned!
 
 ### How can I tell if BrowserPlus is installed?
 
