@@ -1,12 +1,18 @@
 # Your Web, Powered by Yahoo! BrowserPlus
 
-We're delighted to offer you Yahoo! BrowserPlus, a small but powerful add-on that helps websites bring rich features to your web browser. With
-BrowserPlus installed on your computer, you can experience faster, more exciting web site features. For instance, Yahoo! Mail comes alive with
-BrowserPlus: you can drag and drop files into the compose message window and even do simple photo touchups right from your inbox.
+We're delighted to offer you Yahoo! BrowserPlus, a small but powerful add-on that helps
+websites bring rich features to your web browser. With BrowserPlus installed on your computer,
+you can experience faster, more exciting web site features. For instance, Yahoo! Mail comes
+alive with BrowserPlus: you can drag and drop files into the compose message window and even do
+simple photo touchups right from your inbox.
 
-When you install BrowserPlus from a non-Yahoo! website, you get the core platform and the set of features required by the website to run their
-web applications. As problems are fixed and new versions are available, we'll automatically update your software with the latest fixes. Every
-update we send is audited and digitally signed, so you're ensured only authentic updates approved by Yahoo! are installed on your computer.
+When you install BrowserPlus, you get the core application and the set of features required by
+the website to run their web applications. As problems are fixed and new versions are
+available, we'll automatically update your software with the latest fixes. Every update we send
+is audited and digitally signed, so you're ensured only authentic updates approved by Yahoo!
+are installed on your computer. Yahoo! BrowserPlus is only available in automatic update mode
+to eliminate your risk of missing out on a critical fix. Say good-bye to inconvenience, as
+manual updates will no longer be required!
 
 ## More info on Yahoo! BrowserPlus
 
