@@ -17,5 +17,5 @@ get started.
 The latest SDKs are available from [GitHub downloads](http://github.com/browserplus/platform/downloads).  SDKs
 are backwards compatible.  Grab the latest here:
 
-* [OSX i386 10.4 or greater](http://github.com/downloads/browserplus/platform/bpsdk_2.7.0-Darwin-i386.tgz)  
-* [Windows i386 xp or greater](http://github.com/downloads/browserplus/platform/bpsdk_@{bpver}-Win32-i386.zip)
+* [OSX i386 10.4 or greater](http://github.com/downloads/browserplus/platform/bpsdk_2.10.1-Darwin-i386.tgz)  
+* [Windows i386 xp or greater](http://github.com/downloads/browserplus/platform/bpsdk_2.10.1-Win32-i386.zip)
