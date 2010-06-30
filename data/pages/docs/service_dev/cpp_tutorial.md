@@ -8,44 +8,41 @@ in C++.
 
 <div style="float:right; margin-left:30px;margin-bottom:10px"><img src="/i/server_arch.png"></div>
 
-BrowserPlus Services allow new capabilities to be provided to the
-web.  
+BrowserPlus Services allow new capabilities to be provided to the web.  
 
-As shown in the figure below, browser processes communicate
-with a BrowserPlus daemon process, which communicates with BrowserPlus
-services.  Each service is hosted in a "harness" process.  The harness performs the Daemon communication responsibilities, and hosting services in separate processes aids system robustness.
+As shown in the figure below, browser processes communicate with a BrowserPlus daemon process, which communicates
+with BrowserPlus services. Each service is hosted in a "harness" process. The harness performs the Daemon
+communication responsibilities, and hosting services in separate processes aids system robustness.
 
 Services are physically packaged as dlls on Windows and dylibs on OSX.
 
 ## Service API
 
-As shown in the figure, BrowserPlus services communicate with the BrowserPlus Daemon over the Service
-API.  The Service API is a C API.  The headers for the Service API are on [github](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/).  The API is designed
-to permit discoverability of service methods and their parameters, among other things.  See the [Service API documentation](http://browserplus.github.com/bp-service-api/) for detailed info.
+As shown in the figure, BrowserPlus services communicate with the BrowserPlus Daemon over the Service API. The
+Service API is a C API. The headers for the Service API are on
+[github](http://github.com/browserplus/platform/tree/master/src/sdk/service_api/api/ServiceAPI/). The API is
+designed to permit discoverability of service methods and their parameters, among other things. See the [Service
+API documentation](http://browserplus.github.com/bp-service-api/) for detailed info.
 
 
 ## The Browserplus Service Framework
 
-C++ programmers may find the required Service API methods and
-types somewhat tedious to implement and interact with.  For this
-reason the Browserplus Service Framework was created.
+C++ programmers may find the required Service API methods and types somewhat tedious to implement and interact
+with. For this reason the Browserplus Service Framework was created.
 
-The Browserplus Service Framework is a header-only framework that
-implements several classes, methods, and types to ease the interaction
-with the rest of BrowserPlus over the Service API.
+The Browserplus Service Framework is a header-only framework that implements several classes, methods, and types to
+ease the interaction with the rest of BrowserPlus over the Service API.
 
-The remainder of this tutorial will use the service framework to
-illustrate implementing a service in C++.
+The remainder of this tutorial will use the service framework to illustrate implementing a service in C++.
 
 
 ## Step 1: Install BrowserPlus
 
-<div id="gotbp">Checking for BrowserPlus...</div>
-<div id="downloadLink"></div>
+If not already installed, you can install BrowserPlus through [Service Explorer](/explore/).
 
 ## Step 2: Install the BrowserPlus SDK
 
-Download the BrowserPlus SDK for your platform from [here](http://browserplus.yahoo.com/developer/service/sdk/).
+Download the [BrowserPlus SDK](http://browserplus.org/docs/service_dev/SDK.html) for your platform.
 
 Once downloaded, unzip (or untar) the sdk, and a directory will be created called `bpsdk`.
 
@@ -55,13 +52,17 @@ Download the sample service code from [here](http://github.com/browserplus/bp-tu
 
 ## Step 4: Let's look at some code!
 
-We're going to create a service called "HelloWorld".  It implements one JS-callable method: "greet" that takes one argument: "name".  The service will assemble an appropriate greeting and return that to JS.
+We're going to create a service called "HelloWorld". It implements one JS-callable method: "greet" that takes one
+argument: "name". The service will assemble an appropriate greeting and return that to JS.
 
 Below is the "service.cpp" file from the sample.  
 
-You can see that the service derives from bplus::service::Service.  Our method receives its arguments in a bplus::Map.  We use a Transaction object to send our results back asynchronously to JS.  More on this later.
-The last 4 lines of the file are macrology that allows the Browserplus Daemon to introspect the methods and arguments of the service.  This introspection allows the service to document itself, and also allows BrowserPlus to peform runtime error checking.  
-The "1.0.0" specifies the version of the service, an important topic for which [more information](/docs/web_dev/JavaScript_API_Overview.html#service_versioning) is available.
+You can see that the service derives from bplus::service::Service. Our method receives its arguments in a
+bplus::Map. We use a Transaction object to send our results back asynchronously to JS. More on this later. The last
+4 lines of the file are macrology that allows the Browserplus Daemon to introspect the methods and arguments of the
+service. This introspection allows the service to document itself, and also allows BrowserPlus to peform runtime
+error checking. The "1.0.0" specifies the version of the service, an important topic for which [more
+information](/docs/web_dev/JavaScript_API_Overview.html#service_versioning) is available.
 
 ~~~
 #include <sstream>
@@ -145,70 +146,6 @@ The "i" command invokes a named method, with a JSON payload.
 
 ## Step 8: Test the HelloWorld service from a web page
 
-We provide a web-based tool called the Service Explorer.  It has two modes.
-In the "List" mode it will show all services available on our
-distribution servers.  In "Test" mode it will show all services
-currently installed on your local machine and allow you to exercise
-them.
-
-1. Launch [Service Explorer](http://browserplus.yahoo.com/developer/explore)
-2. Click "Test Services"
-3. Open the HelloWorld 1.0.0 dropdown
-4. Select the greet method
-5. Fill in the "name" box and Execute the method
-
-Note you can also use this tool to view the documentation for methods on services.
-This is done via metadata provided by the service author.
-
- ![Hello world](/i/explorer_hello_world.png)
-
-
-
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script>
-localPageCB = function () {
-  function myInitCB(r) {
-	var BP = BrowserPlus;
-    var instDiv = document.getElementById("gotbp");
-	if (r.success)
-	{
-      instDiv.innerHTML = "BrowserPlus installed!  Ver. " +
-		BP.getPlatformInfo().version;
-	}
-	else if (r.error === 'bp.notInstalled')
-	{
-      // render an upsell link for inpage installation
-	  while (instDiv.firstChild) instDiv.removeChild(instDiv.firstChild);
-	  var lnk = document.createElement("a");
-      lnk.onclick = function () {
-        BPTool.Installer.show({}, myInitCB);
-      }         
-	  lnk.innerHTML = "install BrowserPlus now";
-	  lnk.href= "#";
-      instDiv.appendChild(lnk);
-    }
-	else if (r.error === 'bp.notInstalled')
-	{
-      instDiv.innerHTML = "Sorry, your platform isn't yet supported, please " +
-		"try again on a <a href='/install'>supported platform</a>."; 
-	}
-	else
-	{
-      instDiv.innerHTML =
-		"Yikes, BrowserPlus encountered an error (" + r.error + ": " +
-		r.verboseError+"), please try restarting your browser, or visit " +
-		"the Troubleshooting page of the BrowserPlus Configuration panel for "
-		+ "more help in figuring out what went wrong.";
-	}
-  }
-
-  BrowserPlus.init({}, myInitCB);
-};
-
-if (window.attachEvent) {
-  window.attachEvent("onload", function(){localPageCB()});
-} else {
-  localPageCB();
-}
-
-</script>
+[Service Explorer](/explore/) is a JavaScript web app that dynamically creates a user interface allowing
+you to test all of the BrowserPlus services without a single line of code.  It's the easiest way to
+test your code.
