@@ -156,10 +156,10 @@
 				   r.error == "bp.unsupportedClient")
 		{
 		  // render upsell
-		  renderHTML('This game requires Yahoo! <a href="http://browserplus.yahoo.com"> BrowserPlus </a> to run.  <a target="_blank" href="/install">Click here to install BrowserPlus</a>.');
+		  renderHTML('This game requires Yahoo! <a href="http://browserplus.yahoo.com"> BrowserPlus </a> to run.  <a target="_blank" href="http://browserplus.yahoo.com//install/">Click here to install BrowserPlus</a>.');
 		} else {
 		  // render failed to load
-		  renderHTML("Oops, failed to initialize BrowserPlus!  Here's the problem: <pre>"+r.error +": "+r.verboseError+"</pre>  Maybe head over to the <a href=\"browserplus.yahoo.com\">BrowserPlus website</a> for help?");
+		  renderHTML("Oops, failed to initialize BrowserPlus!  Here's the problem: <pre>"+r.error +": "+r.verboseError+"</pre>  Head over to the <a href=\"http://browserplus.org/\">BrowserPlus website</a> for help?");
 		}
 	  });
 	}

@@ -136,7 +136,8 @@ Finally on Windows Vista and Windows 7, your logfiles can be found here:
 
 Currently we don't have any built in mechanisms to require a certain platform version, nor force an update.
 
-But you can do it at the page level with [getPlatformInfo()](http://browserplus.yahoo.com/developer/web/api/#bpgetplatforminfo).
+But you can do it at the page level with 
+[getPlatformInfo()](/docs/web_dev/JavaScript_API_Reference.html#getPlatformInfo).
 
 This will let you get the platform version, and appropriately message the end user, or refuse to run the page.
 
@@ -175,7 +176,7 @@ The trouble shooting tab looks like this:
 ## How do I get BrowserPlus to display an installation dialog if it is not already installed?
 
 If users have to have BrowserPlus installed to use a webpage, use the [BrowserPlus
-Installer](http://browserplus.yahoo.com/developer/web/toolbox/installer/) to present 
+Installer](/docs/widgets/installer.html) to present 
 the user with a graphical dialog that guides through installation. If BrowserPlus is 
 already installed, then no dialog is presented.
 

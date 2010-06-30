@@ -138,13 +138,9 @@ BrowserPlus will not rescan services while running for performance reasons, so s
 not neccesarily be detected. We can quickly solve this problem by using the BrowserPlus configuration panel. Find it in Start -
 Programs - Yahoo! BrowserPlus on Windows, or in your System Preferences on OSX.
 
-Once you've found it, navigate to the 'Troubleshooting' pane and click on "Restart BrowserPlus"
-
-![troubleshooting tab](http://browserplus.yahoo.com/developer/service/tutorial/troubleshooting.jpg)
+Once you've found it, navigate to the 'Troubleshooting' pane and click on "Restart BrowserPlus".
 
 Once that's done, you should be able to hop over to the 'services' pane and see your great new service.
-
-![service tab](http://browserplus.yahoo.com/developer/service/tutorial/greatservice.jpg)
 
 **Note**: As of BrowserPlus 2.1.12 and greater, there's a new "Developer Mode" feature that lets BrowserPlus instantly discover new
 locally published services. To enable, edit BrowserPlusCore.config (on windows in `C:\Program Files\Yahoo! BrowserPlus\@{bpver}\` or on mac
@@ -154,12 +150,9 @@ in `~/Library/Application Support/Yahoo!/BrowserPlus/@{bpver}`), and change "Dev
 
 ## Step 8: Test your service API online
 
-You should now be able to see your service in the Service Explorer by clicking on the 'activated' tab:
-
-![service explorer](http://browserplus.yahoo.com/developer/service/tutorial/explorer.jpg)
+You should now be able to see your service in the [Service Explorer](/explore/) by clicking on the 'activated' tab:
 
 This tool will let you excercise the functions of your service without writing another line of code.
-
 
 
 ## Step 9: write a webpage that uses your service

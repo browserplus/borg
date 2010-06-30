@@ -266,7 +266,7 @@ invoke when the call is complete.
 ## Service Function Return Values
 
 Just as all functions on Services are invoked in the same way, they return data and errors in the same way. We've
-focused one of our [code samples](http://browserplus.yahoo.com/developer/web/code/error_handling/) on this
+focused one of our [code samples](/docs/web_dev/example_code/error_handling.html) on this
 pattern, and encourage you to find full documentation and discussion there.
 
 ## File Handles

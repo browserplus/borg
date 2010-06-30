@@ -15,8 +15,7 @@ email site in the world, [Yahoo! Mail](http://mail.yahoo.com), uses BrowserPlus 
 
 BrowserPlus can be installed and updated without a Browser or OS restart. Services are **not built** into the
 core, but installed on demand. What this means is that features (services) can be added without modifying or
-redistributing the core platform.  Once the platform is installed, your users are just 80KB away from 
-[zipping](http://browserplus.yahoo.com/developer/explore/?s=Zipper) their uploads.
+redistributing the core platform.
 
 Want to offer the next photo or video processing site? Save big on servers and bandwidth,
 cause BrowserPlus does all the processing on the client.  
@@ -41,12 +40,10 @@ Dave,
 Eileen, 
 [Gary](http://twitter.com/midgetdivet), 
 Gordon, 
-[Lloyd](http://twitter.com/lloydhilaiel),
-[Steve](http://twitter.com/steven_spencer)
-and
-[Chris](http://twitter.com/chrissaari), 
-our intrepid leader. We're all full time Yahoo! employees and we almost all work from home 
-(sorry Chris). Since we are geographically diverse (western half of USA), we stay in touch via IRC. If you have a 
+[Lloyd](http://twitter.com/lloydhilaiel) and 
+[Steve](http://twitter.com/steven_spencer). 
+We're all full time Yahoo! employees and we almost all work from home. Since we are geographically 
+diverse (western half of USA), we stay in touch via IRC. If you have a 
 question, drop on in for a chat at `irc.freenode.net #browserplus`.  
 
 ## What, No Linux!!!

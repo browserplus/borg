@@ -52,7 +52,7 @@ require("../../../php/vars.php");
 
         <div id="ft">
             <p>
-                <a href="http://browserplus.yahoo.com/">A BrowserPlus&trade; thang!</a>
+                <a href="http://browserplus.org/">A BrowserPlus&trade; thang!</a>
             </p>
         </div>
     </div>
