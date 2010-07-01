@@ -85,7 +85,7 @@ var JsonRequestDemoModule = function() {
             var form = $("url_input_form");
             form.url.value = url;
 
-            BrowserPlus.init({}, initCB);
+			BPInstallerUI.start({pathToJar: "/installer"}, initCB);
         }
     };
 }();

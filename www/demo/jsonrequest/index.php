@@ -36,6 +36,7 @@ body { text-align: left; color:#333;}
     <div id="bpinstall" style="display:none"></div>
 
 	<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+	<script src="/installer/install-min.js"></script> 
     <script src="bpDpSyntaxHighlighter.js"></script>
     <script src="json2-min.js"></script>
     <script src="jsonrequest.js"></script>
