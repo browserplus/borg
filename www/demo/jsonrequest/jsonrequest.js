@@ -64,7 +64,7 @@ var JsonRequestDemoModule = function() {
             BrowserPlus.require( {services: services, progressCallback: progressCB }, requireCB);
         } else if (res.error === "bp.notInstalled") {
           $("bpinstall").style.display='block';
-          $("bpinstall").innerHTML = 'Click here to <a target="_blank" href="/install">install BrowserPlus</a>.';
+          $("bpinstall").innerHTML = 'Click here to <a target="_blank" href="http://browserplus.yahoo.com/install/">install BrowserPlus</a>.';
         } else if (res.error === "bp.unsupportedClient") {
           $("bpinstall").style.display='block';
           $("bpinstall").innerHTML = "Oops!  This demonstration doesn't yet run on your browser.  Click here for <a target=\"_blank\" href=\"/install\">system requirements</a>.";
