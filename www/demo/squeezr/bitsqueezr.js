@@ -76,16 +76,12 @@ YUI().use('node', function(Y) {
 
 	// Show "Drag Files" or "Drop Files" message based on hover state of current drag
 	function dragHover(hovering) {
-		console.log("hovering: " + (hovering ? "true" : "false"));
 		if (Busy) { return; }
 		DropText.setContent(hovering ? DropString : DragString);
 	}
 
 	// User drop files
 	function dragDrop(files) {
-		console.log("drop it!");
-		console.log(files);
-
 		if (files.length > 0) {
 			Busy = true;
 			combineFiles(files);
