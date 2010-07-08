@@ -17,11 +17,12 @@ require("../../../php/vars.php");
     
         <div id="bd">
             <p>
-                Drag and drop the one or more files and folders below that you wish to combine and compress (using 
+                Select or Drag one or more files and folders to combine and compress (using 
                 <a href="http://en.wikipedia.org/wiki/Tar_(file_format)">tar</a> and 
                 <a href="http://en.wikipedia.org/wiki/LZMA">LZMA</a>).
             </p>
 
+			<div align="center"><input id="selectbutton" type="button" value="Select Files"></div><br>
             <div id="seq">
                 <div id="dropitem" class="active">
                     <span id="droptext"></span>
@@ -56,8 +57,9 @@ require("../../../php/vars.php");
             </p>
         </div>
     </div>
+<script src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js"></script>
 <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
 <script src="/installer/install-min.js"></script> 
-<script type="text/javascript" src="bitsqueezr.js"></script>
+<script src="bitsqueezr.js"></script>
 </body>
 </html>
