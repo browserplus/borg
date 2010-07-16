@@ -6,7 +6,6 @@ var ExParamValues = {
 	DragAndDrop_AttachCallbacks_id: "result",
 
 	FileTransfer_download_url: "http://browserplus.org/images/site-logo.png",
-	FileTransfer_download_file: "browserplus.png",
 	InactiveServices_All_platform: "win32",
 	InactiveServices_Describe_service: "Uploader",
 	InactiveServices_Describe_version: "3.2.5",
