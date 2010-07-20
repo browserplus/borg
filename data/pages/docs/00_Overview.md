@@ -49,4 +49,4 @@ complete examples of BrowserPlus in action.
 BrowserPlus integration on your website. Just include a script, set some 
 optional parameters and make your site more capable.
 
-**[FAQ](/docs/FAQ/)**: Answers to frequently asked questions.
+**[FAQ](/docs/FAQ.html)**: Answers to frequently asked questions.
