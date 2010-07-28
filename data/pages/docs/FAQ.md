@@ -156,8 +156,8 @@ a report is easy:
 1. reproduce the issue inside your web browser
 2. STOP
 3. open up the BrowserPlus control panel.  
-  a. On windows this is `Start -> Programs -> BrowserPlus -> Configuration`
-  b. On OSX this is found in `Start -> Programs -> BrowserPlus -> Configuration`
+  a. On windows this is `Start -> Programs -> BrowserPlus -> Configuration`   
+  b. On OSX this is found in `System Preferences -> BrowserPlus`
 4. Click on the "Troubleshooting" tab
 5. Include some descriptive text about what site you were visiting and what you did when the problem happened.
 6. click send!
