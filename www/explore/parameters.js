@@ -37,6 +37,8 @@ var ExParamValues = {
 	PublishSubscribe_postMessage_data: "Hello World!",
 	PublishSubscribe_postMessage_targetOrigin: "*",
 
+	ImageAlter_transform_actions: '[{"rotate":90}, {"scale":{"maxheight":150}}]',
+	
 	JSONRequest_get_url: "http://browserplus.yahoo.com/api/v2/corelets/osx"
 };
 

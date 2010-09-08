@@ -149,3 +149,10 @@ fieldset label{
 .log_time {
     color:#787470;
 }
+
+div#result .viewit { 
+    background:#bbd;
+    border:1px solid #99b;
+    color:black;
+    padding:5px 0 3px 10px;
+}

@@ -56,6 +56,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	var QueryFunctionParam = null;
 	var HasWritablePaths = false;
 	var WritableVersion = "3.0.0";
+	var FileAccessVersion = "2.0.1";
 	
 	// for log(LEVEL, str)
 	var FUNC   = "func";
@@ -113,6 +114,18 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 	function asciiquo(value) {
 		return value.replace(/[^\x20-\x7f]/g, "_").replace(/"/g, "&quot;");
+	}
+
+	function isImage(file) {
+		var i, len = file.mimeType.length, mime;
+
+		for (i = 0; i < len; i++) {
+			mime = file.mimeType[i];
+			if (mime === "image/jpeg" || mime === "image/pjpeg" || mime === "image/gif" || mime === "image/png") {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function opt(name, sel) {
@@ -316,7 +329,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		if (firstFocus) { Y.one("#"+firstFocus).focus();}
 	}
 
-	function log(level, str, fmt) {
+	function log(level, str, fmt, extra) {
 
 		if (str === undefined) {
 			str = level;
@@ -336,6 +349,9 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 			if (fmt && cnt > 0) {
 				str = "VALUE:\n<pre>" + str + "</pre>";
+				if (extra) { 
+					str += extra;
+				}
 			}
 
 			r.append('<div><span class="log_' + TIME + '">' + getTimeStamp() + '</span>' + 
@@ -368,7 +384,20 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		return function(res) {
 			if (res.success) {
 				log(INFO, "SUCCESS");
-				log(RETVAL, JSON.stringify(res.value, null, "  "), true);
+
+				if (res.value.file && isImage(res.value.file)) {
+					BrowserPlus.FileAccess[FileAccessVersion].getURL({ file: res.value.file }, function (r) {
+						if (r.success) {
+							var w = res.value.width, h = res.value.height;
+							var str = "<div class=\"viewit\">The result is an image.  <b><a target=\"blank\" href=\"" + r.value + "\">View it</a></b> in a new window</div>";
+							log(RETVAL, JSON.stringify(res.value, null, "  "), true, str);
+						}
+					});
+
+
+				} else {
+					log(RETVAL, JSON.stringify(res.value, null, "  "), true);
+				}
 			} else {
 				log(INFO, "FAILURE");
 				log(ERROR, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
@@ -442,13 +471,15 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 	function saveAsAction(node) {
 		if (HasWritablePaths && BrowserPlus.FileBrowse[WritableVersion] === undefined) {
-			BrowserPlus.require({ services: [{service:"FileBrowse", version: WritableVersion}]}, function(res) {
-				if (res.success) {
-					displaySaveAs(node);
-				} else {
-					log(INFO, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
-				}
-			});
+			BrowserPlus.require(
+				{ services: [{service:"FileBrowse", version: WritableVersion}]}, 
+				function(res) {
+					if (res.success) {
+						displaySaveAs(node);
+					} else {
+						log(INFO, res.error + (res.verboseError ? (" - " + res.verboseError) : ""));
+					}
+				}); // require()
 		} else {
 			displaySaveAs(node);
 		}
@@ -585,7 +616,8 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	BPInstallerUI.start({pathToJar: "../installer"}, function(initres) {
 		var services = [
 			{service: "FileBrowse", version:"1"},
-			{service: "InactiveServices", version:"1"}
+			{service: "InactiveServices", version:"1"},
+			{service: "FileAccess", version: FileAccessVersion}
 		];
 
 		QueryServiceParam  = QueryParams["s"] || null;
