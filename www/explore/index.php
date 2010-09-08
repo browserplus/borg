@@ -389,7 +389,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 					BrowserPlus.FileAccess[FileAccessVersion].getURL({ file: res.value.file }, function (r) {
 						if (r.success) {
 							var w = res.value.width, h = res.value.height;
-							var str = "<div class=\"viewit\">The result is an image.  <b><a target=\"blank\" href=\"" + r.value + "\">View it</a></b> in a new window</div>";
+							var str = "<div class=\"viewit\">The result is an image.  <b><a target=\"_blank\" href=\"" + r.value + "\">View it</a></b> in a new window.</div>";
 							log(RETVAL, JSON.stringify(res.value, null, "  "), true, str);
 						}
 					});
