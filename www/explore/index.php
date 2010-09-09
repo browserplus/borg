@@ -387,9 +387,13 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 				if (res.value.file && isImage(res.value.file)) {
 					BrowserPlus.FileAccess[FileAccessVersion].getURL({ file: res.value.file }, function (r) {
+						var str;
 						if (r.success) {
-							var w = res.value.width, h = res.value.height;
-							var str = "<div class=\"viewit\">The result is an image.  <b><a target=\"_blank\" href=\"" + r.value + "\">View it</a></b> in a new window.</div>";
+							if (res.value.width <= 600) { 
+								str = '<img src="' + r.value + '" width="' + res.value.width + '" height="' + res.value.height + '">';
+							} else {
+								str = "<div class=\"viewit\">The result is an image.  <b><a target=\"_blank\" href=\"" + r.value + "\">View it</a></b> in a new window.</div>";
+							}
 							log(RETVAL, JSON.stringify(res.value, null, "  "), true, str);
 						}
 					});

@@ -37,7 +37,7 @@ var ExParamValues = {
 	PublishSubscribe_postMessage_data: "Hello World!",
 	PublishSubscribe_postMessage_targetOrigin: "*",
 
-	ImageAlter_transform_actions: '[{"scale":{"maxheight":150}}, {"rotate":90}]',
+	ImageAlter_transform_actions: '[{"thumbnail":{"maxheight":150}}, {"rotate":90}]',
 	
 	JSONRequest_get_url: "http://browserplus.yahoo.com/api/v2/corelets/osx"
 };
@@ -87,6 +87,9 @@ var ExParamHelp = {
 	ImageAlter_Alter_effects: 'Ex/ ["sepia", "swirl"]', 
 	ImageAlter_Alter_format:  'gif | jpeg | png',
 
+	// ImageAlter 4+
+	ImageAlter_transform_actions: 'or try: ["sepia", {"contrast":1}]',
+	
 	InactiveServices_All_platform: '"osx" or "win32"',
 	InactiveServices_Describe_platform: '"osx" or "win32"'
 
