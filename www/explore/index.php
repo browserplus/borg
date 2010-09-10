@@ -638,7 +638,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 		BrowserPlus.require({services: services}, function(x) {
 			if (!x.success) { 
 				// Could not require services
-				alert("ERROR - not able to require basic level to services.	 Error is " +
+				alert("ERROR - could not download services required to run Explorer. Error is " +
 					x.error + (x.verboseError ? " - " + x.verboseError : ""));
 				return;
 			}
