@@ -75,6 +75,7 @@ p { margin-bottom: 1em;}
 strong,dt {font-weight:bold;}
 tt,code { padding:1px; }
 
+
 pre,tt,code {
     font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;
 }
@@ -236,3 +237,19 @@ dt em {  color:#070; }
 #side-a  {width:235px; float:left;}
 #side-b  {width:235px; float:right;}
 #content {width:51%;   float:left;}
+
+/* BP Service API /docs/services/ */
+.serviceapi dd strong {
+    color:#000;
+    padding:2px;
+    font-family:consolas, monaco, "courier new", courier, monospace;
+    font-weight:normal;
+    background:#9cf;
+}
+
+.serviceapi dd br {
+    content: "";
+    display: block;
+    margin:8px;
+}
+
