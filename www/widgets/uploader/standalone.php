@@ -22,9 +22,9 @@
 
         <div id="uploader"></div>
 
-		<script type="text/javascript" src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>	 
-		<script type="text/javascript" src="http://bp.yahooapis.com/toolbox/uploader/<?php echo UPLOAD_WIDGET_VERSION; ?>/uploader-min.js"></script>	
-        <script type="text/javascript">
+		<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>	 
+		<script src="http://bp.yahooapis.com/toolbox/uploader/<?php echo UPLOAD_WIDGET_VERSION; ?>/uploader-min.js"></script>	
+        <script>
         BPTool.Uploader.create("uploader", {uploadUrl: "/misc/upload.php"}).render();
         </script>
     </body>

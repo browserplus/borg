@@ -10,8 +10,8 @@
 <p>
 <div id="lastDropDetails"></div>   
 
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript">
+<script src="@{bpminjs}"></script>  
+<script>
 function setDropAreaText(txt) {
   var div = document.getElementById("myTarget");
   while (div.firstChild) {div.removeChild(div.firstChild);}

@@ -10,7 +10,7 @@ require("../../../php/vars.php");
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/3.1.1/build/cssfonts/fonts-min.css" />
 <link rel="stylesheet" type="text/css" href="imagealter.css">
 <script src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js"></script>
-<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 <script src="/installer/install-min.js"></script> 
 </head>
 
@@ -20,10 +20,12 @@ require("../../../php/vars.php");
 
 <div class="intro">
 	<p>
-		Your servers are busy enough already!  Use ImageAlter from BrowserPlus to perform
-		client-side image transformations.	To start, drag an image from the desktop and drop it on the
-		area below.	 Once you do, a list of transformations will appear.  You can apply the transformations
-		more than once.
+
+		Your servers are busy enough already! Use <a target="_blank" href="/docs/services/ImageAlter.html">ImageAlter</a> from
+        BrowserPlus to perform client-side image transformations. To start, drag an image from the desktop and
+        drop it on the area below. Once you do, a list of transformations will appear. You can apply the
+        transformations more than once.
+
 	</p>
 </div>
 
@@ -64,25 +66,27 @@ YUI({combine: true, timeout: 10000}).use('anim', function(Y) {
 		{service: "FileAccess",	 version: "1", minversion: "1.0.9"}
 	];
 	var Transformations = {
-		'a_blur':		 { 'label': 'Blur',			 'action':'blur'},
-		'a_trast_more':	 { 'label': 'Contrast More', 'action':{'contrast': 1}},
-		'a_trast_less':	 { 'label': 'Contrast Less', 'action':{'contrast': -1}},
-		'a_despeckle':	 { 'label': 'Despeckle',	 'action':'despeckle'},
-		'a_dither':		 { 'label': 'Dither',		 'action':'dither'},
-		'a_enhance':	 { 'label': 'Enhance',		 'action':'enhance'},
-		'a_equalize':	 { 'label': 'Equalize',		 'action':'equalize'},
-		'a_grayscale':	 { 'label': 'Grayscale',	 'action':'grayscale'},
-		'a_negate':		 { 'label': 'Negate',		 'action':'negate'},
-		'a_normalize':	 { 'label': 'Normalize',	 'action':'normalize'},
-		'a_oilpaint':	 { 'label': 'OilPaint',		 'action':'oilpaint'},
-		'a_psychedelic': { 'label': 'Psychedelic',	 'action':'psychedelic'},
-		'a_rot_left':	 { 'label': 'Rotate Left',	 'action':{'rotate': -90}},
-		'a_rot_right':	 { 'label': 'Rotate Right',	 'action':{'rotate': 90}},
-		'a_sepia':		 { 'label': 'Sepia',		 'action':'sepia'},
-		'a_sharpen':	 { 'label': 'Sharpen',		 'action':'sharpen'},
-		'a_solarize':	 { 'label': 'Solarize',		 'action':'solarize'},
-		'a_swirl':		 { 'label': 'Swirl',		 'action':{'swirl': 90}},
-		'a_unsharpen':	 { 'label': 'Unsharpen',	 'action':'unsharpen'}
+		'a_blkthresh':   { 'label': 'Black Threshold', 'action':{'black_threshold':50}},
+		'a_blur':		 { 'label': 'Blur',			   'action':'blur'},
+		'a_trast_more':	 { 'label': 'Contrast More',   'action':{'contrast': 1}},
+		'a_trast_less':	 { 'label': 'Contrast Less',   'action':{'contrast': -1}},
+		'a_despeckle':	 { 'label': 'Despeckle',	   'action':'despeckle'},
+		'a_dither':		 { 'label': 'Dither',		   'action':'dither'},
+		'a_enhance':	 { 'label': 'Enhance',		   'action':'enhance'},
+		'a_equalize':	 { 'label': 'Equalize',		   'action':'equalize'},
+		'a_grayscale':	 { 'label': 'Grayscale',	   'action':'grayscale'},
+		'a_negate':		 { 'label': 'Negate',		   'action':'negate'},
+		'a_normalize':	 { 'label': 'Normalize',	   'action':'normalize'},
+		'a_oilpaint':	 { 'label': 'OilPaint',		   'action':'oilpaint'},
+		'a_psychedelic': { 'label': 'Psychedelic',	   'action':'psychedelic'},
+		'a_rot_left':	 { 'label': 'Rotate Left',	   'action':{'rotate': -90}},
+		'a_rot_right':	 { 'label': 'Rotate Right',	   'action':{'rotate': 90}},
+		'a_sepia':		 { 'label': 'Sepia',		   'action':'sepia'},
+		'a_sharpen':	 { 'label': 'Sharpen',		   'action':'sharpen'},
+		'a_solarize':	 { 'label': 'Solarize',		   'action':'solarize'},
+		'a_swirl':		 { 'label': 'Swirl',		   'action':{'swirl': 90}},
+		'a_threshold':   { 'label': 'Threshold',       'action':{'threshold':140}},
+		'a_unsharpen':	 { 'label': 'Unsharpen',	   'action':'unsharpen'}
 	};
 
 	function fireActionChange() {
@@ -177,7 +181,7 @@ YUI({combine: true, timeout: 10000}).use('anim', function(Y) {
 			var params = {
 				"file": file,
 				"quality": 100,
-				"actions": [{"scale": {"maxwidth": 400, "maxheight": 400}}]
+				"actions": [{"scale": {"maxwidth": 450, "maxheight": 450}}]
 			};
 
 			BP.ImageAlter.transform(params, function (transform) {

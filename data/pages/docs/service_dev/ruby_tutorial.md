@@ -161,7 +161,7 @@ This tool will let you excercise the functions of your service without writing a
     <html>  
     <head>
       <title>My Great Service</title></head>  
-      <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+      <script src="@{bpminjs}"></script>  
     <body>
       <p>testing...</p>
     </body>
@@ -187,7 +187,7 @@ This tool will let you excercise the functions of your service without writing a
 Copy this text into an html file on disk, open it in your favorite supported web browser, and check out your great service in action!
 You've done it! You've extended the web in about 15 minutes. Neat, eh? Now what are you gonna build?
 
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script src="@{bpminjs}"></script>  
 <script>
 localPageCB = function () {
   var rubyServiceDesc = {  

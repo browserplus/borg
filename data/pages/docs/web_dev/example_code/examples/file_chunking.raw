@@ -9,8 +9,8 @@
 <div id="lastDropSummary"></div>
 <textarea rows="20" cols="80" id="lastDropContents"></textarea> 
 
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript">
+<script src="@{bpminjs}"></script>  
+<script>
 function setDropAreaTitle(txt) {
   var div = document.getElementById("dropTitle");
   while (div.firstChild) {div.removeChild(div.firstChild);}

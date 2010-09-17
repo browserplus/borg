@@ -58,7 +58,7 @@ require("../../../php/vars.php");
         </div>
     </div>
 <script src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js"></script>
-<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 <script src="/installer/install-min.js"></script> 
 <script src="bitsqueezr.js"></script>
 </body>

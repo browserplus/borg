@@ -96,7 +96,7 @@ If for some reason the uninstall doesn't work for you, just manually remove the 
 
 You can progressively enhance a web page to only use BrowserPlus if it is installed with the built-in init method.
 
-    <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+    <script src="@{bpminjs}"></script>  
     <script>
     BrowserPlus.init({}, function(result){
         if (result.success) {
@@ -180,7 +180,7 @@ Installer](/docs/widgets/installer.html) to present
 the user with a graphical dialog that guides through installation. If BrowserPlus is 
 already installed, then no dialog is presented.
 
-    <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+    <script src="@{bpminjs}"></script>  
     <script src="http://bp.yahooapis.com/toolbox/installer/@{installver}/install-min.js"></script>  
     <script>
     BPTool.Installer.show({}, function(result){

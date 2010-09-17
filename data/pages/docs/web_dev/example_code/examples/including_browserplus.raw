@@ -2,8 +2,8 @@
 <head><title>Simplest possible BrowserPlus site.</title></head>
 <body>
 BrowserPlus says, hello world.
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>
-<script type="text/javascript">
+<script src="@{bpminjs}"></script>
+<script>
 BrowserPlus.init(function() {
   alert("Yahoo! BrowserPlus installed, v" + 
     BrowserPlus.getPlatformInfo().version);

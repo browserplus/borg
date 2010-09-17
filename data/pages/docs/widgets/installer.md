@@ -8,7 +8,7 @@ This page is a demonstration of how to use the BrowserPlus Installer widget.
 
 Include the base BrowserPlus library and the advanced installer JavaScript tool at the bottom of your webpage:
 
-    <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+    <script src="@{bpminjs}"></script>  
     <script src="http://bp.yahooapis.com/toolbox/installer/@{installver}/install-min.js"></script>  
 
 ## 2. Choose an installation method

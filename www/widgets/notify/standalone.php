@@ -29,9 +29,9 @@
     <input id="b2" type="button" value="Show it!">
     </form>
 
-	<script type="text/javascript" src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>	 
-	<script type="text/javascript" src="http://bp.yahooapis.com/toolbox/notify/<?php echo NOTIFY_WIDGET_VERSION; ?>/notify-min.js"></script>	
-    <script type="text/javascript">
+	<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>	 
+	<script src="http://bp.yahooapis.com/toolbox/notify/<?php echo NOTIFY_WIDGET_VERSION; ?>/notify-min.js"></script>	
+    <script>
 var notify = BPTool.Notify.create();
 
 function getSelectedImage(radio) {

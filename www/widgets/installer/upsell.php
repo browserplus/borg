@@ -33,9 +33,9 @@
     
     <p>See it above?  Nope, then BrowserPlus is already installed.</p>
 
-	<script type="text/javascript" src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>	 
-	<script type="text/javascript" src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script>	
-    <script type="text/javascript">
+	<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>	 
+	<script src="http://bp.yahooapis.com/toolbox/installer/<?php echo INSTALL_WIDGET_VERSION; ?>/install-min.js"></script>	
+    <script>
         function sayit(text) {
             BrowserPlus.TextToSpeech.Say({utterance: text}, function(){});
         }

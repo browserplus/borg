@@ -17,7 +17,7 @@ if (isset($jslibs)) {
 ?>
 <?php if (get_cfg_var("bp_env") != "local"): ?>
 
-<script type="text/javascript">
+<script>
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-11920567-1']);

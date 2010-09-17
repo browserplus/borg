@@ -14,8 +14,8 @@
     Server MD5: <span id="serverMD5"> ... </span>
   </p>
 </body>  
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript">
+<script src="@{bpminjs}"></script>  
+<script>
 // a convenience function to alter the content of the "dropNotes" div
 // to give user feedback
 function setDropAreaTitle(txt) {

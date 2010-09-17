@@ -18,7 +18,7 @@ Create and place a block type element like div on your webpage. Specify the heig
 
 Include the base BrowserPlus library, and the advanced upload JavaScript library at the bottom of your webpage:
 
-    <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+    <script src="@{bpminjs}"></script>  
     <script src="http://bp.yahooapis.com/toolbox/uploader/@{uploadver}/uploader-min.js"></script
 
 ## 3. Create Upload Object

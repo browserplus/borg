@@ -36,10 +36,10 @@ strong {color:#e90;}
 
 <div id="results"></div>
 
-<script type="text/javascript" src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>	 
-<script type="text/javascript" src="http://bp.yahooapis.com/toolbox/uploader/<?php echo UPLOAD_WIDGET_VERSION; ?>/uploader-min.js"></script>	
-<script type="text/javascript" src="http://l.yimg.com/a/lib/bp/s/1.106/json2.js"></script>
-<script type="text/javascript">
+<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>	 
+<script src="http://bp.yahooapis.com/toolbox/uploader/<?php echo UPLOAD_WIDGET_VERSION; ?>/uploader-min.js"></script>	
+<script src="http://l.yimg.com/a/lib/bp/s/1.106/json2.js"></script>
+<script>
 var my = function() {
     var results = document.getElementById("results");
 

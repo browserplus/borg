@@ -35,10 +35,10 @@
 </select>
 </div>
 <!-- inclusion of JS library for BrowserPlus access -->
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script src="@{bpminjs}"></script>  
 
 <!-- site-specific javascript code -->
-<script type="text/javascript">
+<script>
 
 var requiredServices = [
   {service: "DragAndDrop", version: "1"},

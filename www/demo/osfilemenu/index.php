@@ -49,7 +49,7 @@ require("../../../php/vars.php");
 
 	</form>
 	<script src="http://yui.yahooapis.com/3.1.0/build/yui/yui-min.js"></script>
-	<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+	<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 	<script src="attach.js"></script>
 </body>
 </html>

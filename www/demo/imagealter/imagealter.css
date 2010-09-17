@@ -93,7 +93,7 @@ dl dl dd {
 #play ul, #imagewell {
     border: 2px solid #369;
     margin-right: 10px;
-    height: 400px;
+    height: 450px;
     float: left;
     padding: 1px;
     position: relative;
@@ -101,7 +101,7 @@ dl dl dd {
 }
 
 #imagewell,#imagetext {
-    width: 400px;
+    width: 450px;
 }
 
 

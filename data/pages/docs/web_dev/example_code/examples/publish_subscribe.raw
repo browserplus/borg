@@ -29,10 +29,10 @@ this page (on your local computer).</p>
 better idea of what this can do.  If you are<br> really daring, you'll 
 <a href="publish_subscribe.html">copy this url</a> and open it in a different browser.</p>
     
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script src="@{bpminjs}"></script>  
 <script src="http://yui.yahooapis.com/combo?2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script src="/js/json2.js"></script><!-- for pretty output -->
-<script type="text/javascript">  
+<script>  
 (function() {
     var YD = YAHOO.util.Dom, YE = YAHOO.util.Event, msg = YD.get("msg");
 

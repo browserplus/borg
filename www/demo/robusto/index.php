@@ -79,7 +79,7 @@ demo page.
 	</div>
 	
 	
-	<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+	<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 	<script src="/js/json2.js"></script>
 	<script src="/demo/robusto/robusto.js"></script>

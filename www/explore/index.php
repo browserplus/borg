@@ -39,11 +39,11 @@ require("../../php/vars.php");
 
 </div>
 <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 <script src="/installer/install-min.js"></script> 
 <script src="/js/json2.js"></script>
 <script src="parameters.js"></script>
-<script type="text/javascript">
+<script>
 YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	var ServiceOS = (BrowserPlus.clientSystemInfo().os == "Mac" ? "osx" : "win32");
 	var ServiceVersions = {};
@@ -712,7 +712,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	});
 });
 </script>
-<script type="text/javascript">
+<script>
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-11920567-1']);

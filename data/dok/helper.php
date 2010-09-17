@@ -12,6 +12,7 @@ $TitleMap = array(
 // replace @{varname} with below
 $VarMap = array(
     "bpver"      => BROWSERPLUS_JS_VERSION,
+    "bpminjs"    => BROWSERPLUS_MIN_JS,
     "rubyver"    => RUBY_SERVICE_VERSION,
     "installver" => INSTALL_WIDGET_VERSION,
     "notifyver"  => NOTIFY_WIDGET_VERSION,

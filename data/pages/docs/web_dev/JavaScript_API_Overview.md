@@ -14,7 +14,7 @@ BrowserPlus is installed and if not, whether it's supported on the client machin
 Web developers include a small JavaScript library in their pages which provides the high level BrowserPlus
 JavaScript API. This library is included from a well known location:
 
-    <script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+    <script src="@{bpminjs}"></script>  
 
 Once the JavaScript library is included, the web developer may call functions on it to test for the presence of
 BrowserPlus, "activate" services on the fly (which perhaps will require an in-page installation), and to use the

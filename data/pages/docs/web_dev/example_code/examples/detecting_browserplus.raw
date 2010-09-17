@@ -3,7 +3,7 @@
 <body>
 Let's see if BrowserPlus is installed... 
 
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>
+<script src="@{bpminjs}"></script>
 <script class="javascript">
 BrowserPlus.init(function(r) {
   function bplusInitialized() {

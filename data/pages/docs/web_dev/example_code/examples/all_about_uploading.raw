@@ -14,7 +14,7 @@
     <h2>Server Response:</h2>
     <pre id="serverResponse"></pre>
 </body>  
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
+<script src="@{bpminjs}"></script>  
 <script class="javascript">
 // a convenience function to alter the content of the "dropNotes" div
 // to give user feedback

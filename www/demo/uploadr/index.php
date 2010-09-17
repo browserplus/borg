@@ -95,12 +95,12 @@ require("../../../php/vars.php");
 		the image to a maximum width or height of 800px.
 	</p>
 
-<script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-<script type="text/javascript" src="/js/json2.js"></script>
-<script type="text/javascript" src="uploadr.js"></script>
+<script src="/js/json2.js"></script>
+<script src="uploadr.js"></script>
 
-<script type="text/javascript">
+<script>
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-11920567-1']);
 _gaq.push(['_trackPageview']);

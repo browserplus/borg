@@ -49,7 +49,7 @@ require("../../../php/vars.php");
 	</div>
 	<div id="status"> Loading... </div>
 	</center>
-    <script src="http://bp.yahooapis.com/<?php echo BROWSERPLUS_JS_VERSION; ?>/browserplus-min.js"></script>
+    <script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
     <script src="http://yui.yahooapis.com/3.0.0pr1/build/yui/yui-min.js"></script>
 	<!-- sample data -->
     <scriptsrc="data.js"></script>

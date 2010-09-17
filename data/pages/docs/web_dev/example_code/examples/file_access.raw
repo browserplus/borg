@@ -13,8 +13,8 @@
 </p>
 <img id="lastDropImg">
 
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript">
+<script src="@{bpminjs}"></script>  
+<script>
 $BP = BrowserPlus;
 
 function setDropAreaTitle(txt) {

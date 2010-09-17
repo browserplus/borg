@@ -14,9 +14,9 @@
 <pre id="outputArea">
 </div>
 
-<script src="http://bp.yahooapis.com/@{bpver}/browserplus-min.js"></script>  
-<script type="text/javascript" src="/js/json2.js"></script>
-<script type="text/javascript">
+<script src="@{bpminjs}"></script>  
+<script src="/js/json2.js"></script>
+<script>
 var requiredServices = [
   { 
     service: "PStore"
