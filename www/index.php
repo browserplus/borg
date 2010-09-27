@@ -116,6 +116,7 @@ $forum_widget = $forums->render_widget($listItemsToShow);
 
 
 $body = <<< EOS
+<!-- TESTPUSH -->
 <div class="home-logs">
     <div class="home-irc-log">$irctable</div>
     <div class="home-git-log">$gittable</div>
