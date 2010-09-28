@@ -6,4 +6,5 @@ define('UPLOAD_WIDGET_VERSION',  '1.1.2');
 define('NOTIFY_WIDGET_VERSION',  '1.0.2');
 
 define('BROWSERPLUS_MIN_JS', 'http://bp.yahooapis.com/' . BROWSERPLUS_JS_VERSION . '/browserplus-min.js');
+//define('BROWSERPLUS_MIN_JS', '/js/browserplus.js');
 ?>
