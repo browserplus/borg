@@ -248,7 +248,7 @@ function render_table($rows, $when_key, $who_key, $what_key, $cfg=array())
         $str .= "  <td class=\"log-when\"><nobr>$t</nobr></td>";
         $str .= "  <td class=\"$clz\">";
         $str .= "    <span class=\"log-who\">" . $who . ":</span> ";
-        $str .= "    <span class=\"irc-what\">$what</span>";
+        $str .= "    <span class=\"irc-what\">" . preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $what) . "</span>";
         $str .= "  </td>\n";
         $str .= "</tr>\n";
     }
