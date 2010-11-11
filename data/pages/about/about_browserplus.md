@@ -40,7 +40,7 @@ Dave,
 Eileen, 
 [Gary](http://twitter.com/midgetdivet), 
 Gordon, 
-[Lloyd](http://twitter.com/lloydhilaiel) and 
+ and 
 [Steve](http://twitter.com/steven_spencer). 
 We're all full time Yahoo! employees and we almost all work from home. Since we are geographically 
 diverse (western half of USA), we stay in touch via IRC. If you have a 
