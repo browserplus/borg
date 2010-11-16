@@ -180,7 +180,7 @@ YUI().use('node', function(Y) {
 					{service: 'Directory',	 version: "2", minversion: "2.0.4" },
 					{service: 'FileAccess',	 version: "2", minversion: "2.0.1" },
 					{service: 'ImageAlter',	 version: "4" },
-					{service: 'FileToWeb', version: "0"}
+					{service: 'FileToWeb'}
 				]},
 				function(require) {
 					if (require.success) {
