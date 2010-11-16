@@ -161,8 +161,8 @@ YUI().use('node', function(Y) {
 
 	function attachFiles() {
 		var params = getQueryParams();
-		if (params.mailTo !== undefined) {
-            document.getElementById("mailTo").value = params.mailTo;
+		if (params.mailto !== undefined) {
+            document.getElementById("mailto").value = params.mailto;
         }
 		if (params.token !== undefined) {
 			BrowserPlus.FileToWeb.getSelection({token: params.token}, function(r){

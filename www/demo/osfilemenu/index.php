@@ -26,7 +26,7 @@ require("../../../php/vars.php");
 	<form>
 		<dl>
 			<dt><label>To:</label></dt>
-			<dd><input id="mailTo" type="text"></dd>
+			<dd><input id="mailto" type="text"></dd>
 		</dl>
 		<dl>
 			<dt><label>Cc:</label></dt>
