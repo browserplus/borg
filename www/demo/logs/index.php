@@ -35,12 +35,11 @@ YUI().use("yui", "tabview", function(Y) {
 	}
 
 	function uploadFiles() {
-		console.log("uploadFIles");
 		BrowserPlus.LogAccess.get({}, function(logs){
 			var i, len, files = {};
-			console.log("logAccess");
+
 			if (!logs.success) return;
-			console.log("logAccess TRUE");
+
 			for (i = 0, len = logs.value.length; i < len; i++) {
 				files["file"+i] = logs.value[i];
 			}
