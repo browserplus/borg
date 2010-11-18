@@ -18,13 +18,14 @@ require("../../../php/vars.php");
 <h1>BrowserPlus Log Files</h1>
 
 <div id="demo"></div>
-
+	<button id="uploadIt">Upload Log Files</button>
 	<script type="text/javascript" src="http://yui.yahooapis.com/3.2.0/build/yui/yui-min.js"></script> 
 	<script src="<?php echo BROWSERPLUS_MIN_JS; ?>"></script>
 
 <script type="text/javascript"> 
 YUI().use("yui", "tabview", function(Y) {
 
+	var UPLOAD_URL = "http://browserplus.org/misc/upload.php";
 	var tabview = new Y.TabView({
 		srcNode: '#demo'
 	});
@@ -33,6 +34,22 @@ YUI().use("yui", "tabview", function(Y) {
 		alert("Error in " + s + ": " + err.error + (err.verboseError ? " - " + err.verboseError : ""));
 	}
 
+	function uploadFiles() {
+		BrowserPlus.LogAccess.get({}, function(logs){
+			var i, len, files = {};
+			if (!logs.success) return;
+			for (i = 0, len = logs.value.length; i < len; i++) {
+				files["file"+i] = logs.value[i];
+			}
+			BrowserPlus.FileTransfer.upload({
+				files: files,
+				url:   UPLOAD_URL,
+				progressCallback: function(p) {
+					console.log("upload progress: " + p.filePercent + "%");
+				}
+			});
+	}
+	
 	function getLogFiles() {
 		BrowserPlus.LogAccess.get({}, function(logs){
 			var i, len, item;
@@ -81,11 +98,13 @@ YUI().use("yui", "tabview", function(Y) {
 			// lots of different services for all the various upload options
 			BrowserPlus.require({
 				services: [
-					{service: 'FileAccess',	version: "2", minversion: "2.0.1" },
-					{service: 'LogAccess',	version: "1", minversion: "1.0.0"}
+					{service: 'FileAccess',	  version: "2", minversion: "2.0.1" },
+					{service: 'FileTransfer', version: "1", minversion: "1.1.1"},
+					{service: 'LogAccess',	  version: "1", minversion: "1.0.0"}
 				]},
 				function(require) {
 					if (require.success) {
+						Y.on("click", function() { uploadFiles(); }, "#uploadIt");
 						getLogFiles();
 					} else {
 						error("REQUIRE", require);
