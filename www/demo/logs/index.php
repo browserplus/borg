@@ -48,6 +48,7 @@ YUI().use("yui", "tabview", function(Y) {
 					console.log("upload progress: " + p.filePercent + "%");
 				}
 			});
+		});
 	}
 	
 	function getLogFiles() {
