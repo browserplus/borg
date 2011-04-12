@@ -107,5 +107,7 @@ var ExParamHints = {
 	Directory_list_files: "filelist",
 	Directory_recursiveList_files: "filelist",
 	Directory_recursiveListWithStructure_files: "filelist",
-	Archiver_archive_files: "filelist"
+	Archiver_archive_files: "filelist",
+	Base64_encode_files: "filelist",
+	Base64_decode_files: "filelist"
 };
