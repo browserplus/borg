@@ -84,9 +84,9 @@ function flickrUploadrDemo() {
 	
 	var RequiredServices = 
 	[
-		{service: "FileBrowse", version: "1"},
+		{service: "FileBrowse", version: "2"},
 		{service: "FileAccess", version: "1"},
-		{service: "DragAndDrop", version: "1"},
+		{service: "DragAndDrop", version: "2"},
 		{service: "ImageAlter", version: "2", minversion: "2.1.3" },
 		{service: "FlickrUploader", version: "2", minversion: "2.0.14"}
 	];
@@ -635,23 +635,19 @@ function flickrUploadrDemo() {
 		setOption(f.safety_level, data.safety_level);
 	}
 
-	function dropCB(args)
+	function handleDropOrSelect(files)
 	{
-		if (YAHOO.lang.isArray(args.value)) {
-			args = args.value;
-		}
-
 		var msg = "";
 		var fnames = [];
 		var dropCount = 0;
-		for (var i = 0; i < args.length; i++) {
+		for (var i = 0; i < files.length; i++) {
 			var regexp = /(\.jpe?g$)|(\.gif$)|(\.png$)/i;
 			
-			if (!regexp.test(args[i].name)) { 
-				notify("Only JPEG, PNG and GIF Images supported at this time: " + args[i].name);
+			if (!regexp.test(files[i].name)) { 
+				notify("Only JPEG, PNG and GIF Images supported at this time: " + files[i].name);
 			} else {
-				addImage(args[i]);
-				fnames.push(args[i].name);
+				addImage(files[i]);
+				fnames.push(files[i].name);
 				dropCount++;
 				notify("");
 			}
@@ -663,6 +659,20 @@ function flickrUploadrDemo() {
 				YD.setStyle(Ids.DropHelp, 'display', 'none');
 				YD.setStyle(Ids.DragHelp, 'visibility', 'visible');
 			}
+		}
+	}
+
+	function dropCB(args)
+	{
+		if (YAHOO.lang.isArray(args)) {
+            handleDropOrSelect(args);
+		}
+	}
+
+	function selectCB(args)
+	{
+		if (YAHOO.lang.isArray(args.value.files)) {
+            handleDropOrSelect(args.value.files);
 		}
 	}
 
@@ -814,7 +824,7 @@ function flickrUploadrDemo() {
 
 	function browserClicked()
 	{
-		BP.FileBrowse.OpenBrowseDialog({}, dropCB);
+		BP.FileBrowse.OpenBrowseDialog({}, selectCB);
 	}
 
   function removeImageConstruct(id)

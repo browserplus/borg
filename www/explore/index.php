@@ -433,20 +433,17 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 
 
 	function selectFilesAction(node) {
-		var limit;
-		
-		// limit to 1 file for "fileAction", N for filesAction
-		limit = node.hasClass("fileAction") ? {limit:1} : {};
-		limit.includeGestureInfo = true;
-
-		// FileBrowse 2.0.0 changed to use Directory Service, so fixing this to original 1.0.1
-		BrowserPlus.FileBrowse["1.0.1"].OpenBrowseDialog(limit, function(res) {
-			var i, handles = [], name, files = res.value.actualSelection, len = files.length, fnames=[];
+		BrowserPlus.FileBrowse.OpenBrowseDialog({}, function(res) {
+			var i, handles = [], name, files = res.value.files, len = files.length, fnames=[];
 			log(RETVAL, JSON.stringify(files, null, " "), true);
 			if (Y.Lang.isArray(files) && len > 0) {
 				for (i = 0; i < len; i++) {
 					handles.push(files[i]);
 					fnames.push(files[i].name);
+                    if (node.hasClass("fileAction")) {
+                        // limit to first item for fileAction
+                        break;
+                    }
 				}
 
 				name = node.get("id").substring(2);
@@ -619,7 +616,7 @@ YUI().use("event-base", "io-base", "dom-base", "substitute", function(Y) {
 	// Action happens once BrowserPlus is initialized
 	BPInstallerUI.start({pathToJar: "../installer"}, function(initres) {
 		var services = [
-			{service: "FileBrowse", version:"1"},
+			{service: "FileBrowse", version:"2"},
 			{service: "InactiveServices", version:"1"},
 			{service: "FileAccess", version: FileAccessVersion}
 		];

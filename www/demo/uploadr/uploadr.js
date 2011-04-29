@@ -642,7 +642,7 @@ YUI().use('node', function(Y) {
 			// lots of different services for all the various upload options
 			BrowserPlus.require({
 				services: [
-				{service: 'DragAndDrop', version: "1"},
+				{service: 'DragAndDrop', version: "2"},
 				{service: 'FileTransfer', version: "1"},
 				{service: 'LZMA', version: "1", minversion: "1.0.2" },
 				{service: 'FileAccess', version: "2", minversion: "2.0.1" },
